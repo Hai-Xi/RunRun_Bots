@@ -1,0 +1,20 @@
+version: '3.8'
+
+
+services:
+
+
+  db:
+    image: ghcr.io/baosystems/postgis:latest
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_PASSWORD: secret
+      TZ: UTC
+    volumes:
+      - runrun_bots-pg-local:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+
+volumes:
+  runrun_bots-pg-local:
