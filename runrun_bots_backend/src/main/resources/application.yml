@@ -1,0 +1,35 @@
+spring:
+  servlet:
+    multipart:
+      max-file-size: 10MB # File upload limit, default 1MB not enough.
+  jackson:
+    default-property-inclusion: non_null
+  datasource:
+    url: jdbc:postgresql://${DATABASE_URL:localhost}:${DATABASE_PORT:5432}/postgres
+    username: ${DATABASE_USERNAME:postgres}
+    password: ${DATABASE_PASSWORD:secret}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      # Do not perform any DDL operations. This is the default setting, suitable for situations where Hibernate is not desired to automatically manage the database structure.
+      #      ddl-auto: none
+      #      ddl-auto: update: This will automatically update the database schema to match the entity classes when the application starts. Other options include none, create (recreate tables on each startup), and validate (verify that the table structure matches the entity classes).
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    database-platform: org.hibernate.spatial.dialect.postgis.PostgisDialect
+    show-sql: true
+  sql:
+    init:
+      mode: always
+      # schema-locations: "classpath:postgis_extension.sql,classpath:database-init.sql"
+      # data-locations: "classpath:config-data.sql"
+
+logging:
+  level:
+    org.apache.coyote.http11.Http11InputBuffer: TRACE # Incoming http requests
+    org.springframework.jdbc.core: DEBUG # SQL
+    org.springframework.jdbc.datasource.init: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
