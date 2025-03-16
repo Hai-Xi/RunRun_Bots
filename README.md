@@ -4,3 +4,9 @@ RunRun Bots is an intelligent dispatch and delivery management system that lever
 ```bash
 cd runrun_bots_backend
 ```
+
+```bash
+# run database
+./docker-compose.yml
+```
+
