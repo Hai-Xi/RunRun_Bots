@@ -1,4 +1,61 @@
 
+
+## ER diagram for the RunRun Bots Dispatch & Delivery Management System database design
+
+
+
+![RunRun_Bots_ERD](assets/RunRun_Bots_ERD.png)
+
+
+
+1. **Entity Relationships:**
+
+   - One USER can create many ORDERS (1:N)
+   - One ORDER can have many PAYMENTS (1:N)
+   - One ORDER can have many ORDER_HISTORY records (1:N)
+
+2. **Tables Structure:**
+
+   a. **USERS Table**
+
+   - Primary Key: user_id
+   - Contains basic user information
+   - Unique constraints on email and phone
+   - Timestamps for account creation
+
+   b. **ORDERS Table**
+
+   - Primary Key: order_id
+   - Foreign Key: user_id (references USERS)
+   - Contains delivery details
+   - Tracks delivery method (ROBOT/DRONE)
+   - Includes order status
+
+   c. **PAYMENTS Table**
+
+   - Primary Key: payment_id
+   - Foreign Key: order_id (references ORDERS)
+   - Records payment transactions
+   - Tracks payment method and status
+
+   d. **ORDER_HISTORY Table**
+
+   - Primary Key: history_id
+   - Foreign Key: order_id (references ORDERS)
+   - Tracks order status changes
+   - Includes timestamp for each status change
+
+3. **Key Features:**
+
+   - All tables include appropriate timestamps
+   - Use of enumerated types for status fields
+   - Proper foreign key relationships
+   - Clear separation of concerns between entities
+
+
+
+
+
 ## **API Integration Requirements**
 
 |      | **Feature**                | **API Endpoint**            | **Method**  | **Description**                      |
