@@ -131,10 +131,3 @@ public class Order {
 
 }
 
-enum DeliveryMethod {
-    ROBOT, DRONE  
-}  
-
-enum OrderStatus {
-    PENDING, PAID, IN_PROGRESS, DELIVERED, CANCELLED  
-}  

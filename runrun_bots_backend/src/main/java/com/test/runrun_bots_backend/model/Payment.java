@@ -87,10 +87,3 @@ public class Payment {
     }
 }
 
-enum PaymentMethod {
-    CREDIT_CARD, PAYPAL, APPLE_PAY  
-}  
-
-enum PaymentStatus {
-    PENDING, SUCCESS, FAILED  
-}  
