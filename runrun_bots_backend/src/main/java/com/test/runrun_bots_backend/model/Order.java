@@ -39,8 +39,11 @@ public class Order {
     @Column(name = "delivery_location", nullable = false)
     private String deliveryLocation;  
 
-    @Column(name = "delivery_method", nullable = false)  
-    @Enumerated(EnumType.STRING)  
+    @Column(name = "delivery_method", nullable = false)
+    // The @Enumerated(EnumType.STRING) annotation ensures that
+    // the enum values are stored as
+    // strings in the database (e.g., "ADMIN", "USER", "GUEST").
+    @Enumerated(EnumType.STRING)
     private DeliveryMethod deliveryMethod;
 
     @Column(nullable = false)  
