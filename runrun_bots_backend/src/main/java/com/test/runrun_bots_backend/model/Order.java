@@ -1,23 +1,33 @@
 package com.test.runrun_bots_backend.model;
 
+
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Orders
  */
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 @Entity
 @Table(name = "orders")  
-public class Order {  
-    @Id  
+public class Order {
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderId;  
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)  
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;  
 
     @Column(name = "item_description", nullable = false)  
@@ -31,7 +41,7 @@ public class Order {
 
     @Column(name = "delivery_method", nullable = false)  
     @Enumerated(EnumType.STRING)  
-    private DeliveryMethod deliveryMethod;  
+    private DeliveryMethod deliveryMethod;
 
     @Column(nullable = false)  
     @Enumerated(EnumType.STRING)  
@@ -45,89 +55,36 @@ public class Order {
     private List<Payment> payments;
 
     @OneToMany(mappedBy = "order")  
-    private List<OrderHistory> orderHistory;  
+    private List<OrderHistory> orderHistory;
 
     // Getters and Setters
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Order order = (Order) o;
+        return Objects.equals(orderId, order.orderId) && Objects.equals(user, order.user) && Objects.equals(itemDescription, order.itemDescription) && Objects.equals(pickupLocation, order.pickupLocation) && Objects.equals(deliveryLocation, order.deliveryLocation) && deliveryMethod == order.deliveryMethod && status == order.status && Objects.equals(createdAt, order.createdAt) && Objects.equals(payments, order.payments) && Objects.equals(orderHistory, order.orderHistory);
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
+    @Override
+    public int hashCode() {
+        return Objects.hash(orderId, user, itemDescription, pickupLocation, deliveryLocation, deliveryMethod, status, createdAt, payments, orderHistory);
     }
 
-    public String getDeliveryLocation() {
-        return deliveryLocation;
+    @Override
+    public String toString() {
+        return "Order{" +
+                "createdAt=" + createdAt +
+                ", orderId=" + orderId +
+                ", user=" + user +
+                ", itemDescription='" + itemDescription + '\'' +
+                ", pickupLocation='" + pickupLocation + '\'' +
+                ", deliveryLocation='" + deliveryLocation + '\'' +
+                ", deliveryMethod=" + deliveryMethod +
+                ", status=" + status +
+                ", payments=" + payments +
+                ", orderHistory=" + orderHistory +
+                '}';
     }
-
-    public void setDeliveryLocation(String deliveryLocation) {
-        this.deliveryLocation = deliveryLocation;
-    }
-
-    public DeliveryMethod getDeliveryMethod() {
-        return deliveryMethod;
-    }
-
-    public void setDeliveryMethod(DeliveryMethod deliveryMethod) {
-        this.deliveryMethod = deliveryMethod;
-    }
-
-    public String getItemDescription() {
-        return itemDescription;
-    }
-
-    public void setItemDescription(String itemDescription) {
-        this.itemDescription = itemDescription;
-    }
-
-    public List<OrderHistory> getOrderHistory() {
-        return orderHistory;
-    }
-
-    public void setOrderHistory(List<OrderHistory> orderHistory) {
-        this.orderHistory = orderHistory;
-    }
-
-    public Long getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(Long orderId) {
-        this.orderId = orderId;
-    }
-
-    public List<Payment> getPayments() {
-        return payments;
-    }
-
-    public void setPayments(List<Payment> payments) {
-        this.payments = payments;
-    }
-
-    public String getPickupLocation() {
-        return pickupLocation;
-    }
-
-    public void setPickupLocation(String pickupLocation) {
-        this.pickupLocation = pickupLocation;
-    }
-
-    public OrderStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(OrderStatus status) {
-        this.status = status;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
 }
 

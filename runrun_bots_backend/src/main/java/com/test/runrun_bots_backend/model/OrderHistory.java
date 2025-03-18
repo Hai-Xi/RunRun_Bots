@@ -1,13 +1,22 @@
 package com.test.runrun_bots_backend.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 /**
  * Order History
  */
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 @Entity
 @Table(name = "order_history")  
 public class OrderHistory {  
@@ -30,35 +39,25 @@ public class OrderHistory {
     // Getters and Setters
 
 
-    public Long getHistoryId() {
-        return historyId;
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        OrderHistory that = (OrderHistory) o;
+        return Objects.equals(historyId, that.historyId) && Objects.equals(order, that.order) && status == that.status && Objects.equals(timestamp, that.timestamp);
     }
 
-    public void setHistoryId(Long historyId) {
-        this.historyId = historyId;
+    @Override
+    public int hashCode() {
+        return Objects.hash(historyId, order, status, timestamp);
     }
 
-    public Order getOrder() {
-        return order;
-    }
-
-    public void setOrder(Order order) {
-        this.order = order;
-    }
-
-    public OrderStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(OrderStatus status) {
-        this.status = status;
-    }
-
-    public LocalDateTime getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(LocalDateTime timestamp) {
-        this.timestamp = timestamp;
+    @Override
+    public String toString() {
+        return "OrderHistory{" +
+                "historyId=" + historyId +
+                ", order=" + order +
+                ", status=" + status +
+                ", timestamp=" + timestamp +
+                '}';
     }
 }

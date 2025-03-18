@@ -1,14 +1,23 @@
 package com.test.runrun_bots_backend.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 /**
  * Payments
  */
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 @Entity
 @Table(name = "payments")  
 public class Payment {  
@@ -38,52 +47,29 @@ public class Payment {
     // Getters and Setters
 
 
-    public BigDecimal getAmount() {
-        return amount;
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Payment payment = (Payment) o;
+        return Objects.equals(paymentId, payment.paymentId) && Objects.equals(order, payment.order) && Objects.equals(amount, payment.amount) && paymentMethod == payment.paymentMethod && status == payment.status && Objects.equals(createdAt, payment.createdAt);
     }
 
-    public void setAmount(BigDecimal amount) {
-        this.amount = amount;
+    @Override
+    public int hashCode() {
+        return Objects.hash(paymentId, order, amount, paymentMethod, status, createdAt);
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    @Override
+    public String toString() {
+        return "Payment{" +
+                "amount=" + amount +
+                ", paymentId=" + paymentId +
+                ", order=" + order +
+                ", paymentMethod=" + paymentMethod +
+                ", status=" + status +
+                ", createdAt=" + createdAt +
+                '}';
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Order getOrder() {
-        return order;
-    }
-
-    public void setOrder(Order order) {
-        this.order = order;
-    }
-
-    public Long getPaymentId() {
-        return paymentId;
-    }
-
-    public void setPaymentId(Long paymentId) {
-        this.paymentId = paymentId;
-    }
-
-    public PaymentMethod getPaymentMethod() {
-        return paymentMethod;
-    }
-
-    public void setPaymentMethod(PaymentMethod paymentMethod) {
-        this.paymentMethod = paymentMethod;
-    }
-
-    public PaymentStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(PaymentStatus status) {
-        this.status = status;
-    }
 }
 
