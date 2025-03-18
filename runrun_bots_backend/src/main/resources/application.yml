@@ -38,3 +38,7 @@ logging:
     org.springframework.jdbc.datasource.init: DEBUG
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+
+runrunbots:
+  jwt:
+    secret-key: 868q0lpi6O/0bTW94LCvjF4/grS8DJuvwBVLrgnLCLs=
