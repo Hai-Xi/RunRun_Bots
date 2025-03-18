@@ -10,6 +10,19 @@ import java.util.Optional;
 
 @Repository
 public interface PaymentRepository extends JpaRepository<Payment, Long> {
+
+    /**
+     *
+     * ‘ @Table(name = "payments") ’
+     *
+     * ‘ @ManyToOne
+     *   @JoinColumn(name = "order_id", nullable = false) ’
+     *     private Order order;
+     *
+     * @param orderId
+     * @return
+     */
     List<Payment> findByOrder_OrderId(Long orderId);
+
     Optional<Payment> findByOrder_OrderIdAndStatus(Long orderId, PaymentStatus status);
 }  
