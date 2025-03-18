@@ -22,6 +22,8 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+        # Format SQL statements into multiple lines with indentation, instead of the default single-line output. This makes it easier to read.
+        format_sql: true
     database-platform: org.hibernate.spatial.dialect.postgis.PostgisDialect
     show-sql: true
 
