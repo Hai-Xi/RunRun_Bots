@@ -4,12 +4,14 @@ spring:
       max-file-size: 10MB # File upload limit, default 1MB not enough.
   jackson:
     default-property-inclusion: non_null
+
   # Database Configuration
   datasource:
     url: jdbc:postgresql://${DATABASE_URL:localhost}:${DATABASE_PORT:5432}/postgres
     username: ${DATABASE_USERNAME:postgres}
     password: ${DATABASE_PASSWORD:secret}
     driver-class-name: org.postgresql.Driver
+
   # Database Configuration
   jpa:
     hibernate:
@@ -22,6 +24,7 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
     database-platform: org.hibernate.spatial.dialect.postgis.PostgisDialect
     show-sql: true
+    
   sql:
     init:
       mode: always
