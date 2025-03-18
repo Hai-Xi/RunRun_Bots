@@ -18,7 +18,7 @@ spring:
       # Do not perform any DDL operations. This is the default setting, suitable for situations where Hibernate is not desired to automatically manage the database structure.
       #      ddl-auto: none
       #      ddl-auto: update: This will automatically update the database schema to match the entity classes when the application starts. Other options include none, create (recreate tables on each startup), and validate (verify that the table structure matches the entity classes).
-      ddl-auto: update
+      ddl-auto: create
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect

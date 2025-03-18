@@ -32,13 +32,13 @@ public class User  implements UserDetails {
     @Column(nullable = false, length = 100)
     private String username;
 
-    @Column(nullable = false, unique = true, length = 100)  
+    @Column(nullable = false, unique = true, length = 100)
     private String email;  
 
-    @Column(nullable = false, unique = true, length = 15)  
+    @Column(nullable = false, unique = true, length = 15)
     private String phone;  
 
-    @Column(nullable = false)  
+    @Column(nullable = false)
     private String password;  
 
     @Column(name = "created_at")  
@@ -51,13 +51,12 @@ public class User  implements UserDetails {
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
-    public User(Object o, String username, String encode, UserRole role) {
-    }
-
-    public User(Object o, String username, String encode) {
-    }
-
-    public User(Object o, String username, String encode, String email, String phone) {
+    public User(Long userId, String username, String email, String phone, String password) {
+        this.userId = userId;
+        this.username = username;
+        this.email = email;
+        this.phone = phone;
+        this.password = password;
     }
 
     @Override
@@ -109,15 +108,14 @@ public class User  implements UserDetails {
     @Override
     public String toString() {
         return "User{" +
-                "createdAt=" + createdAt +
-                ", userId=" + userId +
+                "userId=" + userId +
                 ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
                 ", password='" + password + '\'' +
+                ", createdAt=" + createdAt +
                 ", orders=" + orders +
                 ", role=" + role +
                 '}';
     }
-
 }
