@@ -24,7 +24,7 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
     database-platform: org.hibernate.spatial.dialect.postgis.PostgisDialect
     show-sql: true
-    
+
   sql:
     init:
       mode: always

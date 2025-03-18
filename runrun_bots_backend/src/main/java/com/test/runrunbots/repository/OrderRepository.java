@@ -9,6 +9,16 @@ import java.util.List;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
-    List<Order> findByUserId(Long userId);
+
+    /**
+     * 
+     * Here, User_UserId tells Spring Data JPA to traverse the user relationship in the Order entity
+     * and access the userId property of the User entity.
+     *
+     * @param userId
+     * @return
+     */
+    List<Order> findByUser_UserId(Long userId);
+
     List<Order> findByStatus(OrderStatus status);
 }  

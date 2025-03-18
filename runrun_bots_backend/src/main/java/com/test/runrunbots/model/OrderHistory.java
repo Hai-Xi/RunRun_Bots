@@ -25,7 +25,7 @@ public class OrderHistory {
     private Long historyId;  
 
     @ManyToOne
-    @JoinColumn(name = "order_id", nullable = false)
+    @JoinColumn(name = "order_id", nullable = false)  // Foreign key to the Order table
     private Order order;  
 
     @Column(nullable = false)  
