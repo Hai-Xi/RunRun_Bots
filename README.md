@@ -17,3 +17,19 @@ RunRun Bots is an intelligent dispatch and delivery management system that lever
 | 🟧    | Order History              | /api/orders/history         | GET         | Fetch past delivery orders           |
 |      | Google Maps API (Frontend) | Google Maps SDK             | Client-side | Display real-time tracking interface |
 |      | Google Maps API (Backend)  | Google Directions API       | Server-side | Compute optimal delivery routes      |
+
+
+## **API Integration Requirements**
+
+| **Feature**                         | **API Endpoint**            | **Method**  | **Description**                                    | **Json scheme**                                              |
+| ----------------------------------- | --------------------------- | ----------- | -------------------------------------------------- | ------------------------------------------------------------ |
+| User Authentication                 | /api/auth/login             | POST        | Authenticate user login                            | {email, passcode}                                            |
+| User Registration                   | /api/auth/signup            | POST        | Register a new user                                | {name, email, passcode}                                      |
+| Get Order                           | /api/orders/get             | GET         | Get information of a confirmed order from order id | {departure_address, destination_address, dispatch_address,route_id,bot_option, payment_amount,status, estimated_time} |
+| List Recent Order                   | /api/orders/list            | GET         | Get recent historic order id                       | {{order_ids}}                                                |
+| Transport Order Info for Estimation | /api/orders/estimate        | POST        | Transport Order Info for Estimation                | {departure_address, destination_address, bot_option}         |
+| Get Delivery Options                | /api/orders/recommendations | GET         | Fetch optimized delivery options                   | {dispatch_address,route_id,bot_option, payment_amount, estimated_time} |
+| Confirm Order & Payment             | /api/orders/confirm         | POST        | Confirm order and process payment                  | {user_id, route_id,order_time, order_quantity，order type, bot_option, payment_amount} |
+| Get Order ID                        | /api/orders/orderid         | GET         | GET order_id once confirmed                        | {order_id, estimated_time}                                   |
+| Google Maps API (Frontend)          | Google Maps SDK             | Client-side | Display real-time tracking interface               | refer                                                        |
+| Google Maps API (Backend)           | Google Directions API       | Server-side | Compute optimal delivery routes                    | refer                                                        |
