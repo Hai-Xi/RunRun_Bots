@@ -30,5 +30,5 @@ RunRun Bots is an intelligent dispatch and delivery management system that lever
 | Transport Order Info for Estimation (REMOVE) | /api/orders/estimate        | POST        | Transport Order Info for Estimation                | {departure_address, destination_address, bot_option}         |
 | Get Delivery Options (REMOVE)               | /api/orders/recommendations | GET         | Fetch optimized delivery options                   | {dispatch_address,route_id,bot_option, payment_amount, estimated_time} |
 | Confirm Order & Payment             | /api/orders/confirm         | POST        | Confirm order and process payment                  | {departure_address, destination_address, dispatch_address,route_id,bot_option, payment_amount,status, estimated_time, payment_amount, payment_type} |
-| Get Order ID                        | /api/orders/orderid         | GET         | GET order_id once confirmed                        | {order_id}                                   |
+| Generate New Order ID                        | /api/orders/orderid         | GET         | GET new order_id once confirmed                        | {order_id}                                   |
 
