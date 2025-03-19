@@ -2,7 +2,7 @@
 RunRun Bots is an intelligent dispatch and delivery management system that leverages autonomous ground robots and drones to optimize small and medium-sized package deliveries.
 
 
-## **API Integration Requirements**
+## **API Integration Requirements v0.1** 
 
 |      | **Feature**                | **API Endpoint**            | **Method**  | **Description**                      |
 | ---- | -------------------------- | --------------------------- | ----------- | ------------------------------------ |
@@ -19,7 +19,7 @@ RunRun Bots is an intelligent dispatch and delivery management system that lever
 |      | Google Maps API (Backend)  | Google Directions API       | Server-side | Compute optimal delivery routes      |
 
 
-## **API Integration Requirements**
+## **API Integration Requirements v0.2**
 
 | **Feature**                         | **API Endpoint**            | **Method**  | **Description**                                    | **Json scheme**                                              |
 | ----------------------------------- | --------------------------- | ----------- | -------------------------------------------------- | ------------------------------------------------------------ |
