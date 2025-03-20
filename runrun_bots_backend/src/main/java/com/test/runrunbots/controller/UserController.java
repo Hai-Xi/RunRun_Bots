@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/auth")
 public class UserController {
 
     private final AuthenticationService authenticationService;
@@ -25,7 +25,7 @@ public class UserController {
         this.authenticationService = authenticationService;
     }
 
-    @PostMapping("/register")
+    @PostMapping("/signup")
     public ResponseEntity<ApiResponse<User>> register(@RequestBody UserRegistrationRequest request) {
         // 用户注册逻辑
         log.info("----------------Registering----------------------");
