@@ -32,10 +32,10 @@ public class UserController {
      */
     @PostMapping("/signup")
     public ResponseEntity<ApiResponse<User>> register(@RequestBody UserRegistrationRequest request) {
-        // 用户注册逻辑
+        // User Registration Logic
         log.info("----------------Registering----------------------");
         log.info(request.toString());
-        User registered = authenticationService.register(request.getUsername(), request.getEmail(), request.getPhone(), request.getPassword());
+        User registered = authenticationService.register(request.getUsername(), request.getEmail(), request.getPhone(), request.getPassword(), request.getRole());
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ApiResponse.success(registered));
@@ -43,7 +43,10 @@ public class UserController {
 
     @PostMapping("/login")  
     public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest request) {
-        // 用户登录逻辑  
-        return null;
+        // User Login Logic
+        // 调用业务逻辑层的 客户登录功能
+        AuthResponse authResponse = authenticationService.login( request );
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(ApiResponse.success(authResponse).getData());
     }
 }  

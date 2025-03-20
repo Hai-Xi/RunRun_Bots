@@ -2,8 +2,12 @@ package com.test.runrunbots.service;
 
 
 
+import com.alibaba.fastjson2.JSON;
 import com.test.runrunbots.controller.UserAlreadyExistException;
 import com.test.runrunbots.model.User;
+import com.test.runrunbots.model.UserRole;
+import com.test.runrunbots.model.dto.user.AuthResponse;
+import com.test.runrunbots.model.dto.user.LoginRequest;
 import com.test.runrunbots.repository.UserRepository;
 import com.test.runrunbots.security.JwtHandler;
 import lombok.extern.slf4j.Slf4j;
@@ -38,7 +42,7 @@ public class AuthenticationService {
    }
 
     @Transactional
-   public User register(String username, String email, String phone, String password  ) throws UserAlreadyExistException {
+   public User register(String username, String email, String phone, String password, UserRole role) throws UserAlreadyExistException {
        log.info("Registering user: {}", username);
        if (userRepository.existsByUsername(username)) {
            throw new UserAlreadyExistException();
@@ -51,14 +55,27 @@ public class AuthenticationService {
        user.setEmail(email);
        user.setPhone(phone);
        user.setPassword(passwordEncoder.encode(password));
+       user.setRole(role);
 
        log.info("Registering user: {} ==>> ", user);
        return userRepository.save(user);
    }
 
 
-   public String login(String username, String password) {
-       authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-       return jwtHandler.generateToken(username);
-   }
+//   public String login(String username, String password) {
+//       authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+//       return jwtHandler.generateToken(username);
+//   }
+
+    public AuthResponse login(LoginRequest loginRequest) {
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+        jwtHandler.generateToken(loginRequest.getEmail());
+        AuthResponse authResponse = new AuthResponse();
+        authResponse.setToken(jwtHandler.generateToken(loginRequest.getEmail()));
+        authResponse.setUser(loginRequest.getEmail());
+        log.info("Logining...: {} ==>> ", JSON.toJSONString(authResponse));
+
+        return authResponse;
+    }
+
 }
