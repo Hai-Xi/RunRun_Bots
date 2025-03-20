@@ -42,11 +42,11 @@ public class UserController {
     }
 
     @PostMapping("/login")  
-    public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<ApiResponse<AuthResponse>> login(@RequestBody LoginRequest request) {
         // User Login Logic
         // 调用业务逻辑层的 客户登录功能
         AuthResponse authResponse = authenticationService.login( request );
         return ResponseEntity.status(HttpStatus.OK)
-                .body(ApiResponse.success(authResponse).getData());
+                .body(ApiResponse.success(authResponse));
     }
 }  
