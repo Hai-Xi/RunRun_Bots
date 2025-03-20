@@ -23,11 +23,17 @@ public class ApiResponse<T> {
 
     // 成功静态方法
     public static <T> ApiResponse<T> success(T data) {
-        return new ApiResponse<>(200, "Success", data);
+        ApiResponse<T> resultData = new ApiResponse<>();
+        resultData.setCode(ReturnCode.RC100.getCode());
+        resultData.setMessage(ReturnCode.RC100.getMessage());
+        resultData.setData(data);
+        return resultData;
+//        return new ApiResponse<>(200, "Success", data);
     }
 
     // 错误静态方法
     public static <T> ApiResponse<T> error(int code, String message) {
+
         return new ApiResponse<>(code, message, null);
     }
 
