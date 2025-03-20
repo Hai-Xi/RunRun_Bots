@@ -25,6 +25,11 @@ public class UserController {
         this.authenticationService = authenticationService;
     }
 
+    /**
+     * User Registration
+     * @param request
+     * @return
+     */
     @PostMapping("/signup")
     public ResponseEntity<ApiResponse<User>> register(@RequestBody UserRegistrationRequest request) {
         // 用户注册逻辑
