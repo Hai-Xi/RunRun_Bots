@@ -1,5 +1,6 @@
 package com.test.runrunbots.controller;
 
+import com.alibaba.fastjson2.JSON;
 import com.test.runrunbots.model.Order;
 import com.test.runrunbots.model.User;
 import com.test.runrunbots.model.dto.order.CreateOrderRequest;
@@ -29,7 +30,7 @@ public class OrderController {
     public ResponseEntity<Order> createOrder(@AuthenticationPrincipal User user,
                                              @RequestBody CreateOrderRequest request) {
         // 创建订单逻辑  
-        log.info("@AuthenticationPrincipal user: {}", user);
+        log.info("@AuthenticationPrincipal user: {}", JSON.toJSONString(user));
         Order createdOrder = orderService.createOrder(user,request);
         return ResponseEntity.ok(createdOrder);
     }

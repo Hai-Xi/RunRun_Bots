@@ -1,5 +1,6 @@
 package com.test.runrunbots.controller;
 
+import com.alibaba.fastjson2.JSON;
 import com.test.runrunbots.model.ApiResponse;
 import com.test.runrunbots.model.User;
 import com.test.runrunbots.model.dto.user.AuthResponse;
@@ -70,7 +71,7 @@ public class UserController {
      */
     @GetMapping("/user")
     public ResponseEntity<ApiResponse<User>> getCurrentUser(@AuthenticationPrincipal User user) {
-        log.info("@AuthenticationPrincipal user: {}", user);
+        log.info("@AuthenticationPrincipal user: {}", JSON.toJSONString(user));
         //  优先使用 DTO：
         //  避免直接返回实体类，使用 DTO 控制序列化的字段。
         return ResponseEntity.ok(ApiResponse.success(user));
