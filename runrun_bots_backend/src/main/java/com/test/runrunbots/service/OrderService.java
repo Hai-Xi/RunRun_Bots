@@ -1,26 +1,43 @@
 package com.test.runrunbots.service;  
 
-import com.test.runrunbots.model.dto.order.CreateOrderRequest;  
+import com.test.runrunbots.model.DeliveryMethod;
+import com.test.runrunbots.model.Order;
+import com.test.runrunbots.model.OrderStatus;
+import com.test.runrunbots.model.User;
+import com.test.runrunbots.model.dto.order.CreateOrderRequest;
 import com.test.runrunbots.model.dto.order.OrderDTO;  
 import com.test.runrunbots.model.dto.order.TrackingInfo;  
-import com.test.runrunbots.model.dto.order.UpdateOrderStatusRequest;  
-import org.springframework.stereotype.Service;  
+import com.test.runrunbots.model.dto.order.UpdateOrderStatusRequest;
+import com.test.runrunbots.repository.OrderRepository;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.stereotype.Service;
 
-@Service  
-public class OrderService {  
+@Slf4j
+@Service
+public class OrderService {
 
-    public OrderDTO createOrder(CreateOrderRequest request) {  
+    private final OrderRepository orderRepository;
+
+    public OrderService(OrderRepository orderRepository) {
+        this.orderRepository = orderRepository;
+    }
+
+
+    public Order createOrder(@AuthenticationPrincipal User user, CreateOrderRequest request) {
         // 模拟创建订单逻辑  
-        OrderDTO order = new OrderDTO();  
-        order.setOrderId(1L);  
-        order.setUserId(request.getUserId());
+        Order order = new Order();
+//        order.setOrderId(1L);
+        order.setUser(user);
         order.setItemDescription(request.getItemDescription());
         order.setPickupLocation(request.getPickupLocation());
         order.setDeliveryLocation(request.getDeliveryLocation());
-        order.setDeliveryMethod(request.getDeliveryMethod());
-        order.setStatus("CREATED");  
-        order.setCreatedAt(java.time.LocalDateTime.now());  
-        return order;  
+        order.setDeliveryMethod(DeliveryMethod.valueOf(request.getDeliveryMethod()));
+        order.setStatus(OrderStatus.valueOf("CREATED"));
+        order.setCreatedAt(java.time.LocalDateTime.now());
+        log.info("@AuthenticationPrincipal User user: {}", user);
+        log.info("Order created: {}", order);
+        return orderRepository.save(order);
     }  
 
     public OrderDTO getOrderById(Long orderId) {  

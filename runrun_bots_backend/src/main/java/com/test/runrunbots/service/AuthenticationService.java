@@ -68,11 +68,11 @@ public class AuthenticationService {
 //   }
 
     public AuthResponse login(LoginRequest loginRequest) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
-        jwtHandler.generateToken(loginRequest.getEmail());
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+        jwtHandler.generateToken(loginRequest.getUsername());
         AuthResponse authResponse = new AuthResponse();
-        authResponse.setToken(jwtHandler.generateToken(loginRequest.getEmail()));
-        authResponse.setUser(loginRequest.getEmail());
+        authResponse.setToken(jwtHandler.generateToken(loginRequest.getUsername()));
+        authResponse.setUser(loginRequest.getUsername());
         log.info("Logining...: {} ==>> ", JSON.toJSONString(authResponse));
 
         return authResponse;

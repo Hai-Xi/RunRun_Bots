@@ -1,14 +1,19 @@
 package com.test.runrunbots.controller;
 
+import com.test.runrunbots.model.Order;
+import com.test.runrunbots.model.User;
 import com.test.runrunbots.model.dto.order.CreateOrderRequest;
 import com.test.runrunbots.model.dto.order.OrderDTO;
 import com.test.runrunbots.model.dto.order.TrackingInfo;
 import com.test.runrunbots.model.dto.order.UpdateOrderStatusRequest;
 import com.test.runrunbots.service.OrderService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/orders")
 public class OrderController {
@@ -21,9 +26,11 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<OrderDTO> createOrder(@RequestBody CreateOrderRequest request) {
+    public ResponseEntity<Order> createOrder(@AuthenticationPrincipal User user,
+                                             @RequestBody CreateOrderRequest request) {
         // 创建订单逻辑  
-        OrderDTO createdOrder = orderService.createOrder(request);
+        log.info("@AuthenticationPrincipal user: {}", user);
+        Order createdOrder = orderService.createOrder(user,request);
         return ResponseEntity.ok(createdOrder);
     }
 
