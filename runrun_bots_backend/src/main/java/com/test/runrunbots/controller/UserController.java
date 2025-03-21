@@ -48,6 +48,26 @@ public class UserController {
                 .body(ApiResponse.success(authResponse));
     }
 
+    /**
+     *
+     * @AuthenticationPrincipal 为 null 的常见原因：
+     *
+     * 用户未登录。
+     * 控制器未受保护。
+     * 用户认证后未正确加载 Principal。
+     * 未正确配置 AuthenticationPrincipal 的解析器。
+     * 用户未被存储到 SecurityContext。
+     * 匿名用户访问。
+     * 解决方法：
+     *
+     * 确保用户已登录并提供有效的认证凭据。
+     * 检查 Spring Security 的配置，确保端点受保护。
+     * 验证自定义的 UserDetailsService 是否正确实现。
+     * 如果允许匿名用户访问，处理 null 的情况。
+     * 
+     * @param user
+     * @return
+     */
     @GetMapping("/user")
     public ResponseEntity<ApiResponse<User>> getCurrentUser(@AuthenticationPrincipal User user) {
         log.info("@AuthenticationPrincipal user: {}", user);
