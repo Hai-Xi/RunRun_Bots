@@ -14,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Slf4j
 @RestController
 @RequestMapping("/api/orders")
@@ -33,6 +35,13 @@ public class OrderController {
         log.info("@AuthenticationPrincipal user: {}", JSON.toJSONString(user));
         Order createdOrder = orderService.createOrder(user,request);
         return ResponseEntity.ok(createdOrder);
+    }
+
+    @GetMapping("/orderList/{userId}")
+    public ResponseEntity<List<OrderDTO>> getOrderList(@AuthenticationPrincipal User user,
+                                                       @PathVariable Long userId) {
+        // 获取订单列表详情逻辑
+        return null;
     }
 
     @GetMapping("/{orderId}")
