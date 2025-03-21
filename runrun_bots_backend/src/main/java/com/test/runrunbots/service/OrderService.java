@@ -13,9 +13,11 @@ public class OrderService {
         // 模拟创建订单逻辑  
         OrderDTO order = new OrderDTO();  
         order.setOrderId(1L);  
-        order.setUserId(request.getUserId());  
-        order.setProductIds(request.getProductIds());  
-        order.setShippingAddress(request.getShippingAddress());  
+        order.setUserId(request.getUserId());
+        order.setItemDescription(request.getItemDescription());
+        order.setPickupLocation(request.getPickupLocation());
+        order.setDeliveryLocation(request.getDeliveryLocation());
+        order.setDeliveryMethod(request.getDeliveryMethod());
         order.setStatus("CREATED");  
         order.setCreatedAt(java.time.LocalDateTime.now());  
         return order;  
@@ -26,8 +28,8 @@ public class OrderService {
         OrderDTO order = new OrderDTO();  
         order.setOrderId(orderId);  
         order.setUserId(123L);  
-        order.setProductIds(java.util.Arrays.asList(1L, 2L, 3L));  
-        order.setShippingAddress("123 Test Street");  
+//        order.setProductIds(java.util.Arrays.asList(1L, 2L, 3L));
+//        order.setShippingAddress("123 Test Street");
         order.setStatus("SHIPPED");  
         order.setCreatedAt(java.time.LocalDateTime.now());  
         return order;  
@@ -43,9 +45,10 @@ public class OrderService {
     public TrackingInfo getTrackingInfo(Long orderId) {  
         // 模拟获取追踪信息逻辑  
         TrackingInfo trackingInfo = new TrackingInfo();  
-        trackingInfo.setTrackingNumber("TRACK123456");  
-        trackingInfo.setCarrier("FedEx");  
-        trackingInfo.setStatus("In Transit");  
+        trackingInfo.setTrackingNumber("TRACK123456");
+        trackingInfo.setDeliveryMethod("FedEx");
+        trackingInfo.setCurrentStatus("In Transit");
+        trackingInfo.setEstimatedArrivalTime("Now");
         return trackingInfo;  
     }  
 }  

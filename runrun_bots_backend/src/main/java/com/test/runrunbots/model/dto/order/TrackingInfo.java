@@ -5,7 +5,8 @@ import lombok.Data;
 @Data  
 public class TrackingInfo {  
     private Long orderId;  
-    private String currentStatus;  
+    private String trackingNumber;
+    private String currentStatus;
     private String deliveryMethod;  
     private String estimatedArrivalTime;  
 }  
