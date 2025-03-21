@@ -30,7 +30,7 @@ public class AppSecurityConfig {
                 .csrf().disable()
                 .authorizeHttpRequests(auth ->
                         auth
-                                .requestMatchers(HttpMethod.POST, "/**").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
                                 .requestMatchers("/**").permitAll()
                                 .anyRequest().authenticated()
                 )
