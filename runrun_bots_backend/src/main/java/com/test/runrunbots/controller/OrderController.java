@@ -23,13 +23,15 @@ public class OrderController {
     @PostMapping
     public ResponseEntity<OrderDTO> createOrder(@RequestBody CreateOrderRequest request) {
         // 创建订单逻辑  
-        return null;
+        OrderDTO createdOrder = orderService.createOrder(request);
+        return ResponseEntity.ok(createdOrder);
     }
 
     @GetMapping("/{orderId}")
     public ResponseEntity<OrderDTO> getOrder(@PathVariable Long orderId) {
         // 获取订单详情逻辑  
-        return null;
+        OrderDTO order = orderService.getOrderById(orderId);
+        return ResponseEntity.ok(order);
     }
 
     @PutMapping("/{orderId}/status")  
@@ -37,12 +39,14 @@ public class OrderController {
             @PathVariable Long orderId,  
             @RequestBody UpdateOrderStatusRequest request) {
         // 更新订单状态逻辑  
-        return null;
+        OrderDTO updatedOrder = orderService.updateOrderStatus(orderId, request);
+        return ResponseEntity.ok(updatedOrder);
     }
 
     @GetMapping("/{orderId}/tracking")  
     public ResponseEntity<TrackingInfo> getTrackingInfo(@PathVariable Long orderId) {
         // 获取订单追踪信息逻辑  
-        return null;
+        TrackingInfo trackingInfo = orderService.getTrackingInfo(orderId);
+        return ResponseEntity.ok(trackingInfo);
     }
 }  
