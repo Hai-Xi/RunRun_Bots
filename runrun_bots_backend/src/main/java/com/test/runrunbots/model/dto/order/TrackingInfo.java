@@ -7,6 +7,6 @@ public class TrackingInfo {
     private Long orderId;  
     private String trackingNumber;
     private String currentStatus;
-    private String deliveryMethod;  
+    private String deliveryMethod;  // ROBOT or DRONE
     private String estimatedArrivalTime;  
 }  

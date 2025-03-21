@@ -45,8 +45,9 @@ public class OrderService {
     public TrackingInfo getTrackingInfo(Long orderId) {  
         // 模拟获取追踪信息逻辑  
         TrackingInfo trackingInfo = new TrackingInfo();  
+        trackingInfo.setOrderId(orderId);
         trackingInfo.setTrackingNumber("TRACK123456");
-        trackingInfo.setDeliveryMethod("FedEx");
+        trackingInfo.setDeliveryMethod("ROBOT");
         trackingInfo.setCurrentStatus("In Transit");
         trackingInfo.setEstimatedArrivalTime("Now");
         return trackingInfo;  
