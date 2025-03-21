@@ -51,6 +51,8 @@ public class UserController {
     @GetMapping("/user")
     public ResponseEntity<ApiResponse<User>> getCurrentUser(@AuthenticationPrincipal User user) {
         log.info("@AuthenticationPrincipal user: {}", user);
+        //  优先使用 DTO：
+        //  避免直接返回实体类，使用 DTO 控制序列化的字段。
         return ResponseEntity.ok(ApiResponse.success(user));
     }
 

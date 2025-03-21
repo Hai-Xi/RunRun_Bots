@@ -47,7 +47,7 @@ public class User  implements UserDetails {
     private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "user")
-    @JsonIgnore // 忽略序列化  
+    @JsonIgnore // 忽略序列化
     private List<Order> orders;
 
     @Enumerated(EnumType.STRING)
