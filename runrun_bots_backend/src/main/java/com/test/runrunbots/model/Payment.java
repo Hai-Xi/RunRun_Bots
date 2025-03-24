@@ -34,11 +34,11 @@ public class Payment {
 
     @Column(name = "payment_method", nullable = false)  
     @Enumerated(EnumType.STRING)  
-    private PaymentMethod paymentMethod;  
+    private PaymentMethod paymentMethod;  // PaymentMethod：Credit Card, PayPal
 
     @Column(nullable = false)  
     @Enumerated(EnumType.STRING)  
-    private PaymentStatus status;  
+    private PaymentStatus status;  // PaymentStatus：PENDING, COMPLETED
 
     @Column(name = "created_at")  
     @CreationTimestamp
