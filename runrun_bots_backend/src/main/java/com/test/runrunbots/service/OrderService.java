@@ -49,8 +49,9 @@ public class OrderService {
         payment.setOrder(order); // 设置关联的订单
 
         // 设置订单中的支付对象
+        // 设置双向关联
         log.info("payment created: {}", payment);
-        order.setPayment(payment);
+        order.setPayment(payment);  // order 端维护，同时设置 payment 的 order 关系
 
         // 持久化订单和支付记录
         log.info("@AuthenticationPrincipal User user: {}", JSON.toJSONString(user));
