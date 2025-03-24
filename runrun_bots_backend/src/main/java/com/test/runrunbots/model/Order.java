@@ -1,6 +1,7 @@
 package com.test.runrunbots.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,10 +25,20 @@ import java.util.Objects;
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long orderId;  
+    private Long orderId;
 
+    /**
+     *
+     * 如果你的 Order 实体中有 User 的双向关系，可能会在序列化为 JSON 时引发循环引用问题。
+     * 例如，Order 实体中有 User user，而 User 实体中又包含 List<Order> 这样的映射关系。
+     * 当使用 Jackson 序列化输出时，Spring 会递归访问字段，导致 StackOverflowError 或类似的错误。
+     *
+     * 解决循环引用
+     * 采用 @JsonIgnore 或 @JsonManagedReference / @JsonBackReference：
+     */
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore // 忽略序列化 User 字段
     private User user;  
 
     @Column(name = "item_description", nullable = false)  
@@ -61,9 +72,11 @@ public class Order {
      *
      */
     @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
+    @JsonIgnore // 忽略序列化 Payment 字段
     private Payment payment;
 
-    @OneToMany(mappedBy = "order")  
+    @OneToMany(mappedBy = "order")
+    @JsonIgnore // 忽略序列化 List<OrderHistory> 字段
     private List<OrderHistory> orderHistory;
 
     // Getters and Setters

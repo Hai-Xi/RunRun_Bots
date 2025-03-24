@@ -38,9 +38,9 @@ public class OrderController {
     }
 
     @GetMapping("/orderList")
-    public ResponseEntity<List<Order>> findByUser_UserId(@AuthenticationPrincipal User user) {
+    public ResponseEntity<List<Order>> getOrdersByUser(@AuthenticationPrincipal User user) {
         // Logic for Retrieving Order List Details
-        List<Order> orderListByUserId = orderService.findByUser_UserId(user);
+        List<Order> orderListByUserId = orderService.getOrdersByUser(user);
         return ResponseEntity.ok(orderListByUserId);
     }
 

@@ -1,5 +1,6 @@
 package com.test.runrunbots.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,6 +31,7 @@ public class Payment {
      */
     @OneToOne
     @JoinColumn(name = "order_id", nullable = false)  // Associated Orders
+    @JsonIgnore // 忽略序列化 Order 字段
     private Order order;  
 
     @Column(nullable = false)  
