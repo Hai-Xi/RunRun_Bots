@@ -38,7 +38,7 @@ public class OrderController {
     }
 
     @GetMapping("/orderList/{userId}")
-    public ResponseEntity<List<OrderDTO>> getOrderList(@AuthenticationPrincipal User user,
+    public ResponseEntity<List<OrderDTO>> getOrderListByUserId(@AuthenticationPrincipal User user,
                                                        @PathVariable Long userId) {
         // Logic for Retrieving Order List Details
         return null;
