@@ -57,7 +57,7 @@ public class OrderService {
         // 持久化订单和支付记录
         log.info("@AuthenticationPrincipal User user: {}", JSON.toJSONString(user));
         log.info("Order created: {}", order);
-        return orderRepository.save(order);  // 当调用 orderRepository.save(order) 时，因为 CascadeType.ALL，Hibernate 会级联保存 Payment。
+        return orderRepository.save(order);  // 当调用 orderRepository.save(order) 时，因为 CascadeType.ALL，Hibernate 会级联保存 Payment 支付记录。
     }  
 
     public OrderDTO getOrderById(Long orderId) {  
