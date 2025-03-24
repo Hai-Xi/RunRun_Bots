@@ -1,33 +1,36 @@
 package com.test.runrunbots.service;  
 
 import com.alibaba.fastjson2.JSON;
-import com.test.runrunbots.model.DeliveryMethod;
-import com.test.runrunbots.model.Order;
-import com.test.runrunbots.model.OrderStatus;
-import com.test.runrunbots.model.User;
+import com.test.runrunbots.model.*;
 import com.test.runrunbots.model.dto.order.CreateOrderRequest;
 import com.test.runrunbots.model.dto.order.OrderDTO;  
 import com.test.runrunbots.model.dto.order.TrackingInfo;  
 import com.test.runrunbots.model.dto.order.UpdateOrderStatusRequest;
 import com.test.runrunbots.repository.OrderRepository;
+import com.test.runrunbots.repository.PaymentRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
 
 @Slf4j
 @Service
 public class OrderService {
 
     private final OrderRepository orderRepository;
+    private final PaymentRepository paymentRepository;
 
-    public OrderService(OrderRepository orderRepository) {
+    public OrderService(OrderRepository orderRepository, PaymentRepository paymentRepository) {
         this.orderRepository = orderRepository;
+        this.paymentRepository = paymentRepository;
     }
 
 
     public Order createOrder(User user, CreateOrderRequest request) {
         // 模拟创建订单逻辑  
         Order order = new Order();
+        Payment payment = new Payment();
 //        order.setOrderId(1L);
         order.setUser(user);
         order.setItemDescription(request.getItemDescription());
@@ -36,6 +39,9 @@ public class OrderService {
         order.setDeliveryMethod(DeliveryMethod.valueOf(request.getDeliveryMethod()));
         order.setStatus(OrderStatus.valueOf("CREATED"));
         order.setCreatedAt(java.time.LocalDateTime.now());
+        payment.setAmount(BigDecimal.valueOf(request.getTotalAmount()));
+        payment.setPaymentMethod(PaymentMethod.valueOf(request.getPaymentMethod()));
+        payment.setStatus(PaymentStatus.valueOf(request.getPaymentStatus()));
         log.info("@AuthenticationPrincipal User user: {}", JSON.toJSONString(user));
         log.info("Order created: {}", order);
         return orderRepository.save(order);
