@@ -23,8 +23,11 @@ import java.util.Objects;
 public class Payment {  
     @Id  
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long paymentId;  
+    private Long paymentId;
 
+    /**
+     * 配置在拥有端的 Payment 上，用于定义外键列。
+     */
     @OneToOne
     @JoinColumn(name = "order_id", nullable = false)  // Associated Orders
     private Order order;  
