@@ -9,11 +9,11 @@ import com.test.runrunbots.model.dto.order.UpdateOrderStatusRequest;
 import com.test.runrunbots.repository.OrderRepository;
 import com.test.runrunbots.repository.PaymentRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -88,5 +88,9 @@ public class OrderService {
         trackingInfo.setCurrentStatus("In Transit");
         trackingInfo.setEstimatedArrivalTime("Now");
         return trackingInfo;  
-    }  
-}  
+    }
+
+    public List<Order> findByUser_UserId(User user) {
+        return orderRepository.findByUser_UserId(user.getUserId());
+    }
+}

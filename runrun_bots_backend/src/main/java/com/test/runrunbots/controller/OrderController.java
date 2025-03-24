@@ -37,11 +37,11 @@ public class OrderController {
         return ResponseEntity.ok(createdOrder);
     }
 
-    @GetMapping("/orderList/{userId}")
-    public ResponseEntity<List<OrderDTO>> getOrderListByUserId(@AuthenticationPrincipal User user,
-                                                       @PathVariable Long userId) {
+    @GetMapping("/orderList")
+    public ResponseEntity<List<Order>> findByUser_UserId(@AuthenticationPrincipal User user) {
         // Logic for Retrieving Order List Details
-        return null;
+        List<Order> orderListByUserId = orderService.findByUser_UserId(user);
+        return ResponseEntity.ok(orderListByUserId);
     }
 
     @GetMapping("/{orderId}")
