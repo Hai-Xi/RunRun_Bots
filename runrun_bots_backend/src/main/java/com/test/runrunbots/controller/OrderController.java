@@ -31,7 +31,7 @@ public class OrderController {
     @PostMapping
     public ResponseEntity<Order> createOrder(@AuthenticationPrincipal User user,
                                              @RequestBody CreateOrderRequest request) {
-        // 创建订单逻辑  
+        // Create Order Logic
         log.info("@AuthenticationPrincipal user: {}", JSON.toJSONString(user));
         Order createdOrder = orderService.createOrder(user,request);
         return ResponseEntity.ok(createdOrder);
@@ -40,13 +40,13 @@ public class OrderController {
     @GetMapping("/orderList/{userId}")
     public ResponseEntity<List<OrderDTO>> getOrderList(@AuthenticationPrincipal User user,
                                                        @PathVariable Long userId) {
-        // 获取订单列表详情逻辑
+        // Logic for Retrieving Order List Details
         return null;
     }
 
     @GetMapping("/{orderId}")
     public ResponseEntity<OrderDTO> getOrder(@PathVariable Long orderId) {
-        // 获取订单详情逻辑  
+        // Logic for Retrieving Order Details
         OrderDTO order = orderService.getOrderById(orderId);
         return ResponseEntity.ok(order);
     }
@@ -55,7 +55,7 @@ public class OrderController {
     public ResponseEntity<OrderDTO> updateOrderStatus(  
             @PathVariable Long orderId,  
             @RequestBody UpdateOrderStatusRequest request) {
-        // 更新订单状态逻辑  
+        // Update Order Status Logic
         OrderDTO updatedOrder = orderService.updateOrderStatus(orderId, request);
         return ResponseEntity.ok(updatedOrder);
     }
