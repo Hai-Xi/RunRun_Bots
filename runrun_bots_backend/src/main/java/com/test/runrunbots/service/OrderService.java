@@ -97,4 +97,8 @@ public class OrderService {
     public List<Order> getOrdersByUser(User user) {
         return orderRepository.findByUser(user);
     }
+
+    public Order getOrderByOrderId(Long orderId) {
+        return orderRepository.findByOrderId( orderId );
+    }
 }

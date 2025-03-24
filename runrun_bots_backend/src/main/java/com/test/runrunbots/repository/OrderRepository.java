@@ -3,6 +3,7 @@ package com.test.runrunbots.repository;
 import com.test.runrunbots.model.Order;
 import com.test.runrunbots.model.OrderStatus;
 import com.test.runrunbots.model.User;
+import com.test.runrunbots.model.dto.order.OrderDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -29,4 +30,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> getOrderListByUserId(@Param("userId") Long userId);
 
     List<Order> findByUser(User user);
-}  
+
+    Order findByOrderId(Long orderId);
+}
