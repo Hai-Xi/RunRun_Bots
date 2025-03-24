@@ -50,6 +50,7 @@ public class OrderService {
 
         // 设置订单中的支付对象
         // 设置双向关联
+        // 在使用双向关系时，需要特别注意保证关系的一致性。通常，需要在设置关联关系时手动维护两个实体之间的双向关联。
         log.info("payment created: {}", payment);
         order.setPayment(payment);  // order 端维护，同时设置 payment 的 order 关系
 
