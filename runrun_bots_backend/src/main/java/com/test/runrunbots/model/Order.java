@@ -60,40 +60,14 @@ public class Order {
      * cascade = CascadeType.ALL: 表示在操作 Order 实体时，相关联的 Payment 实体也会被自动操作。例如创建 Order 时，会自动保存 Payment。
      *
      */
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
-    private List<Payment> payments;
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
+    private Payment payment;
 
     @OneToMany(mappedBy = "order")  
     private List<OrderHistory> orderHistory;
 
     // Getters and Setters
 
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        Order order = (Order) o;
-        return Objects.equals(orderId, order.orderId) && Objects.equals(user, order.user) && Objects.equals(itemDescription, order.itemDescription) && Objects.equals(pickupLocation, order.pickupLocation) && Objects.equals(deliveryLocation, order.deliveryLocation) && deliveryMethod == order.deliveryMethod && status == order.status && Objects.equals(createdAt, order.createdAt) && Objects.equals(payments, order.payments) && Objects.equals(orderHistory, order.orderHistory);
-    }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(orderId, user, itemDescription, pickupLocation, deliveryLocation, deliveryMethod, status, createdAt, payments, orderHistory);
-    }
-
-    @Override
-    public String toString() {
-        return "Order{" +
-                "createdAt=" + createdAt +
-                ", orderId=" + orderId +
-                ", user=" + user +
-                ", itemDescription='" + itemDescription + '\'' +
-                ", pickupLocation='" + pickupLocation + '\'' +
-                ", deliveryLocation='" + deliveryLocation + '\'' +
-                ", deliveryMethod=" + deliveryMethod +
-                ", status=" + status +
-                ", payments=" + payments +
-                ", orderHistory=" + orderHistory +
-                '}';
-    }
 }
 

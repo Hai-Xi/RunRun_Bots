@@ -11,6 +11,7 @@ import com.test.runrunbots.repository.PaymentRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 
@@ -26,12 +27,11 @@ public class OrderService {
         this.paymentRepository = paymentRepository;
     }
 
-
+    @Transactional
     public Order createOrder(User user, CreateOrderRequest request) {
-        // 模拟创建订单逻辑  
+        // 模拟创建订单逻辑
+        // 创建订单对象
         Order order = new Order();
-        Payment payment = new Payment();
-//        order.setOrderId(1L);
         order.setUser(user);
         order.setItemDescription(request.getItemDescription());
         order.setPickupLocation(request.getPickupLocation());
@@ -39,12 +39,23 @@ public class OrderService {
         order.setDeliveryMethod(DeliveryMethod.valueOf(request.getDeliveryMethod()));
         order.setStatus(OrderStatus.valueOf("CREATED"));
         order.setCreatedAt(java.time.LocalDateTime.now());
+
+        // 创建支付对象
+        Payment payment = new Payment();
+        log.info("order.getOrderId(): {}", order.getOrderId());
         payment.setAmount(BigDecimal.valueOf(request.getTotalAmount()));
         payment.setPaymentMethod(PaymentMethod.valueOf(request.getPaymentMethod()));
         payment.setStatus(PaymentStatus.valueOf(request.getPaymentStatus()));
+        payment.setOrder(order); // 设置关联的订单
+
+        // 设置订单中的支付对象
+        log.info("payment created: {}", payment);
+        order.setPayment(payment);
+
+        // 持久化订单和支付记录
         log.info("@AuthenticationPrincipal User user: {}", JSON.toJSONString(user));
         log.info("Order created: {}", order);
-        return orderRepository.save(order);
+        return orderRepository.save(order);  // 当调用 orderRepository.save(order) 时，因为 CascadeType.ALL，Hibernate 会级联保存 Payment。
     }  
 
     public OrderDTO getOrderById(Long orderId) {  
