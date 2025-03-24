@@ -56,7 +56,7 @@ public class Order {
 
     /**
      *
-     * mappedBy: 被维护端使用，表示由另一端 (即 order )的哪个字段来维护这段关系。这里 Payment 的 order 是拥有端。
+     * mappedBy: 被维护端使用，表示由另一端 (即 Payment表 )(即 带有 @JoinColumn注解的 table, 用于定义外键列)的哪个字段来维护这段关系。这里 Payment 的 order字段 是拥有端。
      * cascade = CascadeType.ALL: 表示在操作 Order 实体时，相关联的 Payment 实体也会被自动操作。例如创建 Order 时，会自动保存 Payment。
      *
      */
