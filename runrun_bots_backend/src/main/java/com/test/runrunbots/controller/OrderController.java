@@ -48,10 +48,11 @@ public class OrderController {
     }
 
     @GetMapping("/{orderId}")
-    public ResponseEntity<Order> getOrderByOrderId(@PathVariable Long orderId) {
+    public ResponseEntity<ApiResponse<Order>> getOrderByOrderId(@PathVariable Long orderId) {
         // Logic for Retrieving Order Details
         Order order = orderService.getOrderByOrderId(orderId);
-        return ResponseEntity.ok(order);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(ApiResponse.success(order));
     }
 
     @PutMapping("/{orderId}/status")  
