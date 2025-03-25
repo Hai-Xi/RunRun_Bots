@@ -56,7 +56,7 @@ public class OrderController {
                 .body(ApiResponse.success(order));
     }
 
-    @PutMapping("/{orderId}/status")  
+    @PutMapping("/{orderId}/updateOrderStatus")
     public ResponseEntity<ApiResponse<OrderDTO>> updateOrderStatus(
             @PathVariable Long orderId,  
             @RequestBody UpdateOrderStatusRequest request) {
