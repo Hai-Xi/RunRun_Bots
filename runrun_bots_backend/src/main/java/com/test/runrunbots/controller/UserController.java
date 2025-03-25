@@ -1,7 +1,7 @@
 package com.test.runrunbots.controller;
 
 import com.alibaba.fastjson2.JSON;
-import com.test.runrunbots.model.ApiResponse;
+import com.test.runrunbots.model.dto.unifiedGlobalResponse.ApiResponse;
 import com.test.runrunbots.model.User;
 import com.test.runrunbots.model.dto.user.LoginAuthResponse;
 import com.test.runrunbots.model.dto.user.LoginRequest;

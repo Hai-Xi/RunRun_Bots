@@ -2,8 +2,8 @@ package com.test.runrunbots;
 
 
 import com.test.runrunbots.controller.UserAlreadyExistException;
-import com.test.runrunbots.model.ApiResponse;
-import com.test.runrunbots.model.RunrunbotsErrorResponse;
+import com.test.runrunbots.model.dto.unifiedGlobalResponse.ApiResponse;
+import com.test.runrunbots.model.dto.error.RunrunbotsErrorResponse;
 import com.test.runrunbots.model.dto.order.OrderIdNotExistException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

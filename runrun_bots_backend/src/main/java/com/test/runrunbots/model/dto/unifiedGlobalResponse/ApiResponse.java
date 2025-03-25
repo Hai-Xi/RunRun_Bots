@@ -1,4 +1,4 @@
-package com.test.runrunbots.model;
+package com.test.runrunbots.model.dto.unifiedGlobalResponse;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

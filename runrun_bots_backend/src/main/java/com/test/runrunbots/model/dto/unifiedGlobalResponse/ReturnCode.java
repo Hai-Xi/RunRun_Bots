@@ -1,4 +1,4 @@
-package com.test.runrunbots.model;
+package com.test.runrunbots.model.dto.unifiedGlobalResponse;
 
 public enum ReturnCode {
     /**Operation successful**/

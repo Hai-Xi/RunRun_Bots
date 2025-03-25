@@ -1,4 +1,4 @@
-package com.test.runrunbots.model;
+package com.test.runrunbots.model.dto.error;
 
 
 public record RunrunbotsErrorResponse(String exceptionMessage, String errorFrom, String exceptionDetails) {
