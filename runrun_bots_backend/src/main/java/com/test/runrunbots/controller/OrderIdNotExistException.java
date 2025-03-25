@@ -1,4 +1,4 @@
-package com.test.runrunbots.model.dto.order;
+package com.test.runrunbots.controller;
 
 
 public class OrderIdNotExistException extends RuntimeException {
