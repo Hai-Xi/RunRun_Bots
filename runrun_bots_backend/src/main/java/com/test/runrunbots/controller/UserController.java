@@ -8,6 +8,7 @@ import com.test.runrunbots.model.dto.user.LoginRequest;
 import com.test.runrunbots.model.dto.user.UserRegistrationRequest;
 import com.test.runrunbots.model.dto.user.UserRegistrationResponse;
 import com.test.runrunbots.service.AuthenticationService;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +32,7 @@ public class UserController {
      * @return
      */
     @PostMapping("/signup")
-    public ResponseEntity<ApiResponse<UserRegistrationResponse>> register(@RequestBody UserRegistrationRequest request) {
+    public ResponseEntity<ApiResponse<UserRegistrationResponse>> register(@Valid @RequestBody UserRegistrationRequest request) {
         // User Registration Logic
         log.info("----------------Registering----------------------");
         log.info(request.toString());
