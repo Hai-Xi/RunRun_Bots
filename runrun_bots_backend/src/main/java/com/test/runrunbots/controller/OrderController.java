@@ -41,10 +41,11 @@ public class OrderController {
     }
 
     @GetMapping("/orderList")
-    public ResponseEntity<List<Order>> getOrdersByUser(@AuthenticationPrincipal User user) {
+    public ResponseEntity<ApiResponse<List<Order>>> getOrdersByUser(@AuthenticationPrincipal User user) {
         // Logic for Retrieving Order List Details
         List<Order> orderListByUserId = orderService.getOrdersByUser(user);
-        return ResponseEntity.ok(orderListByUserId);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(ApiResponse.success(orderListByUserId));
     }
 
     @GetMapping("/{orderId}")
