@@ -1,6 +1,7 @@
 package com.test.runrunbots;
 
 
+import com.test.runrunbots.controller.DeliveryMethodNotExistException;
 import com.test.runrunbots.controller.UserAlreadyExistException;
 import com.test.runrunbots.model.dto.unifiedGlobalResponse.ApiResponse;
 import com.test.runrunbots.model.dto.error.RunrunbotsErrorResponse;
@@ -35,12 +36,22 @@ public class GlobalControllerExceptionHandler {
                 "OrderIdNotExistException error.",
                 e.getClass().getName(),
                 e.getMessage());
-//        runrunbotsErrorResponse.message("UserAlreadyExistException error.");
-//        runrunbotsErrorResponse.error(e.getClass().getName());
-//        runrunbotsErrorResponse.details(e.getMessage());
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(ApiResponse.success(runrunbotsErrorResponse));
 
     }
+
+    @ExceptionHandler(DeliveryMethodNotExistException.class)
+    public final ResponseEntity<ApiResponse<RunrunbotsErrorResponse>> handleDefaultException(DeliveryMethodNotExistException e) {
+        RunrunbotsErrorResponse runrunbotsErrorResponse = new RunrunbotsErrorResponse(
+                "DeliveryMethodNotExistException error.",
+                e.getClass().getName(),
+                e.getMessage());
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(ApiResponse.success(runrunbotsErrorResponse));
+
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.test.runrunbots.model.dto.order;
 
+import com.test.runrunbots.model.DeliveryMethod;
 import lombok.Data;
 
 @Data  
@@ -11,7 +12,7 @@ public class CreateOrderRequest {
     private String itemDescription;  
     private String pickupLocation;  
     private String deliveryLocation;  
-    private String deliveryMethod; // ROBOT or DRONE
+    private DeliveryMethod deliveryMethod; // ROBOT or DRONE
 
     /**
      * payment table

@@ -34,7 +34,7 @@ public class OrderService {
         order.setItemDescription(request.getItemDescription());
         order.setPickupLocation(request.getPickupLocation());
         order.setDeliveryLocation(request.getDeliveryLocation());
-        order.setDeliveryMethod(DeliveryMethod.valueOf(request.getDeliveryMethod()));
+        order.setDeliveryMethod(request.getDeliveryMethod());
         order.setStatus(OrderStatus.valueOf("CREATED"));
         order.setCreatedAt(java.time.LocalDateTime.now());
 
