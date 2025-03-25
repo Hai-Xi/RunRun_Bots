@@ -1,7 +1,7 @@
 package com.test.runrunbots.model;
 
 
-public record RunrunbotsErrorResponse(String message, String errorFrom, String details) {
+public record RunrunbotsErrorResponse(String exceptioMessage, String errorFrom, String exceptionDetails) {
 
 
     public RunrunbotsErrorResponse(Exception e) {
