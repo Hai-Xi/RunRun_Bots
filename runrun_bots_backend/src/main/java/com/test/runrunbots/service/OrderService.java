@@ -2,10 +2,7 @@ package com.test.runrunbots.service;
 
 import com.alibaba.fastjson2.JSON;
 import com.test.runrunbots.model.*;
-import com.test.runrunbots.model.dto.order.CreateOrderRequest;
-import com.test.runrunbots.model.dto.order.OrderDTO;  
-import com.test.runrunbots.model.dto.order.TrackingInfo;  
-import com.test.runrunbots.model.dto.order.UpdateOrderStatusRequest;
+import com.test.runrunbots.model.dto.order.*;
 import com.test.runrunbots.repository.OrderRepository;
 import com.test.runrunbots.repository.PaymentRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -60,7 +57,7 @@ public class OrderService {
         return orderRepository.save(order);  // 当调用 orderRepository.save(order) 时，因为 CascadeType.ALL，Hibernate 会级联保存 Payment 支付记录。
     }  
 
-    public OrderDTO getOrderById(Long orderId) {  
+    public OrderDTO getOrderById(Long orderId) throws OrderIdNotExistException {
         // 模拟获取订单逻辑  
         OrderDTO order = new OrderDTO();  
         order.setOrderId(orderId);  
@@ -98,7 +95,10 @@ public class OrderService {
         return orderRepository.findByUser(user);
     }
 
-    public Order getOrderByOrderId(Long orderId) {
-        return orderRepository.findByOrderId( orderId );
+    public Order getOrderByOrderId(Long orderId) throws OrderIdNotExistException {
+        if (orderRepository.existsById(orderId)) {
+            return orderRepository.findByOrderId(orderId);
+        }
+        throw new OrderIdNotExistException();
     }
 }
