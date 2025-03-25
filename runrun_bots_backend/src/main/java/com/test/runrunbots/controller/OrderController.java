@@ -57,12 +57,13 @@ public class OrderController {
     }
 
     @PutMapping("/{orderId}/status")  
-    public ResponseEntity<OrderDTO> updateOrderStatus(  
+    public ResponseEntity<ApiResponse<OrderDTO>> updateOrderStatus(
             @PathVariable Long orderId,  
             @RequestBody UpdateOrderStatusRequest request) {
         // Update Order Status Logic
         OrderDTO updatedOrder = orderService.updateOrderStatus(orderId, request);
-        return ResponseEntity.ok(updatedOrder);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(ApiResponse.success(updatedOrder));
     }
 
     @GetMapping("/{orderId}/tracking")  
