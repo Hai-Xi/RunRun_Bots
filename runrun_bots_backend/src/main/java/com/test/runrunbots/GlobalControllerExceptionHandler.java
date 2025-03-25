@@ -17,20 +17,25 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 @RestControllerAdvice
 public class GlobalControllerExceptionHandler {
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex) {
-        Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getAllErrors().forEach((error) -> {
-            String fieldName = ((FieldError) error).getField();
-            String errorMessage = error.getDefaultMessage();
-            errors.put(fieldName, errorMessage);
-        });
-        return errors;
+    public ResponseEntity<ApiResponse<RunrunbotsErrorResponse>> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        RunrunbotsErrorResponse runrunbotsErrorResponse = new RunrunbotsErrorResponse(
+                "MethodArgumentNotValidException error.",
+                ex.getClass().getName(),
+                Objects.requireNonNull(ex.getBindingResult().getFieldError()).getDefaultMessage());
+//        Map<String, String> errors = new HashMap<>();
+//        ex.getBindingResult().getAllErrors().forEach((error) -> {
+//            String fieldName = ((FieldError) error).getField();
+//            String errorMessage = error.getDefaultMessage();
+//            errors.put(fieldName, errorMessage);
+//        });
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(ApiResponse.success(runrunbotsErrorResponse));
     }
 
     @ExceptionHandler(UserAlreadyExistException.class)
