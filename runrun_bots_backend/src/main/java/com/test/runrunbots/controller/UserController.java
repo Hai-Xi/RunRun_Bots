@@ -6,6 +6,7 @@ import com.test.runrunbots.model.User;
 import com.test.runrunbots.model.dto.user.AuthResponse;
 import com.test.runrunbots.model.dto.user.LoginRequest;
 import com.test.runrunbots.model.dto.user.UserRegistrationRequest;
+import com.test.runrunbots.model.dto.user.UserRegistrationResponse;
 import com.test.runrunbots.service.AuthenticationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -30,14 +31,20 @@ public class UserController {
      * @return
      */
     @PostMapping("/signup")
-    public ResponseEntity<ApiResponse<User>> register(@RequestBody UserRegistrationRequest request) {
+    public ResponseEntity<ApiResponse<UserRegistrationResponse>> register(@RequestBody UserRegistrationRequest request) {
         // User Registration Logic
         log.info("----------------Registering----------------------");
         log.info(request.toString());
         User registered = authenticationService.register(request.getUsername(), request.getEmail(), request.getPhone(), request.getPassword(), request.getRole());
 
+        UserRegistrationResponse userRegistrationResponse = new UserRegistrationResponse();
+        userRegistrationResponse.setUsername(registered.getUsername());
+        userRegistrationResponse.setEmail(registered.getEmail());
+        userRegistrationResponse.setPhone(registered.getPhone());
+        userRegistrationResponse.setRole(registered.getRole());
+
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(ApiResponse.success(registered));
+                .body(ApiResponse.success(userRegistrationResponse));
     }
 
     @PostMapping("/login")  
