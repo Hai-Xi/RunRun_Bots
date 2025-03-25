@@ -1,6 +1,7 @@
 package com.test.runrunbots.controller;
 
 import com.alibaba.fastjson2.JSON;
+import com.test.runrunbots.model.ApiResponse;
 import com.test.runrunbots.model.Order;
 import com.test.runrunbots.model.User;
 import com.test.runrunbots.model.dto.order.CreateOrderRequest;
@@ -10,6 +11,7 @@ import com.test.runrunbots.model.dto.order.UpdateOrderStatusRequest;
 import com.test.runrunbots.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -29,12 +31,13 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<Order> createOrder(@AuthenticationPrincipal User user,
-                                             @RequestBody CreateOrderRequest request) {
+    public ResponseEntity<ApiResponse<Order>> createOrder(@AuthenticationPrincipal User user,
+                                                         @RequestBody CreateOrderRequest request) {
         // Create Order Logic
         log.info("@AuthenticationPrincipal user: {}", JSON.toJSONString(user));
         Order createdOrder = orderService.createOrder(user,request);
-        return ResponseEntity.ok(createdOrder);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(ApiResponse.success(createdOrder));
     }
 
     @GetMapping("/orderList")
