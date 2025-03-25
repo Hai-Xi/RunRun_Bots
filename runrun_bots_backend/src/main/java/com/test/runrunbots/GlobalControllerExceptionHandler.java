@@ -15,7 +15,10 @@ public class GlobalControllerExceptionHandler {
 
     @ExceptionHandler(UserAlreadyExistException.class)
     public final ResponseEntity<ApiResponse<RunrunbotsErrorResponse>> handleDefaultException(Exception e) {
-        RunrunbotsErrorResponse runrunbotsErrorResponse = new RunrunbotsErrorResponse("UserAlreadyExistException error.", e.getClass().getName(), e.getMessage());
+        RunrunbotsErrorResponse runrunbotsErrorResponse = new RunrunbotsErrorResponse(
+                "UserAlreadyExistException error.",
+                e.getClass().getName(),
+                e.getMessage());
 //        runrunbotsErrorResponse.message("UserAlreadyExistException error.");
 //        runrunbotsErrorResponse.error(e.getClass().getName());
 //        runrunbotsErrorResponse.details(e.getMessage());
