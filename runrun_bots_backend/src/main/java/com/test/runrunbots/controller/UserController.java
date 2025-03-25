@@ -38,10 +38,12 @@ public class UserController {
         User registered = authenticationService.register(request.getUsername(), request.getEmail(), request.getPhone(), request.getPassword(), request.getRole());
 
         UserRegistrationResponse userRegistrationResponse = new UserRegistrationResponse();
-        userRegistrationResponse.setUsername(registered.getUsername());
+        userRegistrationResponse.setUsername(request.getUsername());
         userRegistrationResponse.setEmail(registered.getEmail());
         userRegistrationResponse.setPhone(registered.getPhone());
         userRegistrationResponse.setRole(registered.getRole());
+        log.info("userRegistrationResponse{}", JSON.toJSONString(registered));
+        log.info("userRegistrationResponse{}", JSON.toJSONString(userRegistrationResponse));
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ApiResponse.success(userRegistrationResponse));
