@@ -1,8 +1,11 @@
 import React from "react";
+import { TOKEN_KEY } from "../constants";
+import { useNavigate } from "react-router-dom";
 import { Container, Card, Form, Button, Row, Col } from "react-bootstrap";
 import { FaFacebook, FaGoogle, FaTwitter } from "react-icons/fa";
 
-const Login = () => {
+const Login = ({ handleLoggedIn }) => {
+  const navigate = useNavigate();
   return (
     <Container
       className="d-flex justify-content-center align-items-center vh-100"
@@ -29,7 +32,14 @@ const Login = () => {
             <Form.Control type="password" placeholder="Enter your password" />
           </Form.Group>
 
-          <Button className="w-100 mt-4" variant="dark">
+          {/* 👉 Directly navigate on Sign In */}
+          <Button
+            className="w-100 mt-4"
+            variant="dark"
+            onClick={() => {
+              handleLoggedIn(TOKEN_KEY) // Lezheng: added artificial token to allow log in, this line need to be modified for future dev.
+            }}
+          >
             Sign In
           </Button>
         </Form>
@@ -43,7 +53,12 @@ const Login = () => {
             <span className="text-muted" style={{ fontSize: "0.9rem" }}>
               Don’t have an account?
             </span>
-            <Button variant="dark" size="sm" style={{ minWidth: "150px" }}>
+            <Button
+              variant="dark"
+              size="sm"
+              style={{ minWidth: "150px" }}
+              onClick={() => navigate("/register")} // Lezheng: I added this line for 03/24's meeting; need to be reviewed. 
+            >
               Register
             </Button>
           </div>

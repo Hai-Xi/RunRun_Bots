@@ -8,7 +8,7 @@ import CreateNewOrder from "./CreateNewOrder";
 import Landing from "./Landing";
 
 function Main(props) {
-  const { isLoggedIn, handleLoggedIn } = props;
+  const { isLoggedIn, handleLoggedIn} = props;
 
   // auth gating
 
@@ -24,9 +24,9 @@ function Main(props) {
     return isLoggedIn ? <Navigate to="/ordermanage" /> : <Register />;
   };
 
-  const showLanding = () => {
-    return isLoggedIn ? <Landing /> : <Navigate to="/login" />;
-  };
+  // const showLanding = () => {
+  //   return isLoggedIn ? <Landing /> : <Navigate to="/login" />;
+  // };
 
   const showOrderManage = () => {
     return isLoggedIn ? <OrderManage /> : <Navigate to="/login" />;
@@ -42,7 +42,7 @@ function Main(props) {
         <Route path="/" exact element={showLogin()} />
         <Route path="/login" element={showLogin()} />
         <Route path="/register" element={showRegister()} />
-        <Route path="/create" element={showLanding()} />
+        {/* <Route path="/create" element={showLanding()} /> */}
         <Route path="/ordermanage" element={showOrderManage()} />
         <Route path="/createneworder" element={showCreateNewOrder()} />
       </Routes>
