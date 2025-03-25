@@ -3,7 +3,7 @@ package com.test.runrunbots.controller;
 import com.alibaba.fastjson2.JSON;
 import com.test.runrunbots.model.ApiResponse;
 import com.test.runrunbots.model.User;
-import com.test.runrunbots.model.dto.user.AuthResponse;
+import com.test.runrunbots.model.dto.user.LoginAuthResponse;
 import com.test.runrunbots.model.dto.user.LoginRequest;
 import com.test.runrunbots.model.dto.user.UserRegistrationRequest;
 import com.test.runrunbots.model.dto.user.UserRegistrationResponse;
@@ -50,10 +50,10 @@ public class UserController {
     }
 
     @PostMapping("/login")  
-    public ResponseEntity<ApiResponse<AuthResponse>> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<ApiResponse<LoginAuthResponse>> login(@RequestBody LoginRequest request) {
         // User Login Logic
         // 调用业务逻辑层的 客户登录功能
-        AuthResponse authResponse = authenticationService.login( request );
+        LoginAuthResponse authResponse = authenticationService.login( request );
         return ResponseEntity.status(HttpStatus.OK)
                 .body(ApiResponse.success(authResponse));
     }

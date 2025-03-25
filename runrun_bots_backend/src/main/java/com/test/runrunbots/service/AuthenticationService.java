@@ -6,7 +6,7 @@ import com.alibaba.fastjson2.JSON;
 import com.test.runrunbots.controller.UserAlreadyExistException;
 import com.test.runrunbots.model.User;
 import com.test.runrunbots.model.UserRole;
-import com.test.runrunbots.model.dto.user.AuthResponse;
+import com.test.runrunbots.model.dto.user.LoginAuthResponse;
 import com.test.runrunbots.model.dto.user.LoginRequest;
 import com.test.runrunbots.repository.UserRepository;
 import com.test.runrunbots.security.JwtHandler;
@@ -67,10 +67,10 @@ public class AuthenticationService {
 //       return jwtHandler.generateToken(username);
 //   }
 
-    public AuthResponse login(LoginRequest loginRequest) {
+    public LoginAuthResponse login(LoginRequest loginRequest) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
         jwtHandler.generateToken(loginRequest.getUsername());
-        AuthResponse authResponse = new AuthResponse();
+        LoginAuthResponse authResponse = new LoginAuthResponse();
         authResponse.setToken(jwtHandler.generateToken(loginRequest.getUsername()));
         authResponse.setUser(loginRequest.getUsername());
         log.info("Logining...: {} ==>> ", JSON.toJSONString(authResponse));
