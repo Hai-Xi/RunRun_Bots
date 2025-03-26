@@ -61,6 +61,7 @@ public class GlobalControllerExceptionHandler {
 
     }
 
+    // 处理请求体解析失败异常 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ApiResponse<RunrunbotsErrorResponse>> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
         // 自定义响应
