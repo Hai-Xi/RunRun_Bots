@@ -52,6 +52,11 @@ public class GlobalControllerExceptionHandler {
      * 因此，HttpMessageNotReadableException 的检查先于 @Valid 的校验执行。
      * @Valid 是针对 已经成功反序列化的 Java 对象 的数据校验。如果对象生成失败，就无法进入 @Valid 校验阶段。
      *
+     *
+     * HttpMessageNotReadableException：针对请求格式和类型错误, ，可以提示用户检查数据格式和类型
+     * MethodArgumentNotValidException：针对验证约束违反, ，可以返回具体的字段错误提示
+     *
+     *
      * @param ex
      * @return
      */
@@ -99,7 +104,7 @@ public class GlobalControllerExceptionHandler {
      * @param ex
      * @return
      */
-    // 处理字段验证错误 
+    // 处理字段验证错误
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponse<RunrunbotsErrorResponse>> handleValidationExceptions(MethodArgumentNotValidException ex) {
         RunrunbotsErrorResponse runrunbotsErrorResponse = new RunrunbotsErrorResponse(
