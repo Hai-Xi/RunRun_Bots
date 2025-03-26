@@ -61,12 +61,12 @@ public class GlobalControllerExceptionHandler {
 
     }
 
-    // 处理请求体解析失败异常 
+    // 处理请求体解析失败异常
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ApiResponse<RunrunbotsErrorResponse>> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
         // 自定义响应
         RunrunbotsErrorResponse runrunbotsErrorResponse = new RunrunbotsErrorResponse(
-                "HttpMessageNotReadableException error.",
+                "Request Body Parsing Failed Exception, HttpMessageNotReadableException error.",
                 ex.getClass().getName(),
                 ex.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
