@@ -1,6 +1,7 @@
 package com.test.runrunbots.model.dto.order;
 
 import com.test.runrunbots.model.DeliveryMethod;
+import com.test.runrunbots.model.dto.valid.ValidDeliveryMethod;
 import lombok.Data;
 
 @Data  
@@ -11,7 +12,9 @@ public class CreateOrderRequest {
     private Long userId;
     private String itemDescription;  
     private String pickupLocation;  
-    private String deliveryLocation;  
+    private String deliveryLocation;
+
+    @ValidDeliveryMethod
     private DeliveryMethod deliveryMethod; // ROBOT or DRONE
 
     /**

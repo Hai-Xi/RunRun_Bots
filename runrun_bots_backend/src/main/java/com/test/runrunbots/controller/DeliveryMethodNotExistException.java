@@ -1,7 +1,9 @@
 package com.test.runrunbots.controller;
 
 
-public class DeliveryMethodNotExistException extends RuntimeException {
+import org.springframework.http.converter.HttpMessageNotReadableException;
+
+public class DeliveryMethodNotExistException extends HttpMessageNotReadableException {
 
 
    public DeliveryMethodNotExistException() {

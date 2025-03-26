@@ -8,15 +8,11 @@ import com.test.runrunbots.model.dto.error.RunrunbotsErrorResponse;
 import com.test.runrunbots.controller.OrderIdNotExistException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 @RestControllerAdvice
@@ -63,6 +59,17 @@ public class GlobalControllerExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(ApiResponse.success(runrunbotsErrorResponse));
 
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ApiResponse<RunrunbotsErrorResponse>> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
+        // 自定义响应
+        RunrunbotsErrorResponse runrunbotsErrorResponse = new RunrunbotsErrorResponse(
+                "HttpMessageNotReadableException error.",
+                ex.getClass().getName(),
+                ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(ApiResponse.success(runrunbotsErrorResponse));
     }
 
     @ExceptionHandler(DeliveryMethodNotExistException.class)

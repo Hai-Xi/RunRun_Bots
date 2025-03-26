@@ -9,6 +9,7 @@ import com.test.runrunbots.model.dto.order.OrderDTO;
 import com.test.runrunbots.model.dto.order.TrackingInfo;
 import com.test.runrunbots.model.dto.order.UpdateOrderStatusRequest;
 import com.test.runrunbots.service.OrderService;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,7 +33,7 @@ public class OrderController {
 
     @PostMapping
     public ResponseEntity<ApiResponse<Order>> createOrder(@AuthenticationPrincipal User user,
-                                                         @RequestBody CreateOrderRequest request) {
+                                                          @Valid @RequestBody CreateOrderRequest request) {
         // Create Order Logic
         log.info("@AuthenticationPrincipal user: {}", JSON.toJSONString(user));
         Order createdOrder = orderService.createOrder(user,request);
