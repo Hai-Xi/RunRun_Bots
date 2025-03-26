@@ -18,22 +18,6 @@ import java.util.Objects;
 @RestControllerAdvice
 public class GlobalControllerExceptionHandler {
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ApiResponse<RunrunbotsErrorResponse>> handleValidationExceptions(MethodArgumentNotValidException ex) {
-        RunrunbotsErrorResponse runrunbotsErrorResponse = new RunrunbotsErrorResponse(
-                "MethodArgumentNotValidException error.",
-                ex.getClass().getName(),
-                Objects.requireNonNull(ex.getBindingResult().getFieldError()).getDefaultMessage());
-//        Map<String, String> errors = new HashMap<>();
-//        ex.getBindingResult().getAllErrors().forEach((error) -> {
-//            String fieldName = ((FieldError) error).getField();
-//            String errorMessage = error.getDefaultMessage();
-//            errors.put(fieldName, errorMessage);
-//        });
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(ApiResponse.success(runrunbotsErrorResponse));
-    }
-
     @ExceptionHandler(UserAlreadyExistException.class)
     public final ResponseEntity<ApiResponse<RunrunbotsErrorResponse>> handleDefaultException(UserAlreadyExistException e) {
         RunrunbotsErrorResponse runrunbotsErrorResponse = new RunrunbotsErrorResponse(
@@ -85,4 +69,20 @@ public class GlobalControllerExceptionHandler {
 
     }
 
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ApiResponse<RunrunbotsErrorResponse>> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        RunrunbotsErrorResponse runrunbotsErrorResponse = new RunrunbotsErrorResponse(
+                "MethodArgumentNotValidException error.",
+                ex.getClass().getName(),
+                Objects.requireNonNull(ex.getBindingResult().getFieldError()).getDefaultMessage());
+//        Map<String, String> errors = new HashMap<>();
+//        ex.getBindingResult().getAllErrors().forEach((error) -> {
+//            String fieldName = ((FieldError) error).getField();
+//            String errorMessage = error.getDefaultMessage();
+//            errors.put(fieldName, errorMessage);
+//        });
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(ApiResponse.success(runrunbotsErrorResponse));
+    }
+    
 }
