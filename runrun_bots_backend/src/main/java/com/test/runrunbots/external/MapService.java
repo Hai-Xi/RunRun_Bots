@@ -20,7 +20,7 @@ public class MapService {
        this.mapApiClient = mapApiClient;
    }
 
-   
+
     public GeoResponse getRoutes(String key) {
         return mapApiClient.getRoutes(key);
     }

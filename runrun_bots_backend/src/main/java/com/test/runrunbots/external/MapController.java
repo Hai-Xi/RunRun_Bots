@@ -19,7 +19,7 @@ public class MapController {
    }
 
 
-   @GetMapping("/routes")
+   @GetMapping("/v2:computeRoutes")
    public GeoResponse getRoutes(@RequestParam(value = "key") String key) {
 
            return mapService.getRoutes(key);
