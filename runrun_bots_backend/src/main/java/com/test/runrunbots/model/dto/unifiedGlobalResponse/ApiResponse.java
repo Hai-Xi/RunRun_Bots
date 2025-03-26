@@ -1,5 +1,6 @@
 package com.test.runrunbots.model.dto.unifiedGlobalResponse;
 
+import com.test.runrunbots.model.dto.error.RunrunbotsErrorResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,9 +34,24 @@ public class ApiResponse<T> {
 
     // 错误静态方法
     public static <T> ApiResponse<T> error(int code, String message) {
-
-        return new ApiResponse<>(code, message, null);
+        ApiResponse<T> resultData = new ApiResponse<>();
+        resultData.setCode(ReturnCode.RC999.getCode());
+        resultData.setMessage(ReturnCode.RC999.getMessage());
+        return resultData;
+//        return new ApiResponse<>(code, message, null);
     }
+
+    // 错误静态方法
+    public static <T> ApiResponse<T> error(T data) {
+        ApiResponse<T> resultData = new ApiResponse<>();
+        resultData.setCode(ReturnCode.RC999.getCode());
+        resultData.setMessage(ReturnCode.RC999.getMessage());
+        resultData.setData(data);
+        return resultData;
+//        return new ApiResponse<>(code, message, null);
+    }
+
+
 
     // 构造方法、getter和setter
 }

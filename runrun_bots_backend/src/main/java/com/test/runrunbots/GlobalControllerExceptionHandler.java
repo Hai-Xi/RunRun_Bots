@@ -29,7 +29,7 @@ public class GlobalControllerExceptionHandler {
 //        runrunbotsErrorResponse.details(e.getMessage());
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                             .body(ApiResponse.success(runrunbotsErrorResponse));
+                             .body(ApiResponse.error(runrunbotsErrorResponse));
 
     }
 
@@ -41,7 +41,7 @@ public class GlobalControllerExceptionHandler {
                 e.getMessage());
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(ApiResponse.success(runrunbotsErrorResponse));
+                .body(ApiResponse.error(runrunbotsErrorResponse));
 
     }
 
@@ -69,7 +69,7 @@ public class GlobalControllerExceptionHandler {
                 ex.getClass().getName(),
                 ex.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(ApiResponse.success(runrunbotsErrorResponse));
+                .body(ApiResponse.error(runrunbotsErrorResponse));
     }
 
     @ExceptionHandler(DeliveryMethodNotExistException.class)
@@ -80,7 +80,7 @@ public class GlobalControllerExceptionHandler {
                 e.getMessage());
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(ApiResponse.success(runrunbotsErrorResponse));
+                .body(ApiResponse.error(runrunbotsErrorResponse));
 
     }
 
@@ -118,7 +118,7 @@ public class GlobalControllerExceptionHandler {
 //            errors.put(fieldName, errorMessage);
 //        });
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(ApiResponse.success(runrunbotsErrorResponse));
+                .body(ApiResponse.error(runrunbotsErrorResponse));
     }
 
 }
