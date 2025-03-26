@@ -79,6 +79,26 @@ public class GlobalControllerExceptionHandler {
 
     }
 
+    /**
+     *
+     * 请求处理流程
+     * 执行顺序：
+     *
+     * - 1. HTTP 请求接收：请求到达 DispatcherServlet
+     * - 2. Content-Type 识别：根据请求头识别内容类型
+     * - 3. 请求体解析（可能抛出 HttpMessageNotReadableException）
+     * -    - 对应 HttpMessageConverter 处理请求体反序列化
+     * -    - 如果 JSON 格式有误或字段类型不匹配，此步骤就会失败
+     * - 4. 对象实例化完成
+     * - 5. 参数验证（@Valid 注解处理）
+     * -    - 可能抛出 MethodArgumentNotValidException
+     * - 6. 控制器方法执行
+     * - 7. 返回结果处理
+     * 因此，HttpMessageNotReadableException 的检查先于 @Valid 的校验执行。
+     *
+     * @param ex
+     * @return
+     */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponse<RunrunbotsErrorResponse>> handleValidationExceptions(MethodArgumentNotValidException ex) {
         RunrunbotsErrorResponse runrunbotsErrorResponse = new RunrunbotsErrorResponse(
