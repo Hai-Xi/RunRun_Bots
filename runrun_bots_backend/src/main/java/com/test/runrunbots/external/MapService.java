@@ -2,12 +2,9 @@ package com.test.runrunbots.external;
 
 
 import com.test.runrunbots.external.model.GeoResponse;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import javax.sound.sampled.Clip;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
 
 @Service
 public class MapService {
@@ -21,8 +18,8 @@ public class MapService {
    }
 
 
-    public GeoResponse getRoutes(String key) {
-        return mapApiClient.getRoutes(key);
+    public GeoResponse getRoutes(String key, Map<String, Map<String, Object>> requestBody) {
+        return mapApiClient.getRoutes(key, requestBody);
     }
 
 }

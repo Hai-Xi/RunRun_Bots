@@ -1,11 +1,10 @@
 package com.test.runrunbots.external;
 
 import com.test.runrunbots.external.model.GeoResponse;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class MapController {
@@ -19,10 +18,11 @@ public class MapController {
    }
 
 
-   @GetMapping("/v2:computeRoutes")
-   public GeoResponse getRoutes(@RequestParam(value = "key") String key) {
+   @PostMapping("/v2:computeRoutes")
+   public GeoResponse getRoutes(@RequestParam(value = "key") String key,
+                                @RequestBody Map<String, Map<String, Object>> requestBody) {
 
-           return mapService.getRoutes(key);
+           return mapService.getRoutes(key,requestBody);
 
    }
 }
