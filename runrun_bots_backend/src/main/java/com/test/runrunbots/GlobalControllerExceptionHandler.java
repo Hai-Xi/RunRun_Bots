@@ -99,6 +99,7 @@ public class GlobalControllerExceptionHandler {
      * @param ex
      * @return
      */
+    // 处理字段验证错误 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponse<RunrunbotsErrorResponse>> handleValidationExceptions(MethodArgumentNotValidException ex) {
         RunrunbotsErrorResponse runrunbotsErrorResponse = new RunrunbotsErrorResponse(
