@@ -20,8 +20,7 @@ public class MapService {
        this.mapApiClient = mapApiClient;
    }
 
-
-    @Cacheable("games_by_name")
+   
     public GeoResponse getRoutes(String key) {
         return mapApiClient.getRoutes(key);
     }
