@@ -4,6 +4,26 @@ spring:
       max-file-size: 10MB # File upload limit, default 1MB not enough.
   jackson:
     default-property-inclusion: non_null
+  cloud:
+    openfeign:
+      oauth2:
+        enabled: true
+        clientRegistrationId: mapTest
+      client:
+        config:
+          map-api:
+            url: https://routes.googleapis.com/directions/v2:computeRoutes
+            loggerLevel: basic
+            default-request-headers:
+              X-Goog-FieldMask: ${X-Goog-FieldMask}
+#  security:
+#    oauth2:
+#      client:
+#        registration:
+#          mapTest:
+#        provider:
+#          mapTest:
+#            token-uri:
 
   # Database Configuration
   datasource:
