@@ -45,6 +45,16 @@ public class GlobalControllerExceptionHandler {
 
     }
 
+    /**
+     *
+     * 在 Spring MVC 处理 HTTP 请求时，请求体解析（可能触发 HttpMessageNotReadableException）必然先于验证（@Valid）执行。
+     * 这是因为请求必须先被成功解析成 Java 对象，才能对该对象执行后续的验证。
+     * 因此，HttpMessageNotReadableException 的检查先于 @Valid 的校验执行。
+     * @Valid 是针对 已经成功反序列化的 Java 对象 的数据校验。如果对象生成失败，就无法进入 @Valid 校验阶段。
+     *
+     * @param ex
+     * @return
+     */
     // 处理请求体解析失败异常
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ApiResponse<RunrunbotsErrorResponse>> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
@@ -84,5 +94,5 @@ public class GlobalControllerExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(ApiResponse.success(runrunbotsErrorResponse));
     }
-    
+
 }
