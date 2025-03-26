@@ -1,6 +1,7 @@
 package com.test.runrunbots.model.dto.user;
 
 import com.test.runrunbots.model.UserRole;
+import com.test.runrunbots.model.dto.valid.StrongPassword;
 import com.test.runrunbots.model.dto.valid.ValidPhone;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -22,6 +23,7 @@ public class UserRegistrationRequest {
     @ValidPhone
     private String phone;
 
+    @StrongPassword
     private String password;
 
     private UserRole role;
