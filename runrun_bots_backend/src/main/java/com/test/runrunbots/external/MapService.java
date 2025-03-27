@@ -109,10 +109,10 @@ public class MapService {
 
         // 调用 Feign Client 获取响应
         String response = feignClient.getRoutes(routeRequest);
-        log.info("调用 Feign Client 获取响应 - Routes response: {}", response);
+        log.info("调用 Feign Client 获取响应 - Routes response: {} - jsonstring", response);
         // Deserialize JSON to (RouteResponse) Java object
         RouteResponse jsonObject = JSON.parseObject(response, RouteResponse.class);
-        log.info("调用 Feign Client 获取响应 - Routes response: {}", jsonObject);
+        log.info("调用 Feign Client 获取响应 - Routes response: {} - object", jsonObject);
 
         // 解码 polyline 数据
         StringBuilder result = new StringBuilder();
