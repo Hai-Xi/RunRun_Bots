@@ -18,10 +18,10 @@ public class MapController {
    }
 
 
-   @PostMapping("/routes")
+   @GetMapping("/routes")
    public String getRoutes() {
 
-           return mapService.getRoutes();
+       return mapService.getRoutes();
 
    }
 }

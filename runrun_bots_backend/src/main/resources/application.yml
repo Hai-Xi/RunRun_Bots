@@ -1,4 +1,7 @@
 spring:
+  profiles:
+    # 当前运行环境： dev 开发环境 / test 测试环境  / prod 生产环境
+    active: dev-secrets
   servlet:
     multipart:
       max-file-size: 10MB # File upload limit, default 1MB not enough.
