@@ -1,10 +1,12 @@
 package com.test.runrunbots.external.model;
 
+import lombok.Builder;
 import lombok.Data;
 
 /**
  * requestBody 包含大量嵌套的结构，建议创建一个 Java DTO（数据传输对象），以便清晰地构造此 JSON 结构
  */
+@Builder
 @Data  
 public class RouteRequest {  
 
@@ -17,23 +19,27 @@ public class RouteRequest {
     private String languageCode;  
     private String units;  
 
-    @Data  
+    @Data
+    @Builder // 嵌套类也使用 Builder
     public static class LocationData {  
         private Location location;  
     }  
 
-    @Data  
+    @Data
+    @Builder // 嵌套类也使用 Builder
     public static class Location {  
         private LatLng latLng;  
     }  
 
-    @Data  
+    @Data
+    @Builder // 嵌套类也使用 Builder
     public static class LatLng {  
         private double latitude;  
         private double longitude;  
     }  
 
-    @Data  
+    @Data
+    @Builder // 嵌套类也使用 Builder
     public static class RouteModifiers {  
         private boolean avoidTolls;  
         private boolean avoidHighways;  
