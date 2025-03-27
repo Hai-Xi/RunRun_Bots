@@ -1,6 +1,5 @@
 package com.test.runrunbots.external;
 
-import com.test.runrunbots.external.model.RouteResponse;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,7 +15,7 @@ public class MapController {
 
 
    @GetMapping("/routes")
-   public RouteResponse getRoutes() {
+   public String getRoutes() {
 
        return mapService.getRoutes();
 

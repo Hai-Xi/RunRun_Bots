@@ -43,7 +43,7 @@ public interface MapApiClient {
     * @return API 返回结果
     */
    @PostMapping(consumes = "application/json", produces = "application/json")
-   RouteResponse getRoutes(// @RequestParam("key") String key,
+   String getRoutes(// @RequestParam("key") String key,
                     @RequestBody RouteRequest requestBody);
 
 }

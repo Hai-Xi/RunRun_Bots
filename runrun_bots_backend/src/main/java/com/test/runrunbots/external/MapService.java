@@ -1,12 +1,16 @@
 package com.test.runrunbots.external;
 
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONObject;
 import com.test.runrunbots.external.model.RouteRequest;
 import com.test.runrunbots.external.model.RouteResponse;
 import com.test.runrunbots.utils.PolylineDecoder;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Slf4j
 @Service
 public class MapService {
 
@@ -16,7 +20,7 @@ public class MapService {
         this.feignClient = feignClient;
     }
 
-    public RouteResponse getRoutes() {
+    public String getRoutes() {
         // 查询参数（API Key）
         // String key = "a";
 
@@ -104,11 +108,15 @@ public class MapService {
         routeRequest.setUnits("IMPERIAL");
 
         // 调用 Feign Client 获取响应
-        RouteResponse response = feignClient.getRoutes(routeRequest);
+        String response = feignClient.getRoutes(routeRequest);
+        log.info("调用 Feign Client 获取响应 - Routes response: {}", response);
+        // Deserialize JSON to (RouteResponse) Java object
+        RouteResponse jsonObject = JSON.parseObject(response, RouteResponse.class);
+        log.info("调用 Feign Client 获取响应 - Routes response: {}", jsonObject);
 
         // 解码 polyline 数据
         StringBuilder result = new StringBuilder();
-        for (RouteResponse.Route route : response.getRoutes()) {
+        for (RouteResponse.Route route : jsonObject.getRoutes()) {
             result.append("Distance: ").append(route.getDistanceMeters()).append(" meters\n");
             result.append("Duration: ").append(route.getDuration()).append("\n");
             result.append("Decoded Polyline Points:\n");
