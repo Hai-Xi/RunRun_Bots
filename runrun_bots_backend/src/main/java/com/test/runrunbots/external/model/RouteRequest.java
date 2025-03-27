@@ -65,14 +65,21 @@ public class RouteRequest {
     @Data
     @Builder // 嵌套类也使用 Builder
     public static class LocationData {  
-        private Location location;  
-    }  
+        private Location location;  // compute by lat/lon
+        private String address;  // compute by address string
+    }
 
     @Data
     @Builder // 嵌套类也使用 Builder
     public static class Location {  
         private LatLng latLng;  
-    }  
+    }
+
+    @Data
+    @Builder // 嵌套类也使用 Builder
+    public static class Address {
+        private String address;
+    }
 
     @Data
     @Builder // 嵌套类也使用 Builder
