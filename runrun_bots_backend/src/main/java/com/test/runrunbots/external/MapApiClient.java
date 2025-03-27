@@ -10,6 +10,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Map;
 
+
+/**
+ *
+ * 如果你的系统同时需要调用 Map Api 和其他 API（比如第三方支付接口、天气信息等），则用 OpenFeign 而不是 map java sdk 会更适合，因为它的声明式编程方式更通用。
+ *
+ * 如果你的项目采用微服务架构（Spring Cloud，例如 Eureka、Ribbon、OpenFeign ），OpenFeign 能与这些组件无缝集成。
+ *
+ * 如需在调用中添加非标准逻辑：拦截器（认证或日志）、动态代理，或自定义异常处理等。
+ * OpenFeign 支持自定义配置和组件，开发自由度更高。
+ * 
+ *
+ */
 @FeignClient(name = "map-api")
 public interface MapApiClient {
 
