@@ -116,28 +116,30 @@ public class MapService {
 
         // 创建请求体 - 起点
         RouteRequest.LocationData origin = RouteRequest.LocationData.builder()
-                .location(
-                        RouteRequest.Location.builder()
-                                .latLng(RouteRequest.LatLng.builder()
-                                        .latitude(37.419734)
-                                        .longitude(-122.0827784)
-                                        .build()
-                                )
-                                .build()
-                )
+//                .location(
+//                        RouteRequest.Location.builder()
+//                                .latLng(RouteRequest.LatLng.builder()
+//                                        .latitude(37.419734)
+//                                        .longitude(-122.0827784)
+//                                        .build()
+//                                )
+//                                .build()
+//                )
+                .address("1600 Amphitheatre Parkway, Mountain View, CA")
                 .build();
 
         // 创建请求体 - 终点
         RouteRequest.LocationData destination = RouteRequest.LocationData.builder()
-                .location(
-                        RouteRequest.Location.builder()
-                                .latLng(RouteRequest.LatLng.builder()
-                                        .latitude(37.417670)
-                                        .longitude(-122.079595)
-                                        .build()
-                                )
-                                .build()
-                )
+//                .location(
+//                        RouteRequest.Location.builder()
+//                                .latLng(RouteRequest.LatLng.builder()
+//                                        .latitude(37.417670)
+//                                        .longitude(-122.079595)
+//                                        .build()
+//                                )
+//                                .build()
+//                )
+                .address("450 Serra Mall, Stanford, CA 94305, USA")
                 .build();
 
         // 路由修饰符
