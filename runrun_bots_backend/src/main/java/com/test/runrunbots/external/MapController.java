@@ -1,10 +1,7 @@
 package com.test.runrunbots.external;
 
-import com.test.runrunbots.external.model.GeoResponse;
+import com.test.runrunbots.external.model.RouteResponse;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Map;
 
 @RestController
 public class MapController {
@@ -19,9 +16,15 @@ public class MapController {
 
 
    @GetMapping("/routes")
-   public String getRoutes() {
+   public RouteResponse getRoutes() {
 
        return mapService.getRoutes();
 
    }
+
+    @GetMapping("/routes/decoded")
+    public String getDecodedRoutes() {
+        return mapService.getDecodedRoutes();
+    }
+
 }
