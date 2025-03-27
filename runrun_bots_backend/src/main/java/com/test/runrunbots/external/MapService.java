@@ -3,6 +3,9 @@ package com.test.runrunbots.external;
 import com.alibaba.fastjson2.JSON;
 import com.test.runrunbots.external.model.RouteRequest;
 import com.test.runrunbots.external.model.RouteResponse;
+import com.test.runrunbots.model.Order;
+import com.test.runrunbots.model.dto.order.OrderDTO;
+import com.test.runrunbots.service.OrderService;
 import com.test.runrunbots.utils.PolylineDecoder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -15,9 +18,11 @@ import java.util.List;
 public class MapService {
 
     private final MapApiClient feignClient;
+    private final OrderService orderService;
 
-    public MapService(MapApiClient feignClient) {
+    public MapService(MapApiClient feignClient, OrderService orderService) {
         this.feignClient = feignClient;
+        this.orderService = orderService;
     }
 
     public String getRoutes() {
@@ -114,6 +119,13 @@ public class MapService {
 
     public RouteResponse getDecodedRoutes() {
 
+        Order orderById = orderService.getOrderByOrderId(1L);
+        String pickupLocation = orderById.getPickupLocation();
+        log.info("pickupLocation: {}", pickupLocation);
+        String deliveryLocation = orderById.getDeliveryLocation();
+        log.info("deliveryLocation: {}", deliveryLocation);
+
+
         // 创建请求体 - 起点
         RouteRequest.LocationData origin = RouteRequest.LocationData.builder()
 //                .location(
@@ -125,7 +137,7 @@ public class MapService {
 //                                )
 //                                .build()
 //                )
-                .address("1600 Amphitheatre Parkway, Mountain View, CA")
+                .address(pickupLocation)
                 .build();
 
         // 创建请求体 - 终点
@@ -139,7 +151,7 @@ public class MapService {
 //                                )
 //                                .build()
 //                )
-                .address("450 Serra Mall, Stanford, CA 94305, USA")
+                .address(deliveryLocation)
                 .build();
 
         // 路由修饰符
