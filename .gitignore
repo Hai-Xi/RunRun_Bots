@@ -130,3 +130,4 @@ dist
 .pnp.*
 /.idea
 runrun_bots_backend/src/main/resources/application-secrets.yaml
+runrun_bots_backend/src/main/resources/application-dev-secrets.yaml
