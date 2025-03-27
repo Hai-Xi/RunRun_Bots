@@ -7,6 +7,7 @@ import java.util.List;
 @Data  
 public class RouteResponse {  
 
+    private Route route;
     private List<Route> routes;  
 
     @Data  

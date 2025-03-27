@@ -115,19 +115,27 @@ public class MapService {
         log.info("调用 Feign Client 获取响应 - Routes response - object: {} ", jsonObject);
 
         // 解码 polyline 数据
-        StringBuilder result = new StringBuilder();
         RouteResponse routeResponse = null;
-        for (RouteResponse.Route route : jsonObject.getRoutes()) {
+
+        RouteResponse.Route route = jsonObject.getRoutes().get(0);
+        route.setDistanceMeters(route.getDistanceMeters());
+        route.setDuration(route.getDuration());
+        route.setPolyline(route.getPolyline());
+        String encodedPolyline = route.getPolyline().getEncodedPolyline();
+        List<PolylineDecoder.LatLng> coordinates = PolylineDecoder.decodePolyline(encodedPolyline);
+        route.setCoordinates(coordinates);
+
+        for (RouteResponse.Route routeInList : jsonObject.getRoutes()) {
 
             routeResponse = new RouteResponse();
             
             RouteResponse.Route modifiedRoute = new RouteResponse.Route();
-            modifiedRoute.setDistanceMeters(route.getDistanceMeters());
-            modifiedRoute.setDuration(route.getDuration());
-            modifiedRoute.setPolyline(route.getPolyline());
-            String encodedPolyline = route.getPolyline().getEncodedPolyline();
-            List<PolylineDecoder.LatLng> coordinates = PolylineDecoder.decodePolyline(encodedPolyline);
-            modifiedRoute.setCoordinates(coordinates);
+            modifiedRoute.setDistanceMeters(routeInList.getDistanceMeters());
+            modifiedRoute.setDuration(routeInList.getDuration());
+            modifiedRoute.setPolyline(routeInList.getPolyline());
+            String encodedPolylineInList = routeInList.getPolyline().getEncodedPolyline();
+            List<PolylineDecoder.LatLng> coordinatesInList = PolylineDecoder.decodePolyline(encodedPolylineInList);
+            modifiedRoute.setCoordinates(coordinatesInList);
             log.info("modifiedRoute.toString(): {}", modifiedRoute.toString());
 
 
@@ -136,6 +144,10 @@ public class MapService {
 
             routeResponse.setRoutes(routes);
         }
+
+        assert routeResponse != null;
+        routeResponse.setRoute(route);
+
         return routeResponse;
     }
 
