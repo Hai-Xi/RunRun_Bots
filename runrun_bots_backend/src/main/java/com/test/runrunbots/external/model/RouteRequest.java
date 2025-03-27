@@ -6,8 +6,8 @@ import lombok.Data;
 /**
  * requestBody 包含大量嵌套的结构，建议创建一个 Java DTO（数据传输对象），以便清晰地构造此 JSON 结构
  *
- * @Builder, 现在，每个嵌套对象都可以通过 Builder 模式构造，避免重复写 Setter
- * 
+ * @Builder, 现在，每个嵌套对象都可以通过 Builder 模式链式构造，避免重复写 Setter
+ *
  */
 @Builder
 @Data  
