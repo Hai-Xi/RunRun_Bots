@@ -22,9 +22,9 @@ public class MapController {
 
    }
 
-    @GetMapping("/routes/decoded")
-    public RouteResponse getDecodedRoutes() {
-        return mapService.getDecodedRoutes();
+    @GetMapping("/routes/decoded/{orderId}")
+    public RouteResponse getDecodedRoutes(@PathVariable String orderId) {
+        return mapService.getDecodedRoutes(orderId);
     }
 
 }

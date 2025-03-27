@@ -9,6 +9,7 @@ import com.test.runrunbots.service.OrderService;
 import com.test.runrunbots.utils.PolylineDecoder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -117,9 +118,9 @@ public class MapService {
                                       routeRequest);
     }
 
-    public RouteResponse getDecodedRoutes() {
+    public RouteResponse getDecodedRoutes(@PathVariable String orderId) {
 
-        Order orderById = orderService.getOrderByOrderId(1L);
+        Order orderById = orderService.getOrderByOrderId(Long.valueOf(orderId));
         String pickupLocation = orderById.getPickupLocation();
         log.info("pickupLocation: {}", pickupLocation);
         String deliveryLocation = orderById.getDeliveryLocation();
