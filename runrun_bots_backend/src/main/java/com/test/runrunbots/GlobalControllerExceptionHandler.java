@@ -6,6 +6,7 @@ import com.test.runrunbots.controller.UserAlreadyExistException;
 import com.test.runrunbots.model.dto.unifiedGlobalResponse.ApiResponse;
 import com.test.runrunbots.model.dto.error.RunrunbotsErrorResponse;
 import com.test.runrunbots.controller.OrderIdNotExistException;
+import feign.FeignException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 @RestControllerAdvice
@@ -119,6 +122,21 @@ public class GlobalControllerExceptionHandler {
 //        });
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(ApiResponse.error(runrunbotsErrorResponse));
+    }
+
+    /**
+     * 这个异常处理器会捕获 Feign 客户端抛出的异常，并返回格式化的错误响应。
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(FeignException.class)
+    public ResponseEntity<Map<String, Object>> handleFeignException(FeignException e) {
+        Map<String, Object> errorDetails = new HashMap<>();
+        errorDetails.put("status", e.status());
+        errorDetails.put("error", "Feign Client Error");
+        errorDetails.put("message", e.getMessage());
+
+        return new ResponseEntity<>(errorDetails, HttpStatus.valueOf(e.status()));
     }
 
 }
