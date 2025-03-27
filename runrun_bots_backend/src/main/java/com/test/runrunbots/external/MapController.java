@@ -18,11 +18,10 @@ public class MapController {
    }
 
 
-   @PostMapping("/v2:computeRoutes")
-   public GeoResponse getRoutes(@RequestParam(value = "key") String key,
-                                @RequestBody Map<String, Map<String, Object>> requestBody) {
+   @PostMapping("/routes")
+   public String getRoutes() {
 
-           return mapService.getRoutes(key,requestBody);
+           return mapService.getRoutes();
 
    }
 }

@@ -12,10 +12,12 @@ spring:
       client:
         config:
           map-api:
-            url: https://routes.googleapis.com/directions
+            url: https://routes.googleapis.com/directions/v2:computeRoutes
             loggerLevel: basic
             default-request-headers:
               X-Goog-FieldMask: ${X-Goog-FieldMask}
+            default-query-parameters:
+              key: ${key}
 #  security:
 #    oauth2:
 #      client:
