@@ -9,8 +9,7 @@ const orders = [
     deliveryMethod: "Robot",
     status: "In process",
     estimatedTime: "12:00pm",
-    orderPlacedTime: "9:30am",
-    orderDate: "2025-03-28",
+    orderedAt: "2025-03-28 09:30am",
   },
   {
     id: 2,
@@ -19,8 +18,7 @@ const orders = [
     deliveryMethod: "Drone",
     status: "Pending",
     estimatedTime: "1:30pm",
-    orderPlacedTime: "10:15am",
-    orderDate: "2025-03-27",
+    orderedAt: "2025-03-27 10:15am",
   },
   {
     id: 3,
@@ -29,8 +27,7 @@ const orders = [
     deliveryMethod: "Robot",
     status: "Delivered",
     estimatedTime: "11:00am",
-    orderPlacedTime: "8:50am",
-    orderDate: "2025-03-25",
+    orderedAt: "2025-03-25 08:50am",
   },
 ];
 
@@ -64,8 +61,7 @@ const OrderManage = () => {
               borderRadius: "5px",
             }}
           >
-            Order #{order.id} | Placed: {order.orderPlacedTime} | Date:{" "}
-            {order.orderDate}
+            Order #{order.id} | Ordered At: {order.orderedAt}
           </button>
         ))}
 
@@ -95,11 +91,7 @@ const OrderManage = () => {
               <strong>Estimated time:</strong> {selectedOrder.estimatedTime}
             </p>
             <p>
-              <strong>Order placed time:</strong>{" "}
-              {selectedOrder.orderPlacedTime}
-            </p>
-            <p>
-              <strong>Order date:</strong> {selectedOrder.orderDate}
+              <strong>Ordered At:</strong> {selectedOrder.orderedAt}
             </p>
           </div>
         )}
