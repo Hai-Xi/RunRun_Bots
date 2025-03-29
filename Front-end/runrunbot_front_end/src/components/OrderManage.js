@@ -17,6 +17,7 @@ function OrderManage() {
   };
 
   return (
+    <div style={{ marginTop: '70px' }}>  {/* shift down by 70px */}
     <div>
       {/* <ResponsiveAppBar isLoggedIn={true} handleLogout={() => {}} /> */}
 
@@ -56,6 +57,9 @@ function OrderManage() {
                   <strong>Deliver to:</strong> B
                 </p>
                 <p>
+                  <strong>Delivery Method:</strong> Robot
+                </p>
+                <p>
                   <strong>Status:</strong> In process
                 </p>
                 <p>
@@ -88,6 +92,7 @@ function OrderManage() {
           </Col>
         </Row>
       </Container>
+    </div>
     </div>
   );
 }
