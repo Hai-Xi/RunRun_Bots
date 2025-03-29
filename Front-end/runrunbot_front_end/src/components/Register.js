@@ -13,13 +13,23 @@ const Register = ({ handleLoggedIn }) => {
   const [password, setPassword] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
 
+  // const [username, setUsername] = useState("");
+  const [phone, setPhone] = useState("");
+  const [role, setRole] = useState("ROLE_USER");
+
   // 注册逻辑
   const handleRegister = async () => {
     try {
-      const response = await axios.post(`${API_ROOT}/register`, {
-        name,
+      // const response = await axios.post(`${API_ROOT}/register`, {
+      const response = await axios.post(`${API_ROOT}/api/auth/signup`, {
+        // name,
+        // email,
+        // password,
+        username: name,
         email,
+        phone,
         password,
+        role,
       });
 
       const { token } = response.data;
@@ -56,7 +66,6 @@ const Register = ({ handleLoggedIn }) => {
               required
             />
           </Form.Group>
-
           <Form.Group controlId="email" className="mt-3">
             <Form.Label className="fw-bold">Email</Form.Label>
             <Form.Control
@@ -67,7 +76,6 @@ const Register = ({ handleLoggedIn }) => {
               required
             />
           </Form.Group>
-
           <Form.Group controlId="password" className="mt-3">
             <Form.Label className="fw-bold">Password</Form.Label>
             <Form.Control
@@ -78,15 +86,28 @@ const Register = ({ handleLoggedIn }) => {
               required
             />
           </Form.Group>
-
+          //new phone number:
+          <Form.Group controlId="phone" className="mt-3">
+            <Form.Label className="fw-bold">Phone</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Enter your phone number"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              required
+            />
+          </Form.Group>
           {/* 错误提示 */}
           {errorMsg && (
             <div className="text-danger mt-2" style={{ fontSize: "0.9rem" }}>
               {errorMsg}
             </div>
           )}
-
-          <Button className="w-100 mt-4" variant="dark" onClick={handleRegister}>
+          <Button
+            className="w-100 mt-4"
+            variant="dark"
+            onClick={handleRegister}
+          >
             Create An Account
           </Button>
         </Form>
