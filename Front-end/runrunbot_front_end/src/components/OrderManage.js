@@ -1,100 +1,119 @@
 import React, { useState } from "react";
-import { Container, Row, Col, Button, ListGroup, Image } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
-import GoogleMapComponent from './GoogleMapComponent'; // Import the map
-// import ResponsiveAppBar from "./ResponsiveBar";
+import GoogleMapComponent from "./GoogleMapComponent";
 
-function OrderManage() {
+const orders = [
+  {
+    id: 1,
+    pickup: "1 Market St, San Francisco, CA",
+    destination: "Golden Gate Park, San Francisco, CA",
+    deliveryMethod: "Robot",
+    status: "In process",
+    estimatedTime: "12:00pm",
+    orderPlacedTime: "9:30am",
+    orderDate: "2025-03-28",
+  },
+  {
+    id: 2,
+    pickup: "Ferry Building, San Francisco, CA",
+    destination: "Twin Peaks, San Francisco, CA",
+    deliveryMethod: "Drone",
+    status: "Pending",
+    estimatedTime: "1:30pm",
+    orderPlacedTime: "10:15am",
+    orderDate: "2025-03-27",
+  },
+  {
+    id: 3,
+    pickup: "Pier 39, San Francisco, CA",
+    destination: "San Francisco Zoo, San Francisco, CA",
+    deliveryMethod: "Robot",
+    status: "Delivered",
+    estimatedTime: "11:00am",
+    orderPlacedTime: "8:50am",
+    orderDate: "2025-03-25",
+  },
+];
+
+const OrderManage = () => {
+  const [routeRequest, setRouteRequest] = useState(null);
   const [selectedOrder, setSelectedOrder] = useState(null);
-  const navigate = useNavigate();
 
-  const handleSelectOrder = (orderName) => {
-    setSelectedOrder(orderName);
-  };
-
-  const handleCreateNewOrder = () => {
-    navigate("/create-new-order");
+  const handleOrderClick = (order) => {
+    setSelectedOrder(order);
+    setRouteRequest({
+      origin: order.pickup,
+      destination: order.destination,
+      travelMode: "DRIVING",
+    });
   };
 
   return (
-    <div style={{ marginTop: '70px' }}>  {/* shift down by 70px */}
-    <div>
-      {/* <ResponsiveAppBar isLoggedIn={true} handleLogout={() => {}} /> */}
+    <div style={{ marginTop: "70px", display: "flex", gap: "20px" }}>
+      {/* Left Section */}
+      <div style={{ flex: 1 }}>
+        <h3>Orders:</h3>
+        {orders.map((order) => (
+          <button
+            key={order.id}
+            onClick={() => handleOrderClick(order)}
+            style={{
+              display: "block",
+              marginBottom: "10px",
+              backgroundColor: order.status !== "Delivered" ? "#e0f0ff" : "",
+              padding: "8px",
+              borderRadius: "5px",
+            }}
+          >
+            Order #{order.id} | Placed: {order.orderPlacedTime} | Date:{" "}
+            {order.orderDate}
+          </button>
+        ))}
 
-      <Container fluid className="mt-5 pt-3">
-        <Row>
-          {/* Left Column: 4 units wide */}
-          <Col md={4}>
-            <h2>Order History</h2>
-            <ListGroup>
-              {["order1", "order2", "order3"].map((order, index) => (
-                <ListGroup.Item
-                  key={order}
-                  action
-                  active={selectedOrder === order}
-                  onClick={() => handleSelectOrder(order)}
-                >
-                  {order}
-                </ListGroup.Item>
-              ))}
-            </ListGroup>
+        {/* Display selected order details */}
+        {selectedOrder && (
+          <div
+            style={{
+              marginTop: "20px",
+              padding: "10px",
+              border: "1px solid #ccc",
+            }}
+          >
+            <h4>Selected Order:</h4>
+            <p>
+              <strong>Sending from:</strong> {selectedOrder.pickup}
+            </p>
+            <p>
+              <strong>Deliver to:</strong> {selectedOrder.destination}
+            </p>
+            <p>
+              <strong>Delivery Method:</strong> {selectedOrder.deliveryMethod}
+            </p>
+            <p>
+              <strong>Status:</strong> {selectedOrder.status}
+            </p>
+            <p>
+              <strong>Estimated time:</strong> {selectedOrder.estimatedTime}
+            </p>
+            <p>
+              <strong>Order placed time:</strong>{" "}
+              {selectedOrder.orderPlacedTime}
+            </p>
+            <p>
+              <strong>Order date:</strong> {selectedOrder.orderDate}
+            </p>
+          </div>
+        )}
+      </div>
 
-            {/* Display Order Details */}
-            {selectedOrder && (
-              <div className="mt-4">
-                <p>
-                  <strong>Order ID:</strong>{" "}
-                  {selectedOrder === "order1"
-                    ? 1
-                    : selectedOrder === "order2"
-                    ? 2
-                    : 3}
-                </p>
-                <p>
-                  <strong>Sending from:</strong> A
-                </p>
-                <p>
-                  <strong>Deliver to:</strong> B
-                </p>
-                <p>
-                  <strong>Delivery Method:</strong> Robot
-                </p>
-                <p>
-                  <strong>Status:</strong> In process
-                </p>
-                <p>
-                  <strong>Estimated time:</strong> 12:00pm
-                </p>
-              </div>
-            )}
-          </Col>
-
-          {/* Right Column: 8 units wide */}
-          <Col md={8}>
-            <Row className="justify-content-center">
-              {/* <Image
-                src="/Map_placeholder.png"
-                alt="Map Placeholder"
-                fluid
-                style={{ width: "70%" }}
-              /> */}
-              <GoogleMapComponent />
-            </Row>
-            <Row className="justify-content-center mt-3">
-              <Button
-                variant="primary"
-                onClick={handleCreateNewOrder}
-                style={{ width: "200px" }}
-              >
-                Create New Order
-              </Button>
-            </Row>
-          </Col>
-        </Row>
-      </Container>
-    </div>
+      {/* Right Section */}
+      <div style={{ flex: 2 }}>
+        <GoogleMapComponent
+          routeRequest={routeRequest}
+          deliveryMethod={selectedOrder?.deliveryMethod}
+        />
+      </div>
     </div>
   );
-}
+};
 
 export default OrderManage;
