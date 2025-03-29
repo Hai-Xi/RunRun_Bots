@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import GoogleMapComponent from "./GoogleMapComponent";
+import { useNavigate } from "react-router-dom";  // for navigation
+import { Button } from "react-bootstrap";        // using Bootstrap Button
 
 const orders = [
   {
@@ -34,6 +36,7 @@ const orders = [
 const OrderManage = () => {
   const [routeRequest, setRouteRequest] = useState(null);
   const [selectedOrder, setSelectedOrder] = useState(null);
+  const navigate = useNavigate();
 
   const handleOrderClick = (order) => {
     setSelectedOrder(order);
@@ -42,6 +45,10 @@ const OrderManage = () => {
       destination: order.destination,
       travelMode: "DRIVING",
     });
+  };
+
+  const handleCreateNewOrder = () => {
+    navigate("/createneworder"); // ✅ fixed to match Main.js
   };
 
   return (
@@ -98,11 +105,20 @@ const OrderManage = () => {
       </div>
 
       {/* Right Section */}
-      <div style={{ flex: 2 }}>
+      <div style={{ flex: 2, display: "flex", flexDirection: "column", alignItems: "center" }}>
         <GoogleMapComponent
           routeRequest={routeRequest}
           deliveryMethod={selectedOrder?.deliveryMethod}
         />
+
+        {/* ✅ Button Below the Map */}
+        <Button
+          variant="success"
+          onClick={handleCreateNewOrder}
+          style={{ marginTop: "20px", width: "200px" }}
+        >
+          ➕ Create New Order
+        </Button>
       </div>
     </div>
   );
