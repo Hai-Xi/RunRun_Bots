@@ -17,7 +17,7 @@ function OrderManage() {
 
   return (
     <div>
-      <ResponsiveAppBar isLoggedIn={true} handleLogout={() => {}} />
+      {/* <ResponsiveAppBar isLoggedIn={true} handleLogout={() => {}} /> */}
 
       <Container fluid className="mt-5 pt-3">
         <Row>

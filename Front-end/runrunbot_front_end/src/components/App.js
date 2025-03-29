@@ -7,8 +7,11 @@ import Login from "./Login"; // 确保路径正确
 import Register from "./Register"; // 确保路径正确
 import ResponsiveAppBar from "./ResponsiveBar"; // 确保路径正确
 import "bootstrap/dist/css/bootstrap.min.css"; // 加载 Bootstrap 样式
+import { useNavigate } from "react-router-dom";
 
 function App() {
+  const navigate = useNavigate();
+
   const [isLoggedIn, setIsLoggedIn] = useState(
     !!localStorage.getItem(TOKEN_KEY)
   );
@@ -20,19 +23,20 @@ function App() {
     }
   };
 
+  // const handleLogout = () => {
+  //   localStorage.removeItem(TOKEN_KEY);
+  //   setIsLoggedIn(false);
+  // };
   const handleLogout = () => {
     localStorage.removeItem(TOKEN_KEY);
     setIsLoggedIn(false);
+    navigate("/login"); // ✅ 立即跳转回登录页
   };
-
 
   return (
     <div className="App">
       <ResponsiveAppBar isLoggedIn={isLoggedIn} handleLogout={handleLogout} />
-      <Main
-        isLoggedIn={isLoggedIn}
-        handleLoggedIn={handleLoggedIn}
-      />
+      <Main isLoggedIn={isLoggedIn} handleLoggedIn={handleLoggedIn} />
     </div>
   );
 }

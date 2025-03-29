@@ -1,9 +1,35 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { API_ROOT, TOKEN_KEY } from "../constants";
 import { Container, Card, Form, Button } from "react-bootstrap";
 
-const Register = () => {
+const Register = ({ handleLoggedIn }) => {
   const navigate = useNavigate();
+
+  // 本地状态
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
+
+  // 注册逻辑
+  const handleRegister = async () => {
+    try {
+      const response = await axios.post(`${API_ROOT}/register`, {
+        name,
+        email,
+        password,
+      });
+
+      const { token } = response.data;
+      localStorage.setItem(TOKEN_KEY, token);
+      handleLoggedIn(token);
+    } catch (err) {
+      setErrorMsg("Register failed. Please try again.");
+    }
+  };
+
   return (
     <Container
       className="d-flex justify-content-center align-items-center vh-100"
@@ -22,20 +48,45 @@ const Register = () => {
         <Form>
           <Form.Group controlId="name">
             <Form.Label className="fw-bold">Name</Form.Label>
-            <Form.Control type="text" placeholder="Enter your name" />
+            <Form.Control
+              type="text"
+              placeholder="Enter your name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
           </Form.Group>
 
           <Form.Group controlId="email" className="mt-3">
             <Form.Label className="fw-bold">Email</Form.Label>
-            <Form.Control type="email" placeholder="Enter your email" />
+            <Form.Control
+              type="email"
+              placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
           </Form.Group>
 
           <Form.Group controlId="password" className="mt-3">
             <Form.Label className="fw-bold">Password</Form.Label>
-            <Form.Control type="password" placeholder="Enter your password" />
+            <Form.Control
+              type="password"
+              placeholder="Enter your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
           </Form.Group>
 
-          <Button className="w-100 mt-4" variant="dark">
+          {/* 错误提示 */}
+          {errorMsg && (
+            <div className="text-danger mt-2" style={{ fontSize: "0.9rem" }}>
+              {errorMsg}
+            </div>
+          )}
+
+          <Button className="w-100 mt-4" variant="dark" onClick={handleRegister}>
             Create An Account
           </Button>
         </Form>
@@ -49,7 +100,7 @@ const Register = () => {
             variant="dark"
             size="sm"
             style={{ minWidth: "150px" }}
-            onClick={() => navigate("/login")} // Lezheng: added this line to navigate back to Login; need to be reviewed. 
+            onClick={() => navigate("/login")}
           >
             Login
           </Button>
