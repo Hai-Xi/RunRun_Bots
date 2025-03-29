@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Container, Row, Col, Button, ListGroup, Image } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import ResponsiveAppBar from "./ResponsiveBar";
+import GoogleMapComponent from './GoogleMapComponent'; // Import the map
+// import ResponsiveAppBar from "./ResponsiveBar";
 
 function OrderManage() {
   const [selectedOrder, setSelectedOrder] = useState(null);
@@ -67,12 +68,13 @@ function OrderManage() {
           {/* Right Column: 8 units wide */}
           <Col md={8}>
             <Row className="justify-content-center">
-              <Image
+              {/* <Image
                 src="/Map_placeholder.png"
                 alt="Map Placeholder"
                 fluid
                 style={{ width: "70%" }}
-              />
+              /> */}
+              <GoogleMapComponent />
             </Row>
             <Row className="justify-content-center mt-3">
               <Button
