@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Container, Card, Form, Button } from "react-bootstrap";
 import { FaFacebook, FaTwitter } from "react-icons/fa";
-import { GoogleLogin } from '@react-oauth/google';
+import { GoogleLogin } from "@react-oauth/google";
 
 const Login = ({ handleLoggedIn }) => {
   const navigate = useNavigate();
@@ -13,35 +13,40 @@ const Login = ({ handleLoggedIn }) => {
   const [password, setPassword] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
 
-
-  // const handleLogin = async () => {
-  //   try {
-  //     const response = await axios.post(`${API_ROOT}/login`, {
-  //       email,
-  //       password,
-  //     });
-
-  //     const { token } = response.data;
-  //     localStorage.setItem(TOKEN_KEY, token); // 保存 token
-  //     handleLoggedIn(token); // 通知 App 登录成功
-  //   } catch (err) {
-  //     setErrorMsg("Login failed. Please check your credentials.");
-  //   }
-  // };
-  
-  // 处理登录逻辑（当前用临时 token）
   const handleLogin = async () => {
-    const token = "temporary_token";
-    localStorage.setItem(TOKEN_KEY, token);
-    handleLoggedIn(token);
+    try {
+      // const response = await axios.post(`${API_ROOT}/login`, {
+      const response = await axios.post(`${API_ROOT}/api/auth/login`, {
+        username: email,
+        password,
+      });
+
+      const { data } = response.data;
+      const token = data.token;
+      localStorage.setItem(TOKEN_KEY, token); // 保存 token
+      handleLoggedIn(token); // 通知 App 登录成功
+    } catch (err) {
+      console.error("Login error:", err);
+      setErrorMsg("Login failed. Please check your credentials.");
+    }
   };
+
+  // 处理登录逻辑（当前用临时 token）
+  // const handleLogin = async () => {
+  //   const token = "temporary_token";
+  //   localStorage.setItem(TOKEN_KEY, token);
+  //   handleLoggedIn(token);
+  // };
 
   return (
     <Container
       className="d-flex justify-content-center align-items-center vh-100"
       style={{ backgroundColor: "#BDBDBD" }}
     >
-      <Card className="p-4 shadow-lg" style={{ width: "500px", borderRadius: "12px" }}>
+      <Card
+        className="p-4 shadow-lg"
+        style={{ width: "500px", borderRadius: "12px" }}
+      >
         {/* Logo */}
         <div className="mb-3 text-center">
           <img src="/logo.png" alt="Logo" style={{ width: "150px" }} />
