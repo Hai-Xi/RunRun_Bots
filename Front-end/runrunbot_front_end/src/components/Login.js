@@ -55,10 +55,10 @@ const Login = ({ handleLoggedIn }) => {
         {/* Login Form */}
         <Form>
           <Form.Group controlId="email">
-            <Form.Label className="fw-bold">Email</Form.Label>
+            <Form.Label className="fw-bold">Username</Form.Label>
             <Form.Control
               type="email"
-              placeholder="Enter your email"
+              placeholder="Enter your username"
               onChange={(e) => setEmail(e.target.value)}
               required
             />
@@ -123,7 +123,7 @@ const Login = ({ handleLoggedIn }) => {
           </Button>
         </div>
 
-        {/* Google Login 独立一行居中 ✅ */}
+        {/* Google Login 独立一行居中 ✅
         <div className="d-flex justify-content-center mt-4">
           <GoogleLogin
             onSuccess={(credentialResponse) => {
@@ -135,7 +135,7 @@ const Login = ({ handleLoggedIn }) => {
               console.log("Google Login Failed");
             }}
           />
-        </div>
+        </div> */}
       </Card>
     </Container>
   );
