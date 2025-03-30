@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  GoogleMap,
-  LoadScript,
-  Marker,
-} from "@react-google-maps/api";
+import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 import { Form, Button, ButtonGroup, Modal } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
@@ -33,6 +29,9 @@ function CreateNewOrder() {
   const [countdown, setCountdown] = useState(5);
   const [orderId, setOrderId] = useState("");
 
+  // --- New confirm modal state ---
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+
   // --- Bill & ETA ---
   const estimatedTime = pickup && destination ? "1h 30min" : "--";
   const bill = pickup && destination ? "$25.00" : "--";
@@ -52,7 +51,13 @@ function CreateNewOrder() {
 
   // --- Handle Confirm Payment ---
   const handleConfirmPayment = () => {
-    if (!itemDescription || !pickup || !destination || !deliveryMethod || !paymentMethod) {
+    if (
+      !itemDescription ||
+      !pickup ||
+      !destination ||
+      !deliveryMethod ||
+      !paymentMethod
+    ) {
       setErrorMsg("Please complete the information above.");
       return;
     }
@@ -75,8 +80,25 @@ function CreateNewOrder() {
     return () => clearTimeout(timer);
   }, [countdown, showSuccessModal, navigate]);
 
+  // --- New functions for manage orders confirm ---
+  const handleManageOrdersClick = () => {
+    setShowConfirmModal(true);
+  };
+
+  const handleConfirmNavigation = () => {
+    setShowConfirmModal(false);
+    navigate("/ordermanage");
+  };
+
   return (
-    <div style={{ display: "flex", marginTop: "70px", padding: "20px", gap: "20px" }}>
+    <div
+      style={{
+        display: "flex",
+        marginTop: "70px",
+        padding: "20px",
+        gap: "20px",
+      }}
+    >
       {/* Left Side */}
       <div style={{ flex: 1 }}>
         <h3>Create New Order</h3>
@@ -122,7 +144,9 @@ function CreateNewOrder() {
               {["Robot", "Drone"].map((method) => (
                 <Button
                   key={method}
-                  variant={deliveryMethod === method ? "primary" : "outline-primary"}
+                  variant={
+                    deliveryMethod === method ? "primary" : "outline-primary"
+                  }
                   onClick={() => setDeliveryMethod(method)}
                 >
                   {method}
@@ -136,8 +160,12 @@ function CreateNewOrder() {
 
         {/* Bill & ETA */}
         <div style={{ marginBottom: "20px" }}>
-          <p><strong>Bill to Pay:</strong> {bill}</p>
-          <p><strong>Estimated Time:</strong> {estimatedTime}</p>
+          <p>
+            <strong>Bill to Pay:</strong> {bill}
+          </p>
+          <p>
+            <strong>Estimated Time:</strong> {estimatedTime}
+          </p>
         </div>
 
         {/* Payment Method */}
@@ -148,7 +176,9 @@ function CreateNewOrder() {
               {["Credit Card", "PayPal", "Venmo"].map((method) => (
                 <Button
                   key={method}
-                  variant={paymentMethod === method ? "primary" : "outline-primary"}
+                  variant={
+                    paymentMethod === method ? "primary" : "outline-primary"
+                  }
                   onClick={() => setPaymentMethod(method)}
                 >
                   {method}
@@ -159,29 +189,44 @@ function CreateNewOrder() {
         </Form.Group>
 
         {/* Confirm Payment */}
-        <Button variant="success" style={{ width: "100%" }} onClick={handleConfirmPayment}>
+        <Button
+          variant="success"
+          style={{ width: "100%" }}
+          onClick={handleConfirmPayment}
+        >
           Confirm Payment
         </Button>
 
         {/* Error Message */}
         {errorMsg && (
-          <div style={{ color: "red", marginTop: "10px" }}>
-            {errorMsg}
-          </div>
+          <div style={{ color: "red", marginTop: "10px" }}>{errorMsg}</div>
         )}
       </div>
 
       {/* Right Side */}
-      <div style={{ flex: 2, display: "flex", flexDirection: "column", alignItems: "center" }}>
-        <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}>
+      <div
+        style={{
+          flex: 2,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <LoadScript
+          googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}
+        >
           <GoogleMap
             mapContainerStyle={containerStyle}
             center={center}
             zoom={12}
             options={{ streetViewControl: false }}
           >
-            {toLatLng(pickup) && <Marker position={toLatLng(pickup)} label="A" />}
-            {toLatLng(destination) && <Marker position={toLatLng(destination)} label="B" />}
+            {toLatLng(pickup) && (
+              <Marker position={toLatLng(pickup)} label="A" />
+            )}
+            {toLatLng(destination) && (
+              <Marker position={toLatLng(destination)} label="B" />
+            )}
           </GoogleMap>
         </LoadScript>
 
@@ -189,7 +234,7 @@ function CreateNewOrder() {
         <Button
           variant="secondary"
           style={{ marginTop: "20px", width: "200px" }}
-          onClick={() => navigate("/ordermanage")}
+          onClick={handleManageOrdersClick}
         >
           Manage My Orders
         </Button>
@@ -201,10 +246,38 @@ function CreateNewOrder() {
           <Modal.Title>Payment Success</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          Payment Success!<br />
+          Payment Success!
+          <br />
           Your order ID is <strong>{orderId}</strong>.<br />
           Navigating to home page in {countdown}...
         </Modal.Body>
+      </Modal>
+
+      {/* Confirm Navigation Modal */}
+      <Modal
+        show={showConfirmModal}
+        onHide={() => setShowConfirmModal(false)}
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Leave This Page?</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          The current new order progress will not be saved.
+          <br />
+          Are you sure you want to go back to the home page?
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant="secondary"
+            onClick={() => setShowConfirmModal(false)}
+          >
+            Cancel
+          </Button>
+          <Button variant="danger" onClick={handleConfirmNavigation}>
+            Confirm
+          </Button>
+        </Modal.Footer>
       </Modal>
     </div>
   );
