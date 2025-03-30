@@ -58,14 +58,13 @@ function CreateNewOrder() {
 
   // --- Handle Confirm Payment ---
   const handleConfirmPayment = () => {
-    if (
-      !itemDescription ||
-      !pickup ||
-      !destination ||
-      !deliveryMethod ||
-      !paymentMethod
-    ) {
-      setErrorMsg("Please complete the information above.");
+    if (!itemDescription || !pickup || !destination || !paymentMethod) {
+      setErrorMsg("Please complete all the information above.");
+      return;
+    }
+
+    if (!pickupValidated || !destinationValidated) {
+      setErrorMsg("Please make sure both addresses are validated.");
       return;
     }
 

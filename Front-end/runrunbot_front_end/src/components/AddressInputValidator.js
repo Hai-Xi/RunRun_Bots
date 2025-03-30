@@ -5,6 +5,8 @@ function AddressValidator({ label, address, setAddress, setLatLng }) {
     const [showModal, setShowModal] = useState(false);
     const [candidates, setCandidates] = useState([]);
     const [error, setError] = useState("");
+    const [validated, setValidated] = useState(false); // ✅ Step 1: New validated state
+
     const geocoderRef = useRef(null);
 
     useEffect(() => {
@@ -13,9 +15,20 @@ function AddressValidator({ label, address, setAddress, setLatLng }) {
         }
     }, []);
 
+    // ✅ This handles input change and reset validated properly
+    const handleInputChange = (e) => {
+        setAddress(e.target.value);
+        setValidated(false); // ✅ Step 3: Reset only when user types
+    };
+
     const handleValidate = () => {
         if (!geocoderRef.current) {
             setError("Google Maps API is not ready");
+            return;
+        }
+
+        if (!address.trim()) {
+            setError("Please enter an address.");
             return;
         }
 
@@ -36,6 +49,7 @@ function AddressValidator({ label, address, setAddress, setLatLng }) {
         setAddress(result.formatted_address);
         setLatLng(result.geometry.location.toJSON());
         setShowModal(false);
+        setValidated(true); // ✅ Step 2: Mark as validated after selection
     };
 
     return (
@@ -46,9 +60,15 @@ function AddressValidator({ label, address, setAddress, setLatLng }) {
                     type="text"
                     placeholder="Enter address"
                     value={address}
-                    onChange={(e) => setAddress(e.target.value)}
+                    onChange={handleInputChange}
                 />
-                <Button variant="outline-primary" onClick={handleValidate}>Validate</Button>
+                <Button
+                    variant={validated ? "secondary" : "outline-primary"}
+                    onClick={handleValidate}
+                    disabled={validated}
+                >
+                    {validated ? "Validated" : "Validate"}
+                </Button>
             </div>
             {error && <div style={{ color: "red", marginTop: "5px" }}>{error}</div>}
 
@@ -60,7 +80,11 @@ function AddressValidator({ label, address, setAddress, setLatLng }) {
                     <p>Please select the correct address:</p>
                     <ul style={{ paddingLeft: "20px" }}>
                         {candidates.map((result, index) => (
-                            <li key={index} style={{ marginBottom: "10px", cursor: "pointer" }} onClick={() => handleSelect(result)}>
+                            <li
+                                key={index}
+                                style={{ marginBottom: "10px", cursor: "pointer" }}
+                                onClick={() => handleSelect(result)}
+                            >
                                 {result.formatted_address}
                             </li>
                         ))}
