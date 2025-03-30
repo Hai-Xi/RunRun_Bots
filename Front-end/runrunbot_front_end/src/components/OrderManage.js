@@ -106,10 +106,11 @@ const OrderManage = () => {
 
       {/* Right Section */}
       <div style={{ flex: 2, display: "flex", flexDirection: "column", alignItems: "center" }}>
-        <GoogleMapComponent
-          routeRequest={routeRequest}
-          deliveryMethod={selectedOrder?.deliveryMethod}
-        />
+      <GoogleMapComponent
+   routeRequest={routeRequest}
+   deliveryMethod={selectedOrder?.deliveryMethod}
+   status={selectedOrder?.status}
+/>
 
         {/* ✅ Button Below the Map */}
         <Button

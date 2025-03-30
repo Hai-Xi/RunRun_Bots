@@ -18,7 +18,7 @@ const center = {
   lng: -122.4194,
 };
 
-const GoogleMapComponent = ({ routeRequest, deliveryMethod }) => {
+const GoogleMapComponent = ({ routeRequest, deliveryMethod, status }) => {
   const [directionsResult, setDirectionsResult] = useState(null);
   const [directionsRequestDone, setDirectionsRequestDone] = useState(false);
   const [dronePath, setDronePath] = useState(null);
@@ -29,12 +29,11 @@ const GoogleMapComponent = ({ routeRequest, deliveryMethod }) => {
     setDirectionsRequestDone(false);
 
     if (routeRequest && deliveryMethod === "Drone") {
-      // Prepare direct path if it's a drone
       setDronePath([routeRequest.origin, routeRequest.destination]);
     }
   }, [routeRequest, deliveryMethod]);
 
-  // Temporary mocked geocode for development
+  // --- Fake geocode ---
   const toLatLng = (address) => {
     const fakePositions = {
       "1 Market St, San Francisco, CA": { lat: 37.7936, lng: -122.395 },
@@ -47,6 +46,55 @@ const GoogleMapComponent = ({ routeRequest, deliveryMethod }) => {
     return fakePositions[address] || center;
   };
 
+  // --- Get mid point on overview path ---
+  const getRouteMidpoint = (path) => {
+    if (!path || path.length < 2) return null;
+    return path[Math.floor(path.length / 2)];
+  };
+
+  // --- Get mid point for drone (simple) ---
+  const getDroneMidpoint = (from, to) => {
+    return {
+      lat: (from.lat + to.lat) / 2,
+      lng: (from.lng + to.lng) / 2,
+    };
+  };
+
+  // --- Render Status Marker ---
+  const renderStatusMarker = () => {
+    if (!status || !routeRequest) return null;
+
+    if (status === "Pending") {
+      return <Marker position={toLatLng(routeRequest.origin)} icon={dotIcon} />;
+    }
+    if (status === "Delivered") {
+      return <Marker position={toLatLng(routeRequest.destination)} icon={dotIcon} />;
+    }
+    if (status === "In process" || status === "In transit") {
+      if (deliveryMethod === "Drone" && dronePath) {
+        const mid = getDroneMidpoint(
+          toLatLng(dronePath[0]),
+          toLatLng(dronePath[1])
+        );
+        return <Marker position={mid} icon={dotIcon} />;
+      }
+      if (deliveryMethod !== "Drone" && directionsResult) {
+        const mid = getRouteMidpoint(directionsResult.routes[0].overview_path);
+        return mid ? <Marker position={mid} icon={dotIcon} /> : null;
+      }
+    }
+    return null;
+  };
+
+  // --- Red half-transparent dot ---
+  const dotIcon = window.google ? {
+    path: window.google.maps.SymbolPath.CIRCLE,
+    scale: 6,
+    fillColor: "#FF0000",
+    fillOpacity: 0.5,
+    strokeWeight: 0,
+  } : null;
+
   return (
     <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}>
       <GoogleMap
@@ -57,7 +105,7 @@ const GoogleMapComponent = ({ routeRequest, deliveryMethod }) => {
           streetViewControl: false,
         }}
       >
-        {/* DRONE: Direct Flight Path with Markers */}
+        {/* Drone route */}
         {dronePath && (
           <>
             <Marker position={toLatLng(dronePath[0])} label="A" />
@@ -65,16 +113,16 @@ const GoogleMapComponent = ({ routeRequest, deliveryMethod }) => {
             <Polyline
               path={[toLatLng(dronePath[0]), toLatLng(dronePath[1])]}
               options={{
-                strokeColor: "#4285F4", // Google Maps default blue
-                strokeOpacity: 0.5, // 50% transparent
-                strokeWeight: 4, // Normal route thickness
-                geodesic: true, // Smooth line
+                strokeColor: "#4285F4",
+                strokeOpacity: 0.5,
+                strokeWeight: 4,
+                geodesic: true,
               }}
             />
           </>
         )}
 
-        {/* NON-DRONE: Normal Driving Route */}
+        {/* Robot route */}
         {routeRequest &&
           deliveryMethod !== "Drone" &&
           !directionsResult &&
@@ -96,6 +144,9 @@ const GoogleMapComponent = ({ routeRequest, deliveryMethod }) => {
         {directionsResult && (
           <DirectionsRenderer directions={directionsResult} />
         )}
+
+        {/* ✅ Status Marker */}
+        {renderStatusMarker()}
       </GoogleMap>
     </LoadScript>
   );
