@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 import { Form, Button, ButtonGroup, Modal } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import AddressValidator from "./AddressInputValidator";
 
 const containerStyle = {
   width: "100%",
@@ -20,7 +21,9 @@ function CreateNewOrder() {
   const [itemDescription, setItemDescription] = useState("");
   const [pickup, setPickup] = useState("");
   const [destination, setDestination] = useState("");
-  const [deliveryMethod, setDeliveryMethod] = useState("");
+  const [pickupLatLng, setPickupLatLng] = useState(null);
+  const [destinationLatLng, setDestinationLatLng] = useState(null);
+  const [deliveryMethod, setDeliveryMethod] = useState("Robot");
   const [paymentMethod, setPaymentMethod] = useState("");
 
   // --- UI states ---
@@ -29,12 +32,16 @@ function CreateNewOrder() {
   const [countdown, setCountdown] = useState(5);
   const [orderId, setOrderId] = useState("");
 
-  // --- New confirm modal state ---
-  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  // --- Validation States ---
+  const [pickupValidated, setPickupValidated] = useState(false);
+  const [destinationValidated, setDestinationValidated] = useState(false);
 
   // --- Bill & ETA ---
-  const estimatedTime = pickup && destination ? "1h 30min" : "--";
-  const bill = pickup && destination ? "$25.00" : "--";
+  const [estimatedTime, setEstimatedTime] = useState("--");
+  const [bill, setBill] = useState("--");
+
+  // --- New confirm modal state ---
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   // --- Fake geocoder ---
   const toLatLng = (address) => {
@@ -68,7 +75,21 @@ function CreateNewOrder() {
     setShowSuccessModal(true);
     setCountdown(5);
   };
-
+  // --- Bill and ETA display logic ---
+  useEffect(() => {
+    if (pickupValidated && destinationValidated) {
+      if (deliveryMethod === "Robot") {
+        setBill("$20.00");
+        setEstimatedTime("2h 00min");
+      } else if (deliveryMethod === "Drone") {
+        setBill("$40.00");
+        setEstimatedTime("1h 00min");
+      }
+    } else {
+      setBill("--");
+      setEstimatedTime("--");
+    }
+  }, [pickupValidated, destinationValidated, deliveryMethod]);
   // --- Countdown effect ---
   useEffect(() => {
     if (!showSuccessModal) return;
@@ -114,27 +135,31 @@ function CreateNewOrder() {
           />
         </Form.Group>
 
-        {/* Sending Location */}
-        <Form.Group className="mb-3">
-          <Form.Label>Sending Location</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="e.g., Ferry Building"
-            value={pickup}
-            onChange={(e) => setPickup(e.target.value)}
-          />
-        </Form.Group>
+        <AddressValidator
+          label="Sending Location"
+          address={pickup}
+          setAddress={(v) => {
+            setPickup(v);
+            setPickupValidated(false);
+          }} // reset when user types
+          setLatLng={(latlng) => {
+            setPickupLatLng(latlng);
+            setPickupValidated(true);
+          }}
+        />
 
-        {/* Delivery Location */}
-        <Form.Group className="mb-3">
-          <Form.Label>Delivery Location</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="e.g., Twin Peaks"
-            value={destination}
-            onChange={(e) => setDestination(e.target.value)}
-          />
-        </Form.Group>
+        <AddressValidator
+          label="Delivery Location"
+          address={destination}
+          setAddress={(v) => {
+            setDestination(v);
+            setDestinationValidated(false);
+          }} // reset when user types
+          setLatLng={(latlng) => {
+            setDestinationLatLng(latlng);
+            setDestinationValidated(true);
+          }}
+        />
 
         {/* Delivery Method */}
         <Form.Group className="mb-3">
@@ -221,11 +246,12 @@ function CreateNewOrder() {
             zoom={12}
             options={{ streetViewControl: false }}
           >
-            {toLatLng(pickup) && (
-              <Marker position={toLatLng(pickup)} label="A" />
-            )}
-            {toLatLng(destination) && (
-              <Marker position={toLatLng(destination)} label="B" />
+            {/* ✅ Marker A for pickup */}
+            {pickupLatLng && <Marker position={pickupLatLng} label="A" />}
+
+            {/* ✅ Marker B for delivery */}
+            {destinationLatLng && (
+              <Marker position={destinationLatLng} label="B" />
             )}
           </GoogleMap>
         </LoadScript>
