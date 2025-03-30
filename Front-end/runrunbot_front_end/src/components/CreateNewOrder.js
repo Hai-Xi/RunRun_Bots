@@ -24,7 +24,7 @@ function CreateNewOrder() {
   const [pickupLatLng, setPickupLatLng] = useState(null);
   const [destinationLatLng, setDestinationLatLng] = useState(null);
   const [deliveryMethod, setDeliveryMethod] = useState("Robot");
-  const [paymentMethod, setPaymentMethod] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState("Credit Card");
 
   // --- UI states ---
   const [errorMsg, setErrorMsg] = useState("");

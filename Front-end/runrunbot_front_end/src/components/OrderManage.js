@@ -12,6 +12,7 @@ const orders = [
     status: "In process",
     estimatedTime: "12:00pm",
     orderedAt: "2025-03-28 09:30am",
+    itemDescription: "Electronics - Portable Speaker", // ✅ added
   },
   {
     id: 2,
@@ -21,6 +22,7 @@ const orders = [
     status: "Pending",
     estimatedTime: "1:30pm",
     orderedAt: "2025-03-27 10:15am",
+    itemDescription: "Books - Collection of Novels", // ✅ added
   },
   {
     id: 3,
@@ -30,6 +32,7 @@ const orders = [
     status: "Delivered",
     estimatedTime: "11:00am",
     orderedAt: "2025-03-25 08:50am",
+    itemDescription: "Clothing - Winter Jackets", // ✅ added
   },
 ];
 
@@ -82,6 +85,7 @@ const OrderManage = () => {
             }}
           >
             <h4>Selected Order:</h4>
+            <p><strong>Item Description:</strong> {selectedOrder.itemDescription}</p> 
             <p>
               <strong>Sending from:</strong> {selectedOrder.pickup}
             </p>
