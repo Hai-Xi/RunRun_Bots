@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/payments")
+@CrossOrigin
 public class PaymentController {  
     @PostMapping
     public ResponseEntity<PaymentDTO> createPayment(@RequestBody CreatePaymentRequest request) {
