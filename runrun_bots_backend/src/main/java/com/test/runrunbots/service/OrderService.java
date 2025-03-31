@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -103,5 +104,41 @@ public class OrderService {
             return orderRepository.findByOrderId(orderId);
         }
         throw new OrderIdNotExistException();
+    }
+
+    /**
+     * 查询所有状态为 CREATED 的订单
+     */
+    public List<Order> findCreatedOrders() {
+        return orderRepository.findOrdersByStatus(OrderStatus.CREATED);
+    }
+
+    /**
+     * 将所有 CREATED 订单批量更新为 PENDING 状态
+     * @return 更新的订单数量
+     */
+    @Transactional
+    public int updateCreatedOrdersToPending() {
+        // 1. 查询所有 CREATED 状态的订单
+        List<Order> createdOrders = findCreatedOrders();
+
+        if (createdOrders.isEmpty()) {
+            System.out.println("没有找到状态为 CREATED 的订单，无需更新。");
+            return 0;
+        }
+
+        // 2. 获取所有 CREATED 订单的 ID 列表
+        List<Long> orderIds = createdOrders.stream()
+                .map(Order::getOrderId)
+                .collect(Collectors.toList());
+
+        System.out.println("找到 " + orderIds.size() + " 个需要更新状态的订单。");
+
+        // 3. 批量更新这些订单状态为 PENDING
+        int updatedCount = orderRepository.updateOrderStatusFromCreatedToPending(orderIds, OrderStatus.PENDING);
+
+        System.out.println("成功更新 " + updatedCount + " 个订单状态为 PENDING。");
+
+        return updatedCount;
     }
 }

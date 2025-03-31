@@ -35,6 +35,30 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     Order findByOrderId(Long orderId);
 
+    /**
+     * 查询所有状态为 CREATED 的订单
+     */
+    @Query("SELECT o FROM Order o WHERE o.status = :status")
+    List<Order> findOrdersByStatus(@Param("status") OrderStatus status);
+
+    /**
+     * 也可以使用方法名称派生查询
+     * 与上面的自定义查询等效
+     */
+    // List<Order> findByStatus(OrderStatus status);
+
+    /**
+     * 批量更新订单状态
+     * @param orderIds 需要更新的订单 ID 列表
+     * @param newStatus 新的订单状态
+     * @return 更新的记录数
+     */
+    @Transactional
+    @Modifying
+    @Query("UPDATE Order o SET o.status = :newStatus WHERE o.orderId IN :ids")
+    int updateOrderStatusFromCreatedToPending(@Param("ids") List<Long> orderIds,
+                                              @Param("newStatus") OrderStatus newStatus);
+
     // 查询超过指定时间未完成支付的订单
     @Query("SELECT o FROM Order o WHERE o.status = 'PENDING' AND o.createdAt <= :expirationTime")
     List<Order> findExpiredOrders(LocalDateTime expirationTime);

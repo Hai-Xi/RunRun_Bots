@@ -3,6 +3,7 @@ package com.test.runrunbots.schedule;
 import com.test.runrunbots.model.Order;
 import com.test.runrunbots.model.OrderStatus;
 import com.test.runrunbots.repository.OrderRepository;
+import com.test.runrunbots.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -23,14 +24,26 @@ import java.util.stream.Collectors;
 public class OrderStatusScheduler {
 
     private final OrderRepository orderRepository;
+    private final OrderService orderService;
 
-    public OrderStatusScheduler(OrderRepository orderRepository) {
+    public OrderStatusScheduler(OrderRepository orderRepository, OrderService orderService) {
         this.orderRepository = orderRepository;
+        this.orderService = orderService;
     }
 
     //    @Autowired
     //    private OrderRepository orderRepository;
 
+
+    /**
+     * 定时任务：每1分钟执行一次，将 CREATED 订单更新为 PENDING
+     */
+    @Scheduled(cron = "0 */1 * * * *") // 每1分钟执行一次
+    public void updateCreatedOrdersToPending() {
+        System.out.println("开始执行订单状态更新任务：CREATED -> PENDING");
+        int updatedCount = orderService.updateCreatedOrdersToPending();
+        System.out.println("订单状态更新任务完成，共更新 " + updatedCount + " 个订单");
+    }
 
     /**
      * 每分钟执行一次，检查并更新超时订单状态。

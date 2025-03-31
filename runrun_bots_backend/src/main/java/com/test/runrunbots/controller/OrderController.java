@@ -17,7 +17,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -74,4 +76,29 @@ public class OrderController {
         TrackingInfo trackingInfo = orderService.getTrackingInfo(orderId);
         return ResponseEntity.ok(trackingInfo);
     }
+
+    /**
+     * 获取所有 CREATED 状态的订单
+     */
+    @GetMapping("/created")
+    public ResponseEntity<List<Order>> getCreatedOrders() {
+        List<Order> orders = orderService.findCreatedOrders();
+        return ResponseEntity.ok(orders);
+    }
+
+    /**
+     * 手动触发更新 CREATED->PENDING 的操作
+     */
+    @PostMapping("/update-to-pending")
+    public ResponseEntity<Map<String, Object>> updateOrdersToPending() {
+        int updatedCount = orderService.updateCreatedOrdersToPending();
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("success", true);
+        response.put("message", "成功将订单状态从 CREATED 更新为 PENDING");
+        response.put("updatedCount", updatedCount);
+
+        return ResponseEntity.ok(response);
+    }
+
 }  
