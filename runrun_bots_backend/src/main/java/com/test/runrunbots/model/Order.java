@@ -61,6 +61,13 @@ public class Order {
     @Enumerated(EnumType.STRING)  
     private OrderStatus status;
 
+    /**
+     * 
+     * 如果你的项目仍在使用 java.util.Date，确保使用 @Temporal 注解指定正确的映射类型。
+     *
+     * 从 Java 8 开始，可以使用更现代的 java.time 包中的类（如 LocalDate、LocalTime、LocalDateTime 等）。使用这些类型时，不需要 @Temporal 注解，因为它们已经具有明确的时间语义
+     *
+     */
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_at",nullable = false, updatable = false)  // 创建时间不可更新
     @CreationTimestamp
