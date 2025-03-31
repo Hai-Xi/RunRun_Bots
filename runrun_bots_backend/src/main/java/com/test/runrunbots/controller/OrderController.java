@@ -87,6 +87,7 @@ public class OrderController {
     }
 
     /**
+     * Updates can also be triggered via API in addition to scheduled tasks
      * 手动触发更新 CREATED->PENDING 的操作
      */
     @PostMapping("/update-to-pending")
