@@ -38,7 +38,7 @@ public class OrderService {
         order.setDeliveryLocation(request.getDeliveryLocation());
         order.setDeliveryMethod(request.getDeliveryMethod());
         order.setStatus(OrderStatus.valueOf("CREATED"));
-        order.setCreatedAt(java.time.LocalDateTime.now());
+        order.setCreatedAt(LocalDateTime.now());
 
         // 创建支付对象
         Payment payment = new Payment();
@@ -68,11 +68,11 @@ public class OrderService {
 //        order.setProductIds(java.util.Arrays.asList(1L, 2L, 3L));
 //        order.setShippingAddress("123 Test Street");
         order.setStatus("SHIPPED");  
-        order.setCreatedAt(java.time.LocalDateTime.now());  
+        order.setCreatedAt(LocalDateTime.now());  
         return order;
     }  
 
-    public int updateOrderStatus(Long orderId, UpdateOrderStatusRequest request) {
+    public OrderDTO updateOrderStatus(Long orderId, UpdateOrderStatusRequest request) {
         // 模拟更新订单状态逻辑  
         OrderDTO order = getOrderById(orderId);
         log.info("order.getOrderId(): {}", order.getOrderId());
@@ -80,9 +80,11 @@ public class OrderService {
         order.setStatus(request.getStatus());
         LocalDateTime now = LocalDateTime.now();
         order.setUpdatedAt(now);
-        return orderRepository.updateOrderStatus(order.getStatus(),
-                                                 order.getUpdatedAt(),
-                                                 order.getOrderId());
+        int success = orderRepository.updateOrderStatus(order.getStatus(),
+                order.getUpdatedAt(),
+                order.getOrderId());
+        OrderDTO fail = null;
+        return success == 1 ? order : fail;
     }  
 
     public TrackingInfo getTrackingInfo(Long orderId) {  
