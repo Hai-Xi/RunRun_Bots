@@ -32,6 +32,7 @@ dependencyManagement {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3' // mybatis for database access
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
