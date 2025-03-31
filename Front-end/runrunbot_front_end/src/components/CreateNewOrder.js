@@ -3,6 +3,8 @@ import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 import { Form, Button, ButtonGroup, Modal } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import AddressValidator from "./AddressInputValidator";
+import axios from "axios";
+import { API_ROOT, TOKEN_KEY } from "../constants";
 
 const containerStyle = {
   width: "100%",
@@ -24,7 +26,7 @@ function CreateNewOrder() {
   const [pickupLatLng, setPickupLatLng] = useState(null);
   const [destinationLatLng, setDestinationLatLng] = useState(null);
   const [deliveryMethod, setDeliveryMethod] = useState("Robot");
-  const [paymentMethod, setPaymentMethod] = useState("Credit Card");
+  const [paymentMethod, setPaymentMethod] = useState("Credit_Card");
 
   // --- UI states ---
   const [errorMsg, setErrorMsg] = useState("");
@@ -43,21 +45,21 @@ function CreateNewOrder() {
   // --- New confirm modal state ---
   const [showConfirmModal, setShowConfirmModal] = useState(false);
 
-  // --- Fake geocoder ---
-  const toLatLng = (address) => {
-    const fakePositions = {
-      "1 Market St": { lat: 37.7936, lng: -122.395 },
-      "Golden Gate Park": { lat: 37.7694, lng: -122.4862 },
-      "Ferry Building": { lat: 37.7955, lng: -122.3937 },
-      "Twin Peaks": { lat: 37.7544, lng: -122.4477 },
-      "Pier 39": { lat: 37.8087, lng: -122.4098 },
-      "San Francisco Zoo": { lat: 37.7325, lng: -122.503 },
-    };
-    return fakePositions[address] || null;
-  };
+  // // --- Fake geocoder ---
+  // const toLatLng = (address) => {
+  //   const fakePositions = {
+  //     "1 Market St": { lat: 37.7936, lng: -122.395 },
+  //     "Golden Gate Park": { lat: 37.7694, lng: -122.4862 },
+  //     "Ferry Building": { lat: 37.7955, lng: -122.3937 },
+  //     "Twin Peaks": { lat: 37.7544, lng: -122.4477 },
+  //     "Pier 39": { lat: 37.8087, lng: -122.4098 },
+  //     "San Francisco Zoo": { lat: 37.7325, lng: -122.503 },
+  //   };
+  //   return fakePositions[address] || null;
+  // };
 
-  // --- Handle Confirm Payment ---
-  const handleConfirmPayment = () => {
+  // --- Handle Confirm Payment ---(with backend API)  
+  const handleConfirmPayment = async () => {
     if (!itemDescription || !pickup || !destination || !paymentMethod) {
       setErrorMsg("Please complete all the information above.");
       return;
@@ -68,12 +70,64 @@ function CreateNewOrder() {
       return;
     }
 
-    // reset error and generate order
+    // reset error
     setErrorMsg("");
-    setOrderId("ORD-" + Math.floor(100000 + Math.random() * 900000)); // fake order id
-    setShowSuccessModal(true);
-    setCountdown(5);
+
+    const token = localStorage.getItem(TOKEN_KEY);
+    if (!token) {
+      setErrorMsg("Authentication token is missing. Please login again.");
+       return;
+    }
+
+    // --- Compose payload ---
+    const payload = {
+      itemDescription: itemDescription,
+      pickupLocation: pickup,
+      deliveryLocation: destination,
+      deliveryMethod: deliveryMethod.toUpperCase(),
+      totalAmount: "1",
+      paymentMethod: paymentMethod.toUpperCase().replace(" ", ""), // e.g., PayPal -> PAYPAL
+      paymentStatus: "SUCCESS",
+      estimatedArrivalTime: estimatedTime,
+    };
+
+    try {
+      // const response = await axios.post("/api/orders", payload);
+      // const response = await axios.post(`${API_ROOT}/api/orders`, payload);
+      const response = await axios.post(`${API_ROOT}/api/orders`, payload, {
+           headers: { Authorization: `Bearer ${token}` }
+      });
+      if (response.data && response.data.code === 100) {
+        setOrderId("ORD-" + response.data.data.orderId);
+        setShowSuccessModal(true);
+        setCountdown(5);
+      } else {
+        setErrorMsg("Order creation failed, please try again.");
+      }
+    } catch (error) {
+      setErrorMsg("Network or server error. Please try again later.");
+    }
   };
+
+  // --- Handle Confirm Payment ---(without backend API)
+  // const handleConfirmPayment = () => {
+  //   if (!itemDescription || !pickup || !destination || !paymentMethod) {
+  //     setErrorMsg("Please complete all the information above.");
+  //     return;
+  //   }
+
+  //   if (!pickupValidated || !destinationValidated) {
+  //     setErrorMsg("Please make sure both addresses are validated.");
+  //     return;
+  //   }
+
+  //   // reset error and generate order
+  //   setErrorMsg("");
+  //   setOrderId("ORD-" + Math.floor(100000 + Math.random() * 900000)); // fake order id
+  //   setShowSuccessModal(true);
+  //   setCountdown(5);
+  // };
+
   // --- Bill and ETA display logic ---
   useEffect(() => {
     if (pickupValidated && destinationValidated) {
@@ -197,7 +251,7 @@ function CreateNewOrder() {
           <Form.Label>Payment Method</Form.Label>
           <div>
             <ButtonGroup>
-              {["Credit Card", "PayPal", "Venmo"].map((method) => (
+              {["Credit_Card", "PayPal", "Apple_Pay"].map((method) => (
                 <Button
                   key={method}
                   variant={
