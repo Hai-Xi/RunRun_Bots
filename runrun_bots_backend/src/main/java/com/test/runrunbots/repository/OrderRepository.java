@@ -117,4 +117,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
                           @org.springframework.data.repository.query.Param("updatedAt") java.time.LocalDateTime updatedAt,
                           @org.springframework.data.repository.query.Param("orderId") Long orderId);
 
+    @Query("SELECT o FROM Order o WHERE o.user.userId = :userId AND o.orderId = :orderId")
+    Order findByUserIdAndOrderId(@Param("userId") Long userId, @Param("orderId") Long orderId);
+
 }

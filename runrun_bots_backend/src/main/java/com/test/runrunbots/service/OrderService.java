@@ -76,7 +76,13 @@ public class OrderService {
 
     public OrderDTO updateOrderStatus(User user, Long orderId, UpdateOrderStatusRequest request) {
         // 模拟更新订单状态逻辑  
-        Order order = orderRepository.findByOrderId(orderId);
+        Order order = orderRepository.findByUserIdAndOrderId(user.getUserId(),orderId);
+
+        if (order == null) {
+            System.out.println("对于 userId: " + user.getUserId() + " , 没有找到 orderId 为 " + orderId + " 的订单，无需更新。");
+            throw new OrderIdNotExistException();
+        }
+
         OrderDTO updatedOrder = new OrderDTO();
         log.info("order.getOrderId(): {}", order.getOrderId());
         log.info("order.getStatus(): {}", order.getStatus());
