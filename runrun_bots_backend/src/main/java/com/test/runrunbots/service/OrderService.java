@@ -69,10 +69,10 @@ public class OrderService {
 //        order.setShippingAddress("123 Test Street");
         order.setStatus("SHIPPED");  
         order.setCreatedAt(java.time.LocalDateTime.now());  
-        return order;  
+        return order;
     }  
 
-    public OrderDTO updateOrderStatus(Long orderId, UpdateOrderStatusRequest request) {  
+    public int updateOrderStatus(Long orderId, UpdateOrderStatusRequest request) {
         // 模拟更新订单状态逻辑  
         OrderDTO order = getOrderById(orderId);
         log.info("order.getOrderId(): {}", order.getOrderId());
@@ -80,7 +80,9 @@ public class OrderService {
         order.setStatus(request.getStatus());
         LocalDateTime now = LocalDateTime.now();
         order.setUpdatedAt(now);
-        return order;  
+        return orderRepository.updateOrderStatus(order.getStatus(),
+                                                 order.getUpdatedAt(),
+                                                 order.getOrderId());
     }  
 
     public TrackingInfo getTrackingInfo(Long orderId) {  
