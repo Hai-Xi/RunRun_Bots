@@ -44,6 +44,11 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
      * @Modifying注解告诉Spring Data JPA这是一个更新或删除操作，而不是一个查询操作。它使得方法可以执行更新操作，如UPDATE、DELETE等操作。
      *
      * 如果没有@Modifying注解，Spring Data JPA会假设这是一个查询操作，而不是更新操作，因此会抛出异常。
+     *
+     *
+     * @Transactional注解用于声明事务边界。在进行数据库更新、删除等写操作时，需要将这些操作放在事务中以确保数据一致性和完整性。
+     *
+     * 如果没有@Transactional注解，当我们使用@Modifying执行更新操作时，会抛出异常：javax.persistence.TransactionRequiredException: Executing an update/delete query。
      * 
      * @param expiredOrderIds
      * @param CANCELLED
