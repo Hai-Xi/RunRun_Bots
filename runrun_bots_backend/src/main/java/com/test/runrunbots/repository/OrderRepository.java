@@ -39,6 +39,16 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     @Query("SELECT o FROM Order o WHERE o.status = 'PENDING' AND o.createdAt <= :expirationTime")
     List<Order> findExpiredOrders(LocalDateTime expirationTime);
 
+    /**
+     *
+     * @Modifying注解告诉Spring Data JPA这是一个更新或删除操作，而不是一个查询操作。它使得方法可以执行更新操作，如UPDATE、DELETE等操作。
+     *
+     * 如果没有@Modifying注解，Spring Data JPA会假设这是一个查询操作，而不是更新操作，因此会抛出异常。
+     * 
+     * @param expiredOrderIds
+     * @param CANCELLED
+     * @return
+     */
     // 批量更新订单状态
     @Transactional
     @Modifying
