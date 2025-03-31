@@ -26,8 +26,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
      */
     List<Order> findByUser_UserId(Long userId);
 
-    List<Order> findByStatus(OrderStatus status);
-
     @Query("SELECT o FROM Order o WHERE o.user.userId = :userId")
     List<Order> getOrderListByUserId(@Param("userId") Long userId);
 
@@ -85,4 +83,19 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     @Modifying
     @Query("UPDATE Order o SET o.status = :CANCELLED WHERE o.orderId IN :expiredOrderIds")
     int updateOrderStatus(List<Long> expiredOrderIds, OrderStatus CANCELLED);
+
+    /**
+     * 查询所有已支付的订单
+     */
+    List<Order> findByStatus(OrderStatus status);
+
+    /**
+     * 批量更新订单状态为 IN_PROGRESS
+     */
+    @Transactional
+    @Modifying
+    @Query("UPDATE Order o SET o.status = :newStatus WHERE o.orderId IN :orderIds")
+    int updateOrdersStatus(@Param("orderIds") List<Long> orderIds,
+                           @Param("newStatus") OrderStatus newStatus);
+
 }

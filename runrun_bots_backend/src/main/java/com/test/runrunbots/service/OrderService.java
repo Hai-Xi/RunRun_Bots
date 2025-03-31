@@ -141,4 +141,27 @@ public class OrderService {
 
         return updatedCount;
     }
+
+    /**
+     * 将所有已支付的订单状态更新为处理中
+     * @return 更新的订单数量
+     */
+    @Transactional
+    public int updatePaidOrdersToInProgress() {
+        // 1. 查询所有已支付的订单
+        List<Order> paidOrders = orderRepository.findByStatus(OrderStatus.PAID);
+
+        if (paidOrders.isEmpty()) {
+            return 0; // 没有需要更新的订单
+        }
+
+        // 2. 获取需要更新状态的订单 ID 列表
+        List<Long> paidOrderIds = paidOrders.stream()
+                .map(Order::getOrderId)
+                .collect(Collectors.toList());
+
+        // 3. 批量更新订单状态为 IN_PROGRESS
+        return orderRepository.updateOrdersStatus(paidOrderIds, OrderStatus.IN_PROGRESS);
+    }
+
 }

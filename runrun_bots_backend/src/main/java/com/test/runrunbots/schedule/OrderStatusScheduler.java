@@ -4,6 +4,7 @@ import com.test.runrunbots.model.Order;
 import com.test.runrunbots.model.OrderStatus;
 import com.test.runrunbots.repository.OrderRepository;
 import com.test.runrunbots.service.OrderService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
  *
  */
 @Component
+@Slf4j
 public class OrderStatusScheduler {
 
     private final OrderRepository orderRepository;
@@ -73,4 +75,20 @@ public class OrderStatusScheduler {
         // 打印日志（可以记录到日志系统中）
         System.out.println("成功更新了 " + updatedCount + " 个超时订单为 CANCELLED");
     }
+
+    /**
+     * 每隔5分钟执行一次，将已支付订单更新为处理中状态
+     */
+    @Scheduled(cron = "0 */5 * * * *") // 每5分钟执行一次
+    public void updatePaidOrdersStatus() {
+        log.info("开始执行订单状态更新任务...");
+
+        try {
+            int updatedCount = orderService.updatePaidOrdersToInProgress();
+            log.info("成功将 {} 个已支付订单更新为处理中状态", updatedCount);
+        } catch (Exception e) {
+            log.error("更新订单状态时发生错误: {}", e.getMessage(), e);
+        }
+    }
+
 }

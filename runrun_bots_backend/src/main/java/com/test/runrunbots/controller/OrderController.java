@@ -102,4 +102,13 @@ public class OrderController {
         return ResponseEntity.ok(response);
     }
 
+    /**
+     * 手动触发更新已支付订单的状态
+     */
+    @PostMapping("/update-status")
+    public ResponseEntity<String> updatePaidOrdersStatus() {
+        int updatedCount = orderService.updatePaidOrdersToInProgress();
+        return ResponseEntity.ok("成功更新 " + updatedCount + " 个订单状态为处理中");
+    }
+
 }  
