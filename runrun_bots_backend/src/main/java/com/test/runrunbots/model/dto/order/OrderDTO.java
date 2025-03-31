@@ -13,5 +13,7 @@ public class OrderDTO {
     private String deliveryLocation;  
     private String deliveryMethod;  
     private String status;  
-    private LocalDateTime createdAt;  
-}  
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+
+}

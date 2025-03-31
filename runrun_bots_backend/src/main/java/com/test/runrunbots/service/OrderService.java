@@ -78,6 +78,8 @@ public class OrderService {
         log.info("order.getOrderId(): {}", order.getOrderId());
         log.info("order.getStatus(): {}", order.getStatus());
         order.setStatus(request.getStatus());
+        LocalDateTime now = LocalDateTime.now();
+        order.setUpdatedAt(now);
         return order;  
     }  
 
