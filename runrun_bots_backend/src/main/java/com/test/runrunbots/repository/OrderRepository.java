@@ -53,9 +53,10 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
      */
     @Transactional
     @Modifying
-    @Query("UPDATE Order o SET o.status = :newStatus WHERE o.orderId IN :ids")
+    @Query("UPDATE Order o SET o.status = :newStatus, o.updatedAt = :updateTime WHERE o.orderId IN :ids")
     int updateOrderStatusFromCreatedToPending(@Param("ids") List<Long> orderIds,
-                                              @Param("newStatus") OrderStatus newStatus);
+                                              @Param("newStatus") OrderStatus newStatus,
+                                              @Param("updateTime") LocalDateTime updateTime);
 
     // 查询超过指定时间未完成支付的订单
     @Query("SELECT o FROM Order o WHERE o.status = 'PENDING' AND o.createdAt <= :expirationTime")

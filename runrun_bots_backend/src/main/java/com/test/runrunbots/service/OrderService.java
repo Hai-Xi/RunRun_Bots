@@ -136,7 +136,8 @@ public class OrderService {
         System.out.println("找到 " + orderIds.size() + " 个需要更新状态的订单。");
 
         // 3. 批量更新这些订单状态为 PENDING
-        int updatedCount = orderRepository.updateOrderStatusFromCreatedToPending(orderIds, OrderStatus.PENDING);
+        LocalDateTime now = LocalDateTime.now();
+        int updatedCount = orderRepository.updateOrderStatusFromCreatedToPending(orderIds, OrderStatus.PENDING, now);
 
         System.out.println("成功更新 " + updatedCount + " 个订单状态为 PENDING。");
 
@@ -162,7 +163,8 @@ public class OrderService {
                 .collect(Collectors.toList());
 
         // 3. 批量更新订单状态为 IN_PROGRESS
-        return orderRepository.updateOrdersStatus(paidOrderIds, OrderStatus.IN_PROGRESS);
+        LocalDateTime now = LocalDateTime.now();
+        return orderRepository.updateOrdersStatus(paidOrderIds, OrderStatus.IN_PROGRESS, now);
     }
 
     /**
