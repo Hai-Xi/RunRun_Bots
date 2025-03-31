@@ -65,6 +65,7 @@ logging:
     org.springframework.jdbc.datasource.init: DEBUG
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    org.springframework.scheduling: DEBUG # Log inspection to check if the scheduled task is running properly
 
 runrunbots:
   jwt:
