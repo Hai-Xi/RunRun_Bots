@@ -29,6 +29,9 @@ dependencyManagement {
 	}
 }
 
+/**
+ * spring-boot-starter 已经内置了对定时任务的支持，因此无需添加额外的依赖。如果已经引入了 Spring Boot 的 Web Starter 和 JPA Starter，就可以直接使用定时任务。
+ */
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3' // mybatis for database access
