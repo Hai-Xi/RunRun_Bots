@@ -72,8 +72,10 @@ public class OrderService {
 
     public OrderDTO updateOrderStatus(Long orderId, UpdateOrderStatusRequest request) {  
         // 模拟更新订单状态逻辑  
-        OrderDTO order = getOrderById(orderId);  
-        order.setStatus(request.getStatus());  
+        OrderDTO order = getOrderById(orderId);
+        log.info("order.getOrderId(): {}", order.getOrderId());
+        log.info("order.getStatus(): {}", order.getStatus());
+        order.setStatus(request.getStatus());
         return order;  
     }  
 
