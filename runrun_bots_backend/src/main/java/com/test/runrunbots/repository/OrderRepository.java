@@ -49,7 +49,9 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
      * 如果没有@Transactional注解，当我们使用@Modifying执行更新操作时，会抛出异常：javax.persistence.TransactionRequiredException: Executing an update/delete query。
      *
      * 使用 JPQL（Java Persistence Query Language）查询，冒号（:）用于标识命名参数（Named Parameters）。这是 JPQL 的特殊语法，用于将方法的参数值绑定到查询字符串
-     *
+     * 如果方法参数名称与查询中的命名参数名称完全相同，Spring Data JPA 会自动进行绑定
+     * 当参数名称与查询中的命名参数不同时，必须使用 @Param 注解显式指定
+     * 
      * @param expiredOrderIds
      * @param CANCELLED
      * @return
