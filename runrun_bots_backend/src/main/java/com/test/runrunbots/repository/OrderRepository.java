@@ -90,7 +90,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> findByStatus(OrderStatus status);
 
     /**
-     * 批量更新订单状态为 IN_PROGRESS
+     * 批量更新 PAID 订单状态为 IN_PROGRESS
      */
     @Transactional
     @Modifying
