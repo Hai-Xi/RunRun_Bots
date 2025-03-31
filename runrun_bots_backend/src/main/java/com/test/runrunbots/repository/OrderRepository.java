@@ -113,7 +113,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     @Modifying
     @Transactional
     @Query("UPDATE Order o SET o.status = :status, o.updatedAt = :updatedAt WHERE o.orderId = :orderId")
-    int updateOrderStatus(@org.springframework.data.repository.query.Param("status") String status,
+    int updateOrderStatus(@org.springframework.data.repository.query.Param("status") OrderStatus status,
                           @org.springframework.data.repository.query.Param("updatedAt") java.time.LocalDateTime updatedAt,
                           @org.springframework.data.repository.query.Param("orderId") Long orderId);
 

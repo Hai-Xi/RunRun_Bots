@@ -62,10 +62,11 @@ public class OrderController {
 
     @PutMapping("/{orderId}/updateOrderStatus")
     public ResponseEntity<ApiResponse<OrderDTO>> updateOrderStatus(
+            @AuthenticationPrincipal User user,
             @PathVariable Long orderId,  
             @RequestBody UpdateOrderStatusRequest request) {
         // Update Order Status Logic
-        OrderDTO updatedOrder = orderService.updateOrderStatus(orderId, request);
+        OrderDTO updatedOrder = orderService.updateOrderStatus(user,orderId, request);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(ApiResponse.success(updatedOrder));
     }

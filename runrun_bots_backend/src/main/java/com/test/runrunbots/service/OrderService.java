@@ -7,6 +7,8 @@ import com.test.runrunbots.model.dto.order.*;
 import com.test.runrunbots.repository.OrderRepository;
 import com.test.runrunbots.repository.PaymentRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -60,31 +62,37 @@ public class OrderService {
         return orderRepository.save(order);  // 当调用 orderRepository.save(order) 时，因为 CascadeType.ALL，Hibernate 会级联保存 Payment 支付记录。
     }  
 
-    public OrderDTO getOrderById(Long orderId) throws OrderIdNotExistException {
-        // 模拟获取订单逻辑  
-        OrderDTO order = new OrderDTO();  
-        order.setOrderId(orderId);  
-        order.setUserId(123L);  
-//        order.setProductIds(java.util.Arrays.asList(1L, 2L, 3L));
-//        order.setShippingAddress("123 Test Street");
-        order.setStatus("SHIPPED");  
-        order.setCreatedAt(LocalDateTime.now());  
-        return order;
-    }  
+//    public OrderDTO getOrderById(Long orderId) throws OrderIdNotExistException {
+//        // 模拟获取订单逻辑
+//        OrderDTO order = new OrderDTO();
+//        order.setOrderId(orderId);
+//        order.setUserId(123L);
+////        order.setProductIds(java.util.Arrays.asList(1L, 2L, 3L));
+////        order.setShippingAddress("123 Test Street");
+//        order.setStatus(OrderStatus.valueOf("SHIPPED"));
+//        order.setCreatedAt(LocalDateTime.now());
+//        return order;
+//    }
 
-    public OrderDTO updateOrderStatus(Long orderId, UpdateOrderStatusRequest request) {
+    public OrderDTO updateOrderStatus(User user, Long orderId, UpdateOrderStatusRequest request) {
         // 模拟更新订单状态逻辑  
-        OrderDTO order = getOrderById(orderId);
+        Order order = orderRepository.findByOrderId(orderId);
+        OrderDTO updatedOrder = new OrderDTO();
         log.info("order.getOrderId(): {}", order.getOrderId());
         log.info("order.getStatus(): {}", order.getStatus());
-        order.setStatus(request.getStatus());
+        updatedOrder.setUserId(user.getUserId());
+        updatedOrder.setOrderId(order.getOrderId());
+        updatedOrder.setStatus(request.getStatus());
+        updatedOrder.setPickupLocation(order.getPickupLocation());
+        updatedOrder.setDeliveryLocation(order.getDeliveryLocation());
         LocalDateTime now = LocalDateTime.now();
-        order.setUpdatedAt(now);
-        int success = orderRepository.updateOrderStatus(order.getStatus(),
-                order.getUpdatedAt(),
-                order.getOrderId());
+        updatedOrder.setUpdatedAt(now);
+        // JPA 的 @Query 不支持直接将一个 DTO 对象绑定到查询参数
+        int success = orderRepository.updateOrderStatus(updatedOrder.getStatus(),
+                updatedOrder.getUpdatedAt(),
+                updatedOrder.getOrderId());
         OrderDTO fail = null;
-        return success == 1 ? order : fail;
+        return success == 1 ? updatedOrder : fail;
     }  
 
     public TrackingInfo getTrackingInfo(Long orderId) {  
