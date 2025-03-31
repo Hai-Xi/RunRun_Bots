@@ -91,4 +91,14 @@ public class OrderStatusScheduler {
         }
     }
 
+    /**
+     * 每 5 min 检查一次并将处理中的订单标记为已送达
+     */
+    @Scheduled(cron = "0 */5 * * * *") // 每5分钟执行一次
+    public void updateOrdersToDelivered() {
+        System.out.println("开始执行订单送达状态更新...");
+        int updatedCount = orderService.markOrdersAsDelivered();
+        System.out.println("订单状态更新完成，共更新 " + updatedCount + " 个订单");
+    }
+
 }

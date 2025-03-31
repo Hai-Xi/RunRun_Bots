@@ -73,6 +73,9 @@ public class Order {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
     /**
      *
      * mappedBy: 被维护端使用，表示由另一端 (即 Payment表 )(即 带有 @JoinColumn注解的 table, 用于定义外键列)的哪个字段来维护这段关系。这里 Payment 的 order字段 是拥有端。

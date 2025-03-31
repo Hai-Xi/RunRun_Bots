@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -162,6 +163,41 @@ public class OrderService {
 
         // 3. 批量更新订单状态为 IN_PROGRESS
         return orderRepository.updateOrdersStatus(paidOrderIds, OrderStatus.IN_PROGRESS);
+    }
+
+    /**
+     * 查询所有处理中的订单
+     */
+    public List<Order> getInProgressOrders() {
+        return orderRepository.findOrdersByStatus(OrderStatus.IN_PROGRESS);
+    }
+
+    /**
+     * 将处理中的订单批量更新为已送达状态
+     * @return 更新的订单数量
+     */
+    @Transactional
+    public int markOrdersAsDelivered() {
+        // 1. 查询所有处理中的订单
+        List<Order> inProgressOrders = getInProgressOrders();
+
+        // 如果没有处理中的订单，直接返回0
+        if (inProgressOrders.isEmpty()) {
+            System.out.println("没有处理中的订单需要更新");
+            return 0;
+        }
+
+        // 2. 获取订单ID列表
+        List<Long> orderIds = inProgressOrders.stream()
+                .map(Order::getOrderId)
+                .collect(Collectors.toList());
+
+        // 3. 批量更新订单状态为已送达
+        LocalDateTime now = LocalDateTime.now();
+        int updatedCount = orderRepository.updateOrdersStatus(orderIds, OrderStatus.DELIVERED, now);
+
+        System.out.println("成功将 " + updatedCount + " 个订单标记为已送达");
+        return updatedCount;
     }
 
 }

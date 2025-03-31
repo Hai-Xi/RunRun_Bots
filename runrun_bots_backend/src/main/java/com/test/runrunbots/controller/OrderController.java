@@ -111,4 +111,17 @@ public class OrderController {
         return ResponseEntity.ok("成功更新 " + updatedCount + " 个订单状态为处理中");
     }
 
+    /**
+     * 批量将所有 IN_PROGRESS 订单标记为已送达
+     */
+    @PostMapping("/mark-delivered")
+    public ResponseEntity<Map<String, Object>> markOrdersAsDelivered() {
+        int updatedCount = orderService.markOrdersAsDelivered();
+        return ResponseEntity.ok(Map.of(
+                "success", true,
+                "message", "订单状态已更新, 批量将所有 IN_PROGRESS 订单标记为已送达",
+                "updatedCount", updatedCount
+        ));
+    }
+
 }  

@@ -98,4 +98,15 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     int updateOrdersStatus(@Param("orderIds") List<Long> orderIds,
                            @Param("newStatus") OrderStatus newStatus);
 
+    /**
+     * 批量更新订单状态并更新修改时间
+     */
+    @Transactional
+    @Modifying
+    @Query("UPDATE Order o SET o.status = :newStatus, o.updatedAt = :updateTime WHERE o.orderId IN :ids")
+    int updateOrdersStatus(
+            @Param("ids") List<Long> orderIds,
+            @Param("newStatus") OrderStatus newStatus,
+            @Param("updateTime") LocalDateTime updateTime);
+
 }
