@@ -75,7 +75,8 @@ public class OrderService {
 //    }
 
     public OrderDTO updateOrderStatus(User user, Long orderId, UpdateOrderStatusRequest request) {
-        // 模拟更新订单状态逻辑  
+        // 模拟更新订单状态逻辑
+        // 验证用户是否有权限访问特定订单
         Order order = orderRepository.findByUserIdAndOrderId(user.getUserId(),orderId);
 
         if (order == null) {
