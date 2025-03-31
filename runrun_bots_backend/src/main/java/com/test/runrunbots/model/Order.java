@@ -59,9 +59,10 @@ public class Order {
 
     @Column(nullable = false)  
     @Enumerated(EnumType.STRING)  
-    private OrderStatus status;  
+    private OrderStatus status;
 
-    @Column(name = "created_at")  
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created_at",nullable = false, updatable = false)  // 创建时间不可更新
     @CreationTimestamp
     private LocalDateTime createdAt;
 
