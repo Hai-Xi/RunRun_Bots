@@ -37,6 +37,7 @@ public class UserController {
         User registered = authenticationService.register(request.getUsername(), request.getEmail(), request.getPhone(), request.getPassword(), request.getRole());
 
         // 将实体类转换为 userRegistrationResponse 响应对象
+        // service层 还是返回完整的 User 对象，但 Controller 通过响应对象封装需要的数据。
         UserRegistrationResponse userRegistrationResponse = new UserRegistrationResponse();
         userRegistrationResponse.setUsername(request.getUsername());
         userRegistrationResponse.setEmail(registered.getEmail());
