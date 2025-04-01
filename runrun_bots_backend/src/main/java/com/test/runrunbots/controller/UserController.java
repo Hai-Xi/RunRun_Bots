@@ -97,6 +97,7 @@ public class UserController {
         User updatedUser = authenticationService.updateUserInfo(user.getUserId(), updateRequest);
 
         // 将实体类转换为 UpdateUserResponse 响应对象
+        // service层 还是返回完整的 User 对象，但 Controller 通过响应对象封装需要的数据。
         UpdateUserResponse response = new UpdateUserResponse(
                 updatedUser.getUserId(),
                 updatedUser.getUsername(),
