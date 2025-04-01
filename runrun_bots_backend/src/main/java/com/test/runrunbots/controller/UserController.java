@@ -86,11 +86,24 @@ public class UserController {
     }
 
     @PutMapping("/user")
-    public ResponseEntity<ApiResponse<User>> updateUserInfo(@AuthenticationPrincipal User user,
-                                                            @Valid @RequestBody UpdateUserRequest updateRequest) {
+    public ResponseEntity<ApiResponse<UpdateUserResponse>> updateUserInfo(
+            @AuthenticationPrincipal User user,
+            @RequestBody UpdateUserRequest updateRequest) {
+
         log.info("Updating user info for user: {}", user.getUserId());
+
+        // 调用 Service 更新用户信息并返回更新的用户实体
         User updatedUser = authenticationService.updateUserInfo(user.getUserId(), updateRequest);
-        return ResponseEntity.ok(ApiResponse.success(updatedUser));
+
+        // 将实体类转换为 UpdateUserResponse 响应对象
+        UpdateUserResponse response = new UpdateUserResponse(
+                updatedUser.getUserId(),
+                updatedUser.getUsername(),
+                updatedUser.getEmail(),
+                updatedUser.getPhone()
+        );
+
+        return ResponseEntity.ok(ApiResponse.success(response));
     }
 
 }  
