@@ -41,9 +41,19 @@ const OrderManage = () => {
     navigate("/createneworder");
   };
 
+  const handleReceiptAndManage = () => {
+    navigate("/selectedorder", { state: { order: selectedOrder } });
+  };
+
   const formatDateTime = (dateString) => {
     const options = { dateStyle: "medium", timeStyle: "short" };
     return new Date(dateString).toLocaleString(undefined, options);
+  };
+
+  const getButtonColor = (status) => {
+    if (status === "Canceled") return "#d3d3d3"; // grey
+    if (status === "Delivered") return "#ccffcc"; // shallow green
+    return "#e0f0ff"; // shallow blue
   };
 
   return (
@@ -58,13 +68,12 @@ const OrderManage = () => {
             style={{
               display: "block",
               marginBottom: "10px",
-              backgroundColor: order.status !== "Delivered" ? "#e0f0ff" : "",
+              backgroundColor: getButtonColor(order.status),
               padding: "8px",
               borderRadius: "5px",
             }}
           >
-            Order #{order.orderId} | Ordered At:{" "}
-            {formatDateTime(order.createdAt)}
+            Order #{order.orderId} | Ordered At: {formatDateTime(order.createdAt)}
           </button>
         ))}
 
@@ -78,25 +87,20 @@ const OrderManage = () => {
             }}
           >
             <h4>Selected Order:</h4>
-            <p>
-              <strong>Item Description:</strong> {selectedOrder.itemDescription}
-            </p>
-            <p>
-              <strong>Sending from:</strong> {selectedOrder.pickupLocation}
-            </p>
-            <p>
-              <strong>Deliver to:</strong> {selectedOrder.deliveryLocation}
-            </p>
-            <p>
-              <strong>Delivery Method:</strong> {selectedOrder.deliveryMethod}
-            </p>
-            <p>
-              <strong>Status:</strong> {selectedOrder.status}
-            </p>
-            <p>
-              <strong>Ordered At:</strong>{" "}
-              {formatDateTime(selectedOrder.createdAt)}
-            </p>
+            <p><strong>Item Description:</strong> {selectedOrder.itemDescription}</p>
+            <p><strong>Sending from:</strong> {selectedOrder.pickupLocation}</p>
+            <p><strong>Deliver to:</strong> {selectedOrder.deliveryLocation}</p>
+            <p><strong>Delivery Method:</strong> {selectedOrder.deliveryMethod}</p>
+            <p><strong>Status:</strong> {selectedOrder.status}</p>
+            <p><strong>Ordered At:</strong> {formatDateTime(selectedOrder.createdAt)}</p>
+
+            <Button
+              variant="primary"
+              style={{ marginTop: "10px" }}
+              onClick={handleReceiptAndManage}
+            >
+              Receipt and Manage
+            </Button>
           </div>
         )}
       </div>
@@ -116,7 +120,6 @@ const OrderManage = () => {
           status={selectedOrder?.status}
         />
 
-        {/* ✅ Button Below the Map */}
         <Button
           variant="success"
           onClick={handleCreateNewOrder}
