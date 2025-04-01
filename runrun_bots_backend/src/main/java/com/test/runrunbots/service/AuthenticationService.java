@@ -19,6 +19,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+
 
 @Slf4j
 @Service
@@ -84,7 +86,7 @@ public class AuthenticationService {
      * 更新用户信息
      */
     @Transactional
-    public User updateUserInfo(Long userId, UpdateUserRequest updateRequest) {
+    public User updateUserInfo(Long userId, UpdateUserRequest updateRequest, LocalDateTime now) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
@@ -99,6 +101,7 @@ public class AuthenticationService {
         if (updateRequest.getEmail() != null) {
             user.setEmail(updateRequest.getEmail());
         }
+        user.setUpdatedAt(now);
 
         // 保存用户信息
         return userRepository.save(user);

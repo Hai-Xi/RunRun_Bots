@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+
 @Slf4j
 @RestController
 @RequestMapping("/api/auth")
@@ -95,7 +97,8 @@ public class UserController {
         log.info("Updating user info for user: {}", user.getUserId());
 
         // 调用 Service 更新用户信息并返回更新的用户实体
-        User updatedUser = authenticationService.updateUserInfo(user.getUserId(), updateRequest);
+        LocalDateTime now = LocalDateTime.now();
+        User updatedUser = authenticationService.updateUserInfo(user.getUserId(), updateRequest, now);
 
         // 将实体类转换为 UpdateUserResponse 响应对象
         // service层 还是返回完整的 User 对象，但 Controller 通过响应对象封装需要的数据。
@@ -103,7 +106,8 @@ public class UserController {
                 updatedUser.getUserId(),
                 updatedUser.getUsername(),
                 updatedUser.getEmail(),
-                updatedUser.getPhone()
+                updatedUser.getPhone(),
+                updatedUser.getUpdatedAt()
         );
 
         return ResponseEntity.ok(ApiResponse.success(response));

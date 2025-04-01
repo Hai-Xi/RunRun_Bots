@@ -46,6 +46,9 @@ public class User  implements UserDetails {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
     @OneToMany(mappedBy = "user")
     @JsonIgnore // 忽略序列化
     private List<Order> orders;
