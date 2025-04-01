@@ -5,7 +5,8 @@ import Login from "./Login";
 import Register from "./Register";
 import OrderManage from "./OrderManage";
 import CreateNewOrder from "./CreateNewOrder";
-import Landing from "./Landing";
+// import Landing from "./Landing";
+import UserProfile from "./UserProfile"
 
 function Main(props) {
   const { isLoggedIn, handleLoggedIn} = props;
@@ -28,6 +29,10 @@ function Main(props) {
   //   return isLoggedIn ? <Landing /> : <Navigate to="/login" />;
   // };
 
+    const showUserProfile = () => {
+    return isLoggedIn ? <UserProfile /> : <Navigate to="/login" />;
+  };
+
   const showOrderManage = () => {
     return isLoggedIn ? <OrderManage /> : <Navigate to="/login" />;
   };
@@ -43,6 +48,7 @@ function Main(props) {
         <Route path="/login" element={showLogin()} />
         <Route path="/register" element={showRegister()} />
         {/* <Route path="/create" element={showLanding()} /> */}
+        <Route path="/userprofile" element={showUserProfile()} />
         <Route path="/ordermanage" element={showOrderManage()} />
         <Route path="/createneworder" element={showCreateNewOrder()} />
       </Routes>
