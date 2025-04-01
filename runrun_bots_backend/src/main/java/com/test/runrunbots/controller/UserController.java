@@ -36,6 +36,7 @@ public class UserController {
         log.info(request.toString());
         User registered = authenticationService.register(request.getUsername(), request.getEmail(), request.getPhone(), request.getPassword(), request.getRole());
 
+        // 将实体类转换为 userRegistrationResponse 响应对象
         UserRegistrationResponse userRegistrationResponse = new UserRegistrationResponse();
         userRegistrationResponse.setUsername(request.getUsername());
         userRegistrationResponse.setEmail(registered.getEmail());
