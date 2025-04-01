@@ -8,9 +8,11 @@ import com.test.runrunbots.model.User;
 import com.test.runrunbots.model.UserRole;
 import com.test.runrunbots.model.dto.user.LoginAuthResponse;
 import com.test.runrunbots.model.dto.user.LoginRequest;
+import com.test.runrunbots.model.dto.user.UpdateUserRequest;
 import com.test.runrunbots.repository.UserRepository;
 import com.test.runrunbots.security.JwtHandler;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -76,6 +78,30 @@ public class AuthenticationService {
         log.info("Logining...: {} ==>> ", JSON.toJSONString(authResponse));
 
         return authResponse;
+    }
+
+    /**
+     * 更新用户信息
+     */
+    @Transactional
+    public User updateUserInfo(Long userId, UpdateUserRequest updateRequest) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (!user.getUserId().equals(userId)) {
+            throw new AccessDeniedException("You can only update your own information");
+        }
+
+        // 更新用户的邮箱和电话
+        if (updateRequest.getPhoneNumber() != null) {
+            user.setPhone(updateRequest.getPhoneNumber());
+        }
+        if (updateRequest.getEmail() != null) {
+            user.setEmail(updateRequest.getEmail());
+        }
+
+        // 保存用户信息
+        return userRepository.save(user);
     }
 
 }

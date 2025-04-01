@@ -3,10 +3,7 @@ package com.test.runrunbots.controller;
 import com.alibaba.fastjson2.JSON;
 import com.test.runrunbots.model.dto.unifiedGlobalResponse.ApiResponse;
 import com.test.runrunbots.model.User;
-import com.test.runrunbots.model.dto.user.LoginAuthResponse;
-import com.test.runrunbots.model.dto.user.LoginRequest;
-import com.test.runrunbots.model.dto.user.UserRegistrationRequest;
-import com.test.runrunbots.model.dto.user.UserRegistrationResponse;
+import com.test.runrunbots.model.dto.user.*;
 import com.test.runrunbots.service.AuthenticationService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -86,6 +83,14 @@ public class UserController {
         //  优先使用 DTO：
         //  避免直接返回实体类，使用 DTO 控制序列化的字段。
         return ResponseEntity.ok(ApiResponse.success(user));
+    }
+
+    @PutMapping("/user")
+    public ResponseEntity<ApiResponse<User>> updateUserInfo(@AuthenticationPrincipal User user,
+                                                            @Valid @RequestBody UpdateUserRequest updateRequest) {
+        log.info("Updating user info for user: {}", user.getUserId());
+        User updatedUser = authenticationService.updateUserInfo(user.getUserId(), updateRequest);
+        return ResponseEntity.ok(ApiResponse.success(updatedUser));
     }
 
 }  
