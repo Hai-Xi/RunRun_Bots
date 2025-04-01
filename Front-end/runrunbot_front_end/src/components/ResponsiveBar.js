@@ -13,10 +13,12 @@ import { TOKEN_KEY } from "../constants";
 function ResponsiveAppBar(props) {
   const { isLoggedIn, handleLogout } = props;
   const navigate = useNavigate();
+  const username = localStorage.getItem("username"); // ✅ read username
 
   // 统一处理登出逻辑 + 页面跳转
   const handleLogoutAndRedirect = () => {
     localStorage.removeItem(TOKEN_KEY);
+    localStorage.removeItem("username"); // ✅ clean username
     handleLogout();          // 调用 App.js 传下来的函数，更新 isLoggedIn 状态
     navigate("/login");      // 立刻跳转到登录页
   };
@@ -53,19 +55,28 @@ function ResponsiveAppBar(props) {
           </Typography>
 
           {isLoggedIn && (
-            <Box
-              sx={{ flexGrow: 1, display: "flex", justifyContent: "flex-end" }}
-            >
-              <Button
-                variant="outlined"
-                startIcon={<LogoutIcon />}
-                onClick={handleLogoutAndRedirect} // 触发登出 + 跳转
-                sx={{ backgroundColor: "white" }}
-              >
-                Log out
-              </Button>
-            </Box>
-          )}
+  <Box sx={{ flexGrow: 1, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+    {/* Empty space to the left */}
+    <Box sx={{ flex: 1 }} />
+
+    {/* Centered Hello Text */}
+    <Typography sx={{ color: "white", fontSize: "1.1rem", fontWeight: 500 }}>
+      Hello, {username}
+    </Typography>
+
+    {/* Logout on the right */}
+    <Box sx={{ flex: 1, display: "flex", justifyContent: "flex-end" }}>
+      <Button
+        variant="outlined"
+        startIcon={<LogoutIcon />}
+        onClick={handleLogoutAndRedirect}
+        sx={{ backgroundColor: "white" }}
+      >
+        Log out
+      </Button>
+    </Box>
+  </Box>
+)}
         </Toolbar>
       </Container>
     </AppBar>

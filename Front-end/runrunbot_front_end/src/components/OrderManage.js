@@ -1,57 +1,49 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import GoogleMapComponent from "./GoogleMapComponent";
-import { useNavigate } from "react-router-dom";  // for navigation
-import { Button } from "react-bootstrap";        // using Bootstrap Button
-
-const orders = [
-  {
-    id: 1,
-    pickup: "1 Market St, San Francisco, CA",
-    destination: "Golden Gate Park, San Francisco, CA",
-    deliveryMethod: "Robot",
-    status: "In process",
-    estimatedTime: "12:00pm",
-    orderedAt: "2025-03-28 09:30am",
-    itemDescription: "Electronics - Portable Speaker", // ✅ added
-  },
-  {
-    id: 2,
-    pickup: "Ferry Building, San Francisco, CA",
-    destination: "Twin Peaks, San Francisco, CA",
-    deliveryMethod: "Drone",
-    status: "Pending",
-    estimatedTime: "1:30pm",
-    orderedAt: "2025-03-27 10:15am",
-    itemDescription: "Books - Collection of Novels", // ✅ added
-  },
-  {
-    id: 3,
-    pickup: "Pier 39, San Francisco, CA",
-    destination: "San Francisco Zoo, San Francisco, CA",
-    deliveryMethod: "Robot",
-    status: "Delivered",
-    estimatedTime: "11:00am",
-    orderedAt: "2025-03-25 08:50am",
-    itemDescription: "Clothing - Winter Jackets", // ✅ added
-  },
-];
+import { useNavigate } from "react-router-dom";
+import { Button } from "react-bootstrap";
+import axios from "axios";
+import { API_ROOT, TOKEN_KEY } from "../constants";
 
 const OrderManage = () => {
+  const [orders, setOrders] = useState([]);
   const [routeRequest, setRouteRequest] = useState(null);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const token = localStorage.getItem(TOKEN_KEY);
+        const response = await axios.get(`${API_ROOT}/api/orders/orderList`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (response.data.code === 100) {
+          setOrders(response.data.data);
+        }
+      } catch (err) {
+        console.error("Failed to fetch orders:", err);
+      }
+    };
+    fetchOrders();
+  }, []);
+
   const handleOrderClick = (order) => {
     setSelectedOrder(order);
     setRouteRequest({
-      origin: order.pickup,
-      destination: order.destination,
+      origin: order.pickupLocation,
+      destination: order.deliveryLocation,
       travelMode: "DRIVING",
     });
   };
 
   const handleCreateNewOrder = () => {
-    navigate("/createneworder"); // ✅ fixed to match Main.js
+    navigate("/createneworder");
+  };
+
+  const formatDateTime = (dateString) => {
+    const options = { dateStyle: "medium", timeStyle: "short" };
+    return new Date(dateString).toLocaleString(undefined, options);
   };
 
   return (
@@ -61,7 +53,7 @@ const OrderManage = () => {
         <h3>Orders:</h3>
         {orders.map((order) => (
           <button
-            key={order.id}
+            key={order.orderId}
             onClick={() => handleOrderClick(order)}
             style={{
               display: "block",
@@ -71,7 +63,8 @@ const OrderManage = () => {
               borderRadius: "5px",
             }}
           >
-            Order #{order.id} | Ordered At: {order.orderedAt}
+            Order #{order.orderId} | Ordered At:{" "}
+            {formatDateTime(order.createdAt)}
           </button>
         ))}
 
@@ -85,12 +78,14 @@ const OrderManage = () => {
             }}
           >
             <h4>Selected Order:</h4>
-            <p><strong>Item Description:</strong> {selectedOrder.itemDescription}</p> 
             <p>
-              <strong>Sending from:</strong> {selectedOrder.pickup}
+              <strong>Item Description:</strong> {selectedOrder.itemDescription}
             </p>
             <p>
-              <strong>Deliver to:</strong> {selectedOrder.destination}
+              <strong>Sending from:</strong> {selectedOrder.pickupLocation}
+            </p>
+            <p>
+              <strong>Deliver to:</strong> {selectedOrder.deliveryLocation}
             </p>
             <p>
               <strong>Delivery Method:</strong> {selectedOrder.deliveryMethod}
@@ -99,22 +94,27 @@ const OrderManage = () => {
               <strong>Status:</strong> {selectedOrder.status}
             </p>
             <p>
-              <strong>Estimated time:</strong> {selectedOrder.estimatedTime}
-            </p>
-            <p>
-              <strong>Ordered At:</strong> {selectedOrder.orderedAt}
+              <strong>Ordered At:</strong>{" "}
+              {formatDateTime(selectedOrder.createdAt)}
             </p>
           </div>
         )}
       </div>
 
       {/* Right Section */}
-      <div style={{ flex: 2, display: "flex", flexDirection: "column", alignItems: "center" }}>
-      <GoogleMapComponent
-   routeRequest={routeRequest}
-   deliveryMethod={selectedOrder?.deliveryMethod}
-   status={selectedOrder?.status}
-/>
+      <div
+        style={{
+          flex: 2,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <GoogleMapComponent
+          routeRequest={routeRequest}
+          deliveryMethod={selectedOrder?.deliveryMethod}
+          status={selectedOrder?.status}
+        />
 
         {/* ✅ Button Below the Map */}
         <Button

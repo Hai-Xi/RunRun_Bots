@@ -24,6 +24,7 @@ const Login = ({ handleLoggedIn }) => {
       const { data } = response.data;
       const token = data.token;
       localStorage.setItem(TOKEN_KEY, token); // 保存 token
+      localStorage.setItem("username", email); // <- save username
       handleLoggedIn(token); // 通知 App 登录成功
     } catch (err) {
       console.error("Login error:", err);
