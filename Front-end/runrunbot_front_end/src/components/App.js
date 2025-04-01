@@ -8,6 +8,7 @@ import Register from "./Register"; // 确保路径正确
 import ResponsiveAppBar from "./ResponsiveBar"; // 确保路径正确
 import "bootstrap/dist/css/bootstrap.min.css"; // 加载 Bootstrap 样式
 import { useNavigate } from "react-router-dom";
+// import FooterBar from "./Footerbar";
 
 function App() {
   const navigate = useNavigate();
@@ -36,7 +37,10 @@ function App() {
   return (
     <div className="App">
       <ResponsiveAppBar isLoggedIn={isLoggedIn} handleLogout={handleLogout} />
+      <div className="main-content">
       <Main isLoggedIn={isLoggedIn} handleLoggedIn={handleLoggedIn} />
+    </div>
+      {/* <FooterBar /> */}
     </div>
   );
 }

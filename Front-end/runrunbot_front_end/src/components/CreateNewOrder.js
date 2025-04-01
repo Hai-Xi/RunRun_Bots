@@ -18,6 +18,7 @@ const center = {
 
 function CreateNewOrder() {
   const navigate = useNavigate();
+  const [isMapLoaded, setIsMapLoaded] = useState(false);
 
   // --- Form states ---
   const [itemDescription, setItemDescription] = useState("");
@@ -58,7 +59,7 @@ function CreateNewOrder() {
   //   return fakePositions[address] || null;
   // };
 
-  // --- Handle Confirm Payment ---(with backend API)  
+  // --- Handle Confirm Payment ---(with backend API)
   const handleConfirmPayment = async () => {
     if (!itemDescription || !pickup || !destination || !paymentMethod) {
       setErrorMsg("Please complete all the information above.");
@@ -76,7 +77,7 @@ function CreateNewOrder() {
     const token = localStorage.getItem(TOKEN_KEY);
     if (!token) {
       setErrorMsg("Authentication token is missing. Please login again.");
-       return;
+      return;
     }
 
     // --- Compose payload ---
@@ -95,7 +96,7 @@ function CreateNewOrder() {
       // const response = await axios.post("/api/orders", payload);
       // const response = await axios.post(`${API_ROOT}/api/orders`, payload);
       const response = await axios.post(`${API_ROOT}/api/orders`, payload, {
-           headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
       });
       if (response.data && response.data.code === 100) {
         setOrderId("ORD-" + response.data.data.orderId);
@@ -166,13 +167,15 @@ function CreateNewOrder() {
 
   return (
     <div
-      style={{
-        display: "flex",
-        marginTop: "70px",
-        padding: "20px",
-        gap: "20px",
-      }}
-    >
+    style={{
+      display: "flex",
+      marginTop: "70px",
+      marginLeft: "100px",
+      marginRight: "100px",
+      padding: "20px",
+      gap: "20px",
+    }}
+  >
       {/* Left Side */}
       <div style={{ flex: 1 }}>
         <h3>Create New Order</h3>
@@ -292,21 +295,24 @@ function CreateNewOrder() {
       >
         <LoadScript
           googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}
+          onLoad={() => setIsMapLoaded(true)}
         >
-          <GoogleMap
-            mapContainerStyle={containerStyle}
-            center={center}
-            zoom={12}
-            options={{ streetViewControl: false }}
-          >
-            {/* ✅ Marker A for pickup */}
-            {pickupLatLng && <Marker position={pickupLatLng} label="A" />}
+          {isMapLoaded && (
+            <GoogleMap
+              mapContainerStyle={containerStyle}
+              center={center}
+              zoom={12}
+              options={{ streetViewControl: false }}
+            >
+              {/* ✅ Marker A for pickup */}
+              {pickupLatLng && <Marker position={pickupLatLng} label="A" />}
 
-            {/* ✅ Marker B for delivery */}
-            {destinationLatLng && (
-              <Marker position={destinationLatLng} label="B" />
-            )}
-          </GoogleMap>
+              {/* ✅ Marker B for delivery */}
+              {destinationLatLng && (
+                <Marker position={destinationLatLng} label="B" />
+              )}
+            </GoogleMap>
+          )}
         </LoadScript>
 
         {/* Manage Orders Button */}

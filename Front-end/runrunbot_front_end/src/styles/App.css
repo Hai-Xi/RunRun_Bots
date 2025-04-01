@@ -1,5 +1,8 @@
 .App {
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Makes the app fill at least the viewport */
 }
 
 .App-logo {
@@ -36,3 +39,4 @@
     transform: rotate(360deg);
   }
 }
+

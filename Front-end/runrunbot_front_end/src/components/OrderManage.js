@@ -57,7 +57,7 @@ const OrderManage = () => {
   };
 
   return (
-    <div style={{ marginTop: "70px", display: "flex", gap: "20px" }}>
+    <div style={{ marginTop: "70px", marginLeft: "100px", marginRight: "100px", display: "flex", gap: "20px" }}>
       {/* Left Section */}
       <div style={{ flex: 1 }}>
         <h3>Orders:</h3>
@@ -71,6 +71,7 @@ const OrderManage = () => {
               backgroundColor: getButtonColor(order.status),
               padding: "8px",
               borderRadius: "5px",
+              width: "100%", // make buttons clean
             }}
           >
             Order #{order.orderId} | Ordered At: {formatDateTime(order.createdAt)}
@@ -96,7 +97,7 @@ const OrderManage = () => {
 
             <Button
               variant="primary"
-              style={{ marginTop: "10px" }}
+              style={{ marginTop: "10px", width: "100%" }}
               onClick={handleReceiptAndManage}
             >
               Receipt and Manage

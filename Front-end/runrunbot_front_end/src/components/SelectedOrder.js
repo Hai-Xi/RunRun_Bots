@@ -2,7 +2,7 @@ import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Button, ProgressBar } from "react-bootstrap";
 
-const statusSteps = ["CREATED", "PAID", "PENDING", "IN PROCESS", "DELIVERED"];
+const statusSteps = ["CREATED", "PENDING", "PAID", "IN PROCESS", "DELIVERED"];
 
 const SelectedOrder = () => {
   const location = useLocation();
@@ -33,10 +33,10 @@ const SelectedOrder = () => {
   };
 
   return (
-    <div style={{ marginTop: "100px", padding: "20px" }}>
+    <div style={{ marginTop: "100px", padding: "20px", display: "flex", flexDirection: "column", alignItems: "center" }}>
       
-      {/* --- Shortened Progress Bar at Top --- */}
-      <div style={{ width: "50%", margin: "0 auto 30px auto" }}>
+      {/* --- Progress Bar --- */}
+      <div style={{ width: "500px", marginBottom: "20px" }}>
         <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.8rem" }}>
           {order.status === "CANCELED" ? (
             <span style={{ color: "red" }}>CANCELED</span>
@@ -51,13 +51,13 @@ const SelectedOrder = () => {
         <ProgressBar
           now={getProgress()}
           variant={order.status === "CANCELED" ? "danger" : "info"}
-          style={{ height: "8px", marginTop: "5px" }}
+          style={{ height: "6px", marginTop: "4px" }}
         />
       </div>
 
       {/* --- Order Information --- */}
-      <h3>Order Receipt & Management</h3>
-      <div style={{ border: "1px solid #ccc", padding: "15px", borderRadius: "8px" }}>
+      <div style={{ width: "500px", border: "1px solid #ccc", padding: "15px", borderRadius: "8px" }}>
+        <h4>Order Receipt & Management</h4>
         <p><strong>Order ID:</strong> {order.orderId}</p>
         <p><strong>Item Description:</strong> {order.itemDescription}</p>
         <p><strong>Pickup Location:</strong> {order.pickupLocation}</p>
@@ -67,29 +67,36 @@ const SelectedOrder = () => {
         <p><strong>Created At:</strong> {formatDateTime(order.createdAt)}</p>
       </div>
 
-      {/* --- Buttons --- */}
-      <div style={{ marginTop: "20px", display: "flex", gap: "10px" }}>
+      {/* --- Slimmer Buttons --- */}
+      <div style={{ marginTop: "15px", display: "flex", flexDirection: "column", gap: "8px" }}>
         <Button
           variant="danger"
+          size="sm"
+          style={{ width: "400px", alignSelf: "center" }}
           disabled={order.status === "IN PROCESS" || order.status === "DELIVERED"}
           onClick={handleCancelOrder}
         >
           Cancel this order
         </Button>
 
-        <Button variant="secondary" onClick={handlePrint}>
+        <Button
+          variant="secondary"
+          size="sm"
+          style={{ width: "400px", alignSelf: "center" }}
+          onClick={handlePrint}
+        >
           🖨 Print Receipt
         </Button>
-      </div>
 
-      {/* --- Back --- */}
-      <Button
-        variant="outline-dark"
-        style={{ marginTop: "20px" }}
-        onClick={() => navigate(-1)}
-      >
-        ⬅ Back to Order Manage
-      </Button>
+        <Button
+          variant="outline-dark"
+          size="sm"
+          style={{ width: "400px", alignSelf: "center" }}
+          onClick={() => navigate(-1)}
+        >
+          ⬅ Back to Order Manage
+        </Button>
+      </div>
     </div>
   );
 };
