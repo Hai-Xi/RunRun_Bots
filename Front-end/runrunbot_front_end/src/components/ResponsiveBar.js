@@ -41,10 +41,18 @@ function ResponsiveAppBar(props) {
   };
 
   return (
-    <AppBar position="static" style={{ background: "black", top: 0, position: "fixed", zIndex: 1 }}>
+    <AppBar
+      position="static"
+      style={{ background: "black", top: 0, position: "fixed", zIndex: 1 }}
+    >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <PublicIcon sx={{ display: { xs: isLoggedIn ? "none" : "flex", md: "flex" }, mr: 1 }} />
+          <PublicIcon
+            sx={{
+              display: { xs: isLoggedIn ? "none" : "flex", md: "flex" },
+              mr: 1,
+            }}
+          />
           <Typography
             variant="h6"
             noWrap
@@ -64,11 +72,25 @@ function ResponsiveAppBar(props) {
           </Typography>
 
           {isLoggedIn && (
-            <Box sx={{ flexGrow: 1, display: "flex", justifyContent: "flex-end" }}>
+            <Box
+              sx={{ flexGrow: 1, display: "flex", justifyContent: "flex-end" }}
+            >
               <IconButton onClick={handleMenuOpen} sx={{ p: 0 }}>
-                <Avatar>{username[0]?.toUpperCase() || '?'}</Avatar>
+                <Avatar>{username[0]?.toUpperCase() || "?"}</Avatar>
               </IconButton>
               <Menu anchorEl={anchorEl} open={open} onClose={handleMenuClose}>
+                <MenuItem disabled style={{ color: "black" }}>
+                  Hello, {username}
+                </MenuItem>{" "}
+                {/* ✅ black text */}
+                <hr
+                  style={{
+                    margin: "4px 0",
+                    border: "none",
+                    borderTop: "1px solid black",
+                  }}
+                />{" "}
+                {/* ✅ black line */}
                 <MenuItem onClick={handleProfileClick}>Profile</MenuItem>
                 <MenuItem onClick={handleLogoutAndRedirect}>Logout</MenuItem>
               </Menu>
