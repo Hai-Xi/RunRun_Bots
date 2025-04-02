@@ -99,7 +99,7 @@ function CreateNewOrder() {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (response.data && response.data.code === 100) {
-        setOrderId("ORD-" + response.data.data.orderId);
+        setOrderId(response.data.data.orderId);
         setShowSuccessModal(true);
         setCountdown(5);
       } else {
@@ -148,7 +148,8 @@ function CreateNewOrder() {
   useEffect(() => {
     if (!showSuccessModal) return;
     if (countdown === 0) {
-      navigate("/ordermanage");
+      // navigate("/ordermanage");
+      navigate("/selectedorder", { state: { orderId: orderId } });
       return;
     }
     const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
@@ -333,7 +334,7 @@ function CreateNewOrder() {
         <Modal.Body>
           Payment Success!
           <br />
-          Your order ID is <strong>{orderId}</strong>.<br />
+          Your order ID is <strong>ORD-{orderId}</strong>.<br />
           Navigating to home page in {countdown}...
         </Modal.Body>
       </Modal>

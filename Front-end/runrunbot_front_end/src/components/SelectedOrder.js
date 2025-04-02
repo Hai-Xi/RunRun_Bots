@@ -1,16 +1,46 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Button, ProgressBar } from "react-bootstrap";
+import axios from "axios";
+import { API_ROOT, TOKEN_KEY } from "../constants";
 
-const statusSteps = ["CREATED", "PENDING", "PAID", "IN PROCESS", "DELIVERED"];
+const statusSteps = ["CREATED", "PENDING", "PAID", "IN_PROGRESS", "DELIVERED"];
 
 const SelectedOrder = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const order = location.state?.order;
+  const orderId = location.state?.orderId;
+
+  const [order, setOrder] = useState(null);
+
+  useEffect(() => {
+    const fetchOrder = async () => {
+      if (!orderId) return;
+      const token = localStorage.getItem(TOKEN_KEY);
+      if (!token) {
+        alert("Missing token. Please login again.");
+        return;
+      }
+      try {
+        const response = await axios.get(`${API_ROOT}/api/orders/${orderId}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (response.data.code === 100) {
+          setOrder(response.data.data);
+        } else {
+          alert("Failed to fetch order info.");
+        }
+      } catch (err) {
+        console.error("Fetch failed:", err);
+        alert("Failed to fetch order info.");
+      }
+    };
+
+    fetchOrder();
+  }, [orderId]);
 
   if (!order) {
-    return <div>No order selected. Please go back and select an order.</div>;
+    return <div>Loading order info...</div>;
   }
 
   const formatDateTime = (dateString) => {
@@ -18,8 +48,31 @@ const SelectedOrder = () => {
     return new Date(dateString).toLocaleString(undefined, options);
   };
 
-  const handleCancelOrder = () => {
-    alert("Cancel API will be called here in the future.");
+  const handleCancelOrder = async () => {
+    try {
+      const token = localStorage.getItem(TOKEN_KEY);
+      if (!token) {
+        alert("Missing token. Please login again.");
+        return;
+      }
+
+      await axios.put(
+        `${API_ROOT}/api/orders/${order.orderId}/updateOrderStatus`,
+        {
+          status: "CANCELLED",
+          estimate: "1.2.3",
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      alert("Order cancelled successfully.");
+      window.location.reload(); // Refresh
+    } catch (err) {
+      console.error("Failed to cancel order:", err);
+      alert("Failed to cancel order. Please try again.");
+    }
   };
 
   const handlePrint = () => {
@@ -34,8 +87,6 @@ const SelectedOrder = () => {
 
   return (
     <div style={{ marginTop: "100px", padding: "20px", display: "flex", flexDirection: "column", alignItems: "center" }}>
-      
-      {/* --- Progress Bar --- */}
       <div style={{ width: "500px", marginBottom: "20px" }}>
         <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.8rem" }}>
           {order.status === "CANCELED" ? (
@@ -55,7 +106,6 @@ const SelectedOrder = () => {
         />
       </div>
 
-      {/* --- Order Information --- */}
       <div style={{ width: "500px", border: "1px solid #ccc", padding: "15px", borderRadius: "8px" }}>
         <h4>Order Receipt & Management</h4>
         <p><strong>Order ID:</strong> {order.orderId}</p>
@@ -67,13 +117,12 @@ const SelectedOrder = () => {
         <p><strong>Created At:</strong> {formatDateTime(order.createdAt)}</p>
       </div>
 
-      {/* --- Slimmer Buttons --- */}
       <div style={{ marginTop: "15px", display: "flex", flexDirection: "column", gap: "8px" }}>
         <Button
           variant="danger"
           size="sm"
           style={{ width: "400px", alignSelf: "center" }}
-          disabled={order.status === "IN PROCESS" || order.status === "DELIVERED"}
+          disabled={order.status === "IN_PROGRESS" || order.status === "DELIVERED" || order.status === "CANCELLED"}
           onClick={handleCancelOrder}
         >
           Cancel this order

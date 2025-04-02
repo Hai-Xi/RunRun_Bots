@@ -42,7 +42,8 @@ const OrderManage = () => {
   };
 
   const handleReceiptAndManage = () => {
-    navigate("/selectedorder", { state: { order: selectedOrder } });
+    // navigate("/selectedorder", { state: { order: selectedOrder } });
+    navigate("/selectedorder", { state: { orderId: selectedOrder.orderId } });
   };
 
   const formatDateTime = (dateString) => {
