@@ -83,7 +83,7 @@ public class Order {
      *
      */
     @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
-    @JsonIgnore // 忽略序列化 Payment 字段
+    //    @JsonIgnore // 忽略序列化 Payment 字段
     private Payment payment;
 
     @OneToMany(mappedBy = "order")
