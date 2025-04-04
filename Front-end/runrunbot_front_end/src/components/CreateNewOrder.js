@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import AddressValidator from "./AddressInputValidator";
 import axios from "axios";
 import { API_ROOT, TOKEN_KEY } from "../constants";
+import { estimateCostAndTime } from "./CostEstimator";
 
 const containerStyle = {
   width: "100%",
@@ -131,19 +132,26 @@ function CreateNewOrder() {
 
   // --- Bill and ETA display logic ---
   useEffect(() => {
-    if (pickupValidated && destinationValidated) {
-      if (deliveryMethod === "Robot") {
-        setBill("$20.00");
-        setEstimatedTime("2h 00min");
-      } else if (deliveryMethod === "Drone") {
-        setBill("$40.00");
-        setEstimatedTime("1h 00min");
+    const fetchEstimate = async () => {
+      if (pickupValidated && destinationValidated) {
+        try {
+          const now = new Date().toISOString(); // use current time as created time
+          const result = await estimateCostAndTime(pickup, destination, deliveryMethod.toUpperCase(), now);
+          setEstimatedTime(result.estimatedTime);
+          setBill(result.estimatedCost);
+        } catch (err) {
+          console.error("Estimation error:", err);
+          setEstimatedTime("--");
+          setBill("--");
+        }
+      } else {
+        setEstimatedTime("--");
+        setBill("--");
       }
-    } else {
-      setBill("--");
-      setEstimatedTime("--");
-    }
-  }, [pickupValidated, destinationValidated, deliveryMethod]);
+    };
+  
+    fetchEstimate();
+  }, [pickupValidated, destinationValidated, deliveryMethod, pickup, destination]);
   // --- Countdown effect ---
   useEffect(() => {
     if (!showSuccessModal) return;
