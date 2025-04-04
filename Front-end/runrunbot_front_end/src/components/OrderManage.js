@@ -58,7 +58,15 @@ const OrderManage = () => {
   };
 
   return (
-    <div style={{ marginTop: "70px", marginLeft: "100px", marginRight: "100px", display: "flex", gap: "20px" }}>
+    <div
+      style={{
+        marginTop: "70px",
+        marginLeft: "100px",
+        marginRight: "100px",
+        display: "flex",
+        gap: "20px",
+      }}
+    >
       {/* Left Section */}
       <div style={{ flex: 1 }}>
         <h3>Orders:</h3>
@@ -75,7 +83,8 @@ const OrderManage = () => {
               width: "100%", // make buttons clean
             }}
           >
-            Order #{order.orderId} | Ordered At: {formatDateTime(order.createdAt)}
+            Order #{order.orderId} | Ordered At:{" "}
+            {formatDateTime(order.createdAt)}
           </button>
         ))}
 
@@ -89,12 +98,25 @@ const OrderManage = () => {
             }}
           >
             <h4>Selected Order:</h4>
-            <p><strong>Item Description:</strong> {selectedOrder.itemDescription}</p>
-            <p><strong>Sending from:</strong> {selectedOrder.pickupLocation}</p>
-            <p><strong>Deliver to:</strong> {selectedOrder.deliveryLocation}</p>
-            <p><strong>Delivery Method:</strong> {selectedOrder.deliveryMethod}</p>
-            <p><strong>Status:</strong> {selectedOrder.status}</p>
-            <p><strong>Ordered At:</strong> {formatDateTime(selectedOrder.createdAt)}</p>
+            <p>
+              <strong>Item Description:</strong> {selectedOrder.itemDescription}
+            </p>
+            <p>
+              <strong>Sending from:</strong> {selectedOrder.pickupLocation}
+            </p>
+            <p>
+              <strong>Deliver to:</strong> {selectedOrder.deliveryLocation}
+            </p>
+            <p>
+              <strong>Delivery Method:</strong> {selectedOrder.deliveryMethod}
+            </p>
+            <p>
+              <strong>Status:</strong> {selectedOrder.status}
+            </p>
+            <p>
+              <strong>Ordered At:</strong>{" "}
+              {formatDateTime(selectedOrder.createdAt)}
+            </p>
 
             <Button
               variant="primary"
@@ -121,6 +143,13 @@ const OrderManage = () => {
           deliveryMethod={selectedOrder?.deliveryMethod}
           status={selectedOrder?.status}
         />
+        {/* <GoogleMapComponent
+  routeRequest={{
+    origin: { lat: 37.7749, lng: -122.4194 },
+    destination: { lat: 37.7849, lng: -122.4094 },
+  }}
+  deliveryMethod="DRONE"
+/> */}
 
         <Button
           variant="success"

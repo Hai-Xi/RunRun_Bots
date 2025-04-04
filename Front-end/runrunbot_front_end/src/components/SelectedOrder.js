@@ -141,7 +141,7 @@ const SelectedOrder = () => {
           variant="outline-dark"
           size="sm"
           style={{ width: "400px", alignSelf: "center" }}
-          onClick={() => navigate(-1)}
+          onClick={() => navigate("/ordermanage")}
         >
           ⬅ Back to Order Manage
         </Button>

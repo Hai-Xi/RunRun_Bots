@@ -102,5 +102,4 @@ function ResponsiveAppBar(props) {
   );
 }
 
-
 export default ResponsiveAppBar;
