@@ -86,7 +86,7 @@ function CreateNewOrder() {
       pickupLocation: pickup,
       deliveryLocation: destination,
       deliveryMethod: deliveryMethod.toUpperCase(),
-      totalAmount: "1",
+      totalAmount: Number(bill.replace(/[^0-9.]/g, "")),
       paymentMethod: paymentMethod.toUpperCase().replace(" ", ""), // e.g., PayPal -> PAYPAL
       paymentStatus: "SUCCESS",
       estimatedArrivalTime: estimatedTime,
