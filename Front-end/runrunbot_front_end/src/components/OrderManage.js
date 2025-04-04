@@ -126,8 +126,11 @@ const OrderManage = () => {
                   <strong>Status:</strong> {order.status}
                 </p>
                 <p>
-                  <strong>Ordered At:</strong>{" "}
-                  {formatDateTime(order.createdAt)}
+                  <strong>Payment Amount:</strong> $
+                  {order.payment?.amount?.toFixed(2) ?? "--"}
+                </p>
+                <p>
+                  <strong>Ordered At:</strong> {formatDateTime(order.createdAt)}
                 </p>
 
                 <Button
@@ -170,9 +173,7 @@ const OrderManage = () => {
           <Button
             variant="outline-primary"
             size="sm"
-            onClick={() =>
-              setCurrentPage((p) => Math.min(totalPages, p + 1))
-            }
+            onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
             disabled={currentPage === totalPages}
           >
             Next

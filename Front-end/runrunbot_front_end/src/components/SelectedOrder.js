@@ -86,14 +86,31 @@ const SelectedOrder = () => {
   };
 
   return (
-    <div style={{ marginTop: "100px", padding: "20px", display: "flex", flexDirection: "column", alignItems: "center" }}>
+    <div
+      style={{
+        marginTop: "100px",
+        padding: "20px",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
       <div style={{ width: "500px", marginBottom: "20px" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.8rem" }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            fontSize: "0.8rem",
+          }}
+        >
           {order.status === "CANCELED" ? (
             <span style={{ color: "red" }}>CANCELED</span>
           ) : (
             statusSteps.map((step, idx) => (
-              <span key={idx} style={{ color: step === order.status ? "blue" : "gray" }}>
+              <span
+                key={idx}
+                style={{ color: step === order.status ? "blue" : "gray" }}
+              >
                 {step}
               </span>
             ))
@@ -106,23 +123,66 @@ const SelectedOrder = () => {
         />
       </div>
 
-      <div style={{ width: "500px", border: "1px solid #ccc", padding: "15px", borderRadius: "8px" }}>
+      <div
+        style={{
+          width: "500px",
+          border: "1px solid #ccc",
+          padding: "15px",
+          borderRadius: "8px",
+        }}
+      >
         <h4>Order Receipt & Management</h4>
-        <p><strong>Order ID:</strong> {order.orderId}</p>
-        <p><strong>Item Description:</strong> {order.itemDescription}</p>
-        <p><strong>Pickup Location:</strong> {order.pickupLocation}</p>
-        <p><strong>Delivery Location:</strong> {order.deliveryLocation}</p>
-        <p><strong>Delivery Method:</strong> {order.deliveryMethod}</p>
-        <p><strong>Status:</strong> {order.status}</p>
-        <p><strong>Created At:</strong> {formatDateTime(order.createdAt)}</p>
+        <p>
+          <strong>Order ID:</strong> {order.orderId}
+        </p>
+        <p>
+          <strong>Item Description:</strong> {order.itemDescription}
+        </p>
+        <p>
+          <strong>Pickup Location:</strong> {order.pickupLocation}
+        </p>
+        <p>
+          <strong>Delivery Location:</strong> {order.deliveryLocation}
+        </p>
+        <p>
+          <strong>Delivery Method:</strong> {order.deliveryMethod}
+        </p>
+        <p>
+          <strong>Status:</strong> {order.status}
+        </p>
+        <p>
+          <strong>Created At:</strong> {formatDateTime(order.createdAt)}
+        </p>
+        <p>
+          <strong>Updated At:</strong> {formatDateTime(order.updatedAt)}
+        </p>
+        <p>
+          <strong>Payment Amount:</strong> $
+          {order.payment?.amount?.toFixed(2) ?? "--"}
+        </p>
+        <p>
+          <strong>Payment Method:</strong>{" "}
+          {order.payment?.paymentMethod ?? "--"}
+        </p>
       </div>
 
-      <div style={{ marginTop: "15px", display: "flex", flexDirection: "column", gap: "8px" }}>
+      <div
+        style={{
+          marginTop: "15px",
+          display: "flex",
+          flexDirection: "column",
+          gap: "8px",
+        }}
+      >
         <Button
           variant="danger"
           size="sm"
           style={{ width: "400px", alignSelf: "center" }}
-          disabled={order.status === "IN_PROGRESS" || order.status === "DELIVERED" || order.status === "CANCELLED"}
+          disabled={
+            order.status === "IN_PROGRESS" ||
+            order.status === "DELIVERED" ||
+            order.status === "CANCELLED"
+          }
           onClick={handleCancelOrder}
         >
           Cancel this order
