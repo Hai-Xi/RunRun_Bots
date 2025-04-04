@@ -54,8 +54,8 @@ const OrderManage = () => {
   };
 
   const getButtonColor = (status) => {
-    if (status === "Canceled") return "#d3d3d3";
-    if (status === "Delivered") return "#ccffcc";
+    if (status === "CANCELLED") return "#d3d3d3";
+    if (status === "DELIVERED") return "#ccffcc";
     return "#e0f0ff";
   };
 
