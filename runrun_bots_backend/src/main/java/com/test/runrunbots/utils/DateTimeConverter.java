@@ -21,6 +21,13 @@ import java.util.Date;
  * | **线程安全** | 否 | 是 |
  * | **API 易用性** | 较差 | 优秀 |
  *
+ *
+ * Date 是 Java 1.0 版本的日期时间 API，API 设计不够完善，使用较为复杂。
+ * LocalDateTime 是 Java 8 引入的新 API，设计更合理，功能更强大，线程安全。
+ * 项目优先考虑使用 LocalDateTime，尤其是对日期时间有较多操作的场景。
+ * 兼容旧版本的项目可能需要同时使用两者，可通过工具类做好转换。
+ *
+ *
  */
 public class DateTimeConverter {  
 
