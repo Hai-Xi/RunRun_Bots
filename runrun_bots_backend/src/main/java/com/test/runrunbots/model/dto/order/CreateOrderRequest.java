@@ -4,6 +4,8 @@ import com.test.runrunbots.model.DeliveryMethod;
 import com.test.runrunbots.model.dto.valid.ValidDeliveryMethod;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data  
 public class CreateOrderRequest {
     /**
@@ -16,6 +18,8 @@ public class CreateOrderRequest {
 
     @ValidDeliveryMethod
     private DeliveryMethod deliveryMethod; // ROBOT or DRONE
+
+    private LocalDateTime estimatedArrivalTime;
 
     /**
      * payment table

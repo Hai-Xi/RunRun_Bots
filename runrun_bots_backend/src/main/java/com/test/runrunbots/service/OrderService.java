@@ -41,6 +41,7 @@ public class OrderService {
         order.setDeliveryMethod(request.getDeliveryMethod());
         order.setStatus(OrderStatus.valueOf("CREATED"));
         order.setCreatedAt(LocalDateTime.now());
+        order.setEstimatedArrivalTime(request.getEstimatedArrivalTime());
 
         // 创建支付对象
         Payment payment = new Payment();
