@@ -43,6 +43,8 @@ public class CreateOrderRequest {
      * 日期时间格式：对外提供接口时，建议明确日期时间格式，并使用 @DateTimeFormat 或全局配置 spring.jackson/ 字段注解 @JsonFormat。
      * 序列化与反序列化：通过 Jackson（或类似工具）自动将 Java 对象与 JSON 互相转换。
      *
+     *
+     * ZoneId 和 LocalDateTime 是线程安全的，这些方法是完全线程安全的，可以在多线程环境中安全使用。
      */
     private LocalDateTime estimatedArrivalTime;
 
