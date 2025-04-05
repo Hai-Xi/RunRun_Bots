@@ -19,6 +19,11 @@ public class CreateOrderRequest {
     @ValidDeliveryMethod
     private DeliveryMethod deliveryMethod; // ROBOT or DRONE
 
+    /**
+     *
+     * LocalDateTime 是 java.time 引入的类型，在序列化为 JSON 时需要确保其格式可读。通常用到 Jackson 或别的序列化工具
+     *
+     */
     private LocalDateTime estimatedArrivalTime;
 
     /**
