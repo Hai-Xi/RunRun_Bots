@@ -78,6 +78,17 @@ public class Order {
 
     /**
      *
+     * 添加预估到达时间字段
+     *
+     * 使用 LocalDateTime 类型存储日期和时间信息，这是 Java 8 引入的新日期时间 API，比 Date 类更加灵活和易用。
+     * 使用 @Column 注解显式指定字段名称，确保与数据库字段名匹配。
+     *
+     */
+    @Column(name = "estimated_arrival_time")
+    private LocalDateTime estimatedArrivalTime;
+
+    /**
+     *
      * mappedBy: 被维护端使用，表示由另一端 (即 Payment表 )(即 带有 @JoinColumn注解的 table, 用于定义外键列)的哪个字段来维护这段关系。这里 Payment 的 order字段 是拥有端。
      * cascade = CascadeType.ALL: 表示在操作 Order 实体时，相关联的 Payment 实体也会被自动操作。例如创建 Order 时，会自动保存 Payment。
      *
