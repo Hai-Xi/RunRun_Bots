@@ -5,7 +5,7 @@ import { Button } from "react-bootstrap";
 import axios from "axios";
 import { API_ROOT, TOKEN_KEY } from "../constants";
 
-const ORDERS_PER_PAGE = 5;
+const ORDERS_PER_PAGE = 4;
 
 const OrderManage = () => {
   const [orders, setOrders] = useState([]);
@@ -83,73 +83,79 @@ const OrderManage = () => {
       {/* Left Section */}
       <div style={{ flex: 1 }}>
         <h3>Orders:</h3>
-
-        {paginatedOrders.map((order) => (
-          <div key={order.orderId}>
-            <button
-              onClick={() => handleOrderClick(order)}
-              style={{
-                display: "block",
-                marginBottom: "10px",
-                backgroundColor: getButtonColor(order.status),
-                padding: "8px",
-                borderRadius: "5px",
-                width: "100%",
-              }}
-            >
-              Order #{order.orderId} | Ordered At:{" "}
-              {formatDateTime(order.createdAt)}
-            </button>
-
-            {selectedOrder?.orderId === order.orderId && (
-              <div
+        {sortedOrders.length === 0 ? (
+          <p style={{ fontStyle: "italic", color: "gray", marginTop: "10px" }}>
+            No past orders found. Let’s create a new order!
+          </p>
+        ) : (
+          paginatedOrders.map((order) => (
+            <div key={order.orderId}>
+              <button
+                onClick={() => handleOrderClick(order)}
                 style={{
-                  marginBottom: "20px",
-                  padding: "10px",
-                  border: "1px solid #ccc",
+                  display: "block",
+                  marginBottom: "10px",
+                  backgroundColor: getButtonColor(order.status),
+                  padding: "8px",
+                  borderRadius: "5px",
+                  width: "100%",
                 }}
               >
-                <h4>Selected Order:</h4>
-                <p>
-                  <strong>Item Description:</strong> {order.itemDescription}
-                </p>
-                <p>
-                  <strong>Sending from:</strong> {order.pickupLocation}
-                </p>
-                <p>
-                  <strong>Deliver to:</strong> {order.deliveryLocation}
-                </p>
-                <p>
-                  <strong>Delivery Method:</strong> {order.deliveryMethod}
-                </p>
-                <p>
-                  <strong>Status:</strong> {order.status}
-                </p>
-                <p>
-                  <strong>Estimated Arrival Time:</strong>{" "}
-                  {order.estimatedArrivalTime
-                    ? formatDateTime(order.estimatedArrivalTime)
-                    : "--"}
-                </p>
-                <p>
-                  <strong>Payment Amount:</strong> $
-                  {order.payment?.amount?.toFixed(2) ?? "--"}
-                </p>
-                <p>
-                  <strong>Ordered At:</strong> {formatDateTime(order.createdAt)}
-                </p>
+                Order #{order.orderId} | Ordered At:{" "}
+                {formatDateTime(order.createdAt)}
+              </button>
 
-                <Button
-                  variant="primary"
-                  style={{ marginTop: "10px", width: "100%" }}
-                  onClick={handleReceiptAndManage}
+              {selectedOrder?.orderId === order.orderId && (
+                <div
+                  style={{
+                    marginBottom: "20px",
+                    padding: "10px",
+                    border: "1px solid #ccc",
+                  }}
                 >
-                  Receipt and Manage
-                </Button>
-              </div>
-            )}
-          </div>
-        ))}
+                  <h4>Selected Order:</h4>
+                  <p>
+                    <strong>Item Description:</strong> {order.itemDescription}
+                  </p>
+                  <p>
+                    <strong>Sending from:</strong> {order.pickupLocation}
+                  </p>
+                  <p>
+                    <strong>Deliver to:</strong> {order.deliveryLocation}
+                  </p>
+                  <p>
+                    <strong>Delivery Method:</strong> {order.deliveryMethod}
+                  </p>
+                  <p>
+                    <strong>Status:</strong> {order.status}
+                  </p>
+                  <p>
+                    <strong>Estimated Arrival Time:</strong>{" "}
+                    {order.estimatedArrivalTime
+                      ? formatDateTime(order.estimatedArrivalTime)
+                      : "--"}
+                  </p>
+                  <p>
+                    <strong>Payment Amount:</strong> $
+                    {order.payment?.amount?.toFixed(2) ?? "--"}
+                  </p>
+                  <p>
+                    <strong>Ordered At:</strong>{" "}
+                    {formatDateTime(order.createdAt)}
+                  </p>
+
+                  <Button
+                    variant="primary"
+                    style={{ marginTop: "10px", width: "100%" }}
+                    onClick={handleReceiptAndManage}
+                  >
+                    Receipt and Manage
+                  </Button>
+                </div>
+              )}
+            </div>
+          ))
+        )}
 
         {/* Pagination Controls */}
         <div style={{ marginTop: "20px", textAlign: "center" }}>
