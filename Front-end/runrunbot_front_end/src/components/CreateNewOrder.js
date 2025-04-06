@@ -41,7 +41,8 @@ function CreateNewOrder() {
   const [destinationValidated, setDestinationValidated] = useState(false);
 
   // --- Bill & ETA ---
-  const [estimatedTime, setEstimatedTime] = useState("--");
+  const [estimatedTimeString, setEstimatedTimeString] = useState("--");
+  const [estimatedTimeISO, setEstimatedTimeISO] = useState("");
   const [bill, setBill] = useState("--");
 
   // --- New confirm modal state ---
@@ -90,7 +91,7 @@ function CreateNewOrder() {
       totalAmount: Number(bill.replace(/[^0-9.]/g, "")),
       paymentMethod: paymentMethod.toUpperCase().replace(" ", ""), // e.g., PayPal -> PAYPAL
       paymentStatus: "SUCCESS",
-      estimatedArrivalTime: estimatedTime,
+      estimatedArrivalTime: estimatedTimeISO,
     };
 
     try {
@@ -137,15 +138,18 @@ function CreateNewOrder() {
         try {
           const now = new Date().toISOString(); // use current time as created time
           const result = await estimateCostAndTime(pickup, destination, deliveryMethod.toUpperCase(), now);
-          setEstimatedTime(result.estimatedTime);
+          setEstimatedTimeString(result.estimatedTimeString);
+          setEstimatedTimeISO(result.estimatedTimeISO);
           setBill(result.estimatedCost);
         } catch (err) {
           console.error("Estimation error:", err);
-          setEstimatedTime("--");
+          setEstimatedTimeString("--");
+          setEstimatedTimeISO("--");
           setBill("--");
         }
       } else {
-        setEstimatedTime("--");
+        setEstimatedTimeString("--");
+        setEstimatedTimeISO("--");
         setBill("--");
       }
     };
@@ -254,7 +258,7 @@ function CreateNewOrder() {
             <strong>Bill to Pay:</strong> {bill}
           </p>
           <p>
-            <strong>Estimated Time:</strong> {estimatedTime}
+            <strong>Estimated Time:</strong> {estimatedTimeString}
           </p>
         </div>
 

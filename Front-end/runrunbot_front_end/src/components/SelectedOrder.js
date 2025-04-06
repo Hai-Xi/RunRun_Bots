@@ -157,6 +157,10 @@ const SelectedOrder = () => {
           <strong>Updated At:</strong> {formatDateTime(order.updatedAt)}
         </p>
         <p>
+          <strong>Estimated Arrival Time:</strong>{" "}
+          {formatDateTime(order.estimatedArrivalTime)}
+        </p>
+        <p>
           <strong>Payment Amount:</strong> $
           {order.payment?.amount?.toFixed(2) ?? "--"}
         </p>

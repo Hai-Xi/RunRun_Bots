@@ -126,6 +126,12 @@ const OrderManage = () => {
                   <strong>Status:</strong> {order.status}
                 </p>
                 <p>
+                  <strong>Estimated Arrival Time:</strong>{" "}
+                  {order.estimatedArrivalTime
+                    ? formatDateTime(order.estimatedArrivalTime)
+                    : "--"}
+                </p>
+                <p>
                   <strong>Payment Amount:</strong> $
                   {order.payment?.amount?.toFixed(2) ?? "--"}
                 </p>

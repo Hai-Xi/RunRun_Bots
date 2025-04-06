@@ -85,11 +85,13 @@ export const estimateCostAndTime = async (pickupAddress, deliveryAddress, delive
     const createdDate = new Date(createdTimeISO);
     const estimatedArrival = new Date(createdDate.getTime() + totalMinutes * 60000);
 
-    const formattedTime = estimatedArrival.toLocaleString();
+    const formattedTime1 = estimatedArrival.toLocaleString();
+    const formattedTime2 = estimatedArrival.toISOString();
     const estimatedCost = `$${(baseCost + perMileCost * distanceMiles).toFixed(2)}`;
 
     return {
-      estimatedTime: formattedTime,
+      estimatedTimeString: formattedTime1,
+      estimatedTimeISO: formattedTime2,
       estimatedCost
     };
   } catch (err) {
