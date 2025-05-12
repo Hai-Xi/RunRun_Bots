@@ -9,7 +9,9 @@ spring:
     default-property-inclusion: non_null
   cloud:
     openfeign:
-      # oauth2.enabled: true：Feign 自动通过你配置的 mapTest 客户端去拿 AccessToken，所有 Feign 请求都自动带上 Bearer Token; Bearer Token 是 default-request-headers
+      # oauth2.enabled: true：Feign 自动通过你配置的 mapTest 客户端去拿 AccessToken，所有 Feign 请求都自动带上 Bearer Token; Bearer Token 是 default-request-headers 之一;
+      #
+      # 不需要写拦截器/切换手动逻辑，全部用配置即可
       # 自动获取 OAuth2 clientRegistrationId token，并附在 Authorization: Bearer token
       oauth2:
         enabled: true
