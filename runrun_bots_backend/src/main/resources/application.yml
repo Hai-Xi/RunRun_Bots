@@ -17,8 +17,10 @@ spring:
           map-api:
             url: https://routes.googleapis.com/directions/v2:computeRoutes
             loggerLevel: basic
+            # 每次请求自动加上指定请求头，不需要在代码里 set。
             default-request-headers:
               X-Goog-FieldMask: ${X-Goog-FieldMask}
+            # default-query-parameters：每次请求自动加上 key 等参数
             default-query-parameters:
               key: ${key}
 
